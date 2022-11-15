@@ -19,16 +19,13 @@ def home(request):
 
         themes = xmltodict.parse(themes.content)  # returns nested dictionary
 
-        # themes = themes['themes']['theme'] # this returns a list
+        themes = themes['themes']['theme'] # this returns a list
 
-        # themes_cleaned = {theme["name"]: theme["id"] for theme in themes}
-        print("Themes: ", themes)
+        themes_cleaned = {theme["name"]: theme["id"] for theme in themes}
+        print("Themes: ", themes_cleaned)
 
-        for theme in themes["themes"]["theme"]:
-            theme_data = Theme(
-                name=theme["name"],
-                theme_id=theme["id"],
-            )
+        theme_data = Theme.objects.create(**themes_cleaned)
+
         theme_data.save()
     
     themes = Theme.objects.values_list('name','theme_id')
