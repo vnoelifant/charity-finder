@@ -11,13 +11,17 @@ def home(request):
 
     themes = charity_api.get_charity_data("/themes")
 
-    themes = xmltodict.parse(themes.content)
-    print(themes)
+    themes = xmltodict.parse(themes.content) # returns nested dictionary
+
+    # themes = themes['themes']['theme'] # this returns a list
+
+    # themes_cleaned = {theme["name"]: theme["id"] for theme in themes}
+    print("Themes: ", themes)
 
     feature_projects = charity_api.get_charity_data("/featured/projects")
 
     feature_projects = xmltodict.parse(feature_projects.content)
-    print(feature_projects)
+    # print("Featured projects: ", feature_projects)
 
     context = {"themes": themes, "featured_projects": feature_projects}
 
