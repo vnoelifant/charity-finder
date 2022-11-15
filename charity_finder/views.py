@@ -4,18 +4,34 @@ from django.http import HttpResponse
 from pprint import pprint
 from functools import partial
 
+from charity_finder.models import Theme
 from charity_finder import charity_api
 
 # Create your views here.
 def home(request):
+    try:
+        print("Found data in DB")
+        Theme.objects.get(theme_id="edu")
+    except Theme.DoesNotExist:
+        print("Calling API for data")
 
-    themes = charity_api.get_charity_data("/themes")
+        themes = charity_api.get_charity_data("/themes")
 
-    themes = xmltodict.parse(themes.content) # returns nested dictionary
+        themes = xmltodict.parse(themes.content)  # returns nested dictionary
 
-    # themes = themes['themes']['theme'] # this returns a list
+        # themes = themes['themes']['theme'] # this returns a list
 
-    # themes_cleaned = {theme["name"]: theme["id"] for theme in themes}
+        # themes_cleaned = {theme["name"]: theme["id"] for theme in themes}
+        print("Themes: ", themes)
+
+        for theme in themes["themes"]["theme"]:
+            theme_data = Theme(
+                name=theme["name"],
+                theme_id=theme["id"],
+            )
+            theme_data.save()
+    
+    themes = Theme.objects.all().order_by('-id')
     print("Themes: ", themes)
 
     feature_projects = charity_api.get_charity_data("/featured/projects")
