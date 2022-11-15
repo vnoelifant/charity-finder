@@ -29,9 +29,10 @@ def home(request):
                 name=theme["name"],
                 theme_id=theme["id"],
             )
-            theme_data.save()
+        theme_data.save()
     
-    themes = Theme.objects.all().order_by('-id')
+    themes = Theme.objects.values_list('name','theme_id')
+    
     print("Themes: ", themes)
 
     feature_projects = charity_api.get_charity_data("/featured/projects")
