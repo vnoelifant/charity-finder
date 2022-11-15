@@ -24,9 +24,7 @@ def home(request):
         themes_cleaned = {theme["name"]: theme["id"] for theme in themes}
         print("Themes: ", themes_cleaned)
 
-        theme_data = Theme.objects.create(**themes_cleaned)
-
-        theme_data.save()
+        Theme.objects.create(**themes_cleaned)
     
     themes = Theme.objects.values_list('name','theme_id')
     
