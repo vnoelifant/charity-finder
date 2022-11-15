@@ -3,7 +3,7 @@ import json
 import xmltodict
 from pprint import pprint
 from functools import partial
-from utils import dump_charity_data_to_json
+# from utils import dump_charity_data_to_json
 
 import requests
 from dotenv import load_dotenv
