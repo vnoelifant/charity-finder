@@ -7,11 +7,10 @@ name = "pypi"
 django = "*"
 django-bootstrap-v5 = "*"
 python-dotenv = "*"
-black = "*"
 requests = "*"
-xmltodict = "*"
 
 [dev-packages]
+black = "*"
 
 [requires]
 python_version = "3.9"
