@@ -1,21 +1,15 @@
-{% load bootstrap5 %}
-{% load static %}
+{% load tailwind_tags %}
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-	<title>{% block title %}{% endblock %}</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-  {% bootstrap_css %}
-  {% bootstrap_javascript %}
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Gruppo|Bad Script|Kanit|Bai Jamjuree|Play">
-</head>
-
-<body>
-  {% bootstrap_messages %}
-
+    <head>
+        <title>{% block title %}{% endblock %}</title>>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+		{% tailwind_css %}
+	</head>
+<body>    
+    <h1 class="text-2xl bg-slate-200 hover:bg-yellow-400">Hello! This is a Django project with Tailwind CSS.</h1>
+    <p>{{themes}}</p>
 </body>
 </html>
