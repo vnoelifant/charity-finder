@@ -8,6 +8,7 @@ django = "*"
 django-bootstrap-v5 = "*"
 python-dotenv = "*"
 requests = "*"
+django-tailwind = "*"
 
 [dev-packages]
 black = "*"

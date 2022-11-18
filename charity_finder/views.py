@@ -28,11 +28,7 @@ def home(request):
         """
 
     themes = Theme.objects.values_list('name','theme_id')
-    print("Themes: ", themes)
-
-    feature_projects = charity_api.get_charity_data("/featured/projects/summary")
-    print("Featured projects: ", feature_projects)
-
-    context = {"themes": themes, "featured_projects": feature_projects}
+  
+    context = {"themes": themes}
 
     return render(request, "home.html", context)
