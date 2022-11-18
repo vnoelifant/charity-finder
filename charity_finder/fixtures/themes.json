@@ -1,0 +1,924 @@
+[
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2022-11-16T05:34:32.422Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "28",
+    "object_repr": "Wildlife Conservation: wildlife",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2022-11-16T05:34:32.433Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "27",
+    "object_repr": "Sustainable Agriculture: agriculture",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2022-11-16T05:34:32.439Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "26",
+    "object_repr": "Safe Housing: housing",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2022-11-16T05:34:32.446Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "25",
+    "object_repr": "Reproductive Health: reproductive",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2022-11-16T05:34:32.453Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "24",
+    "object_repr": "Refugee Rights: refugee",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2022-11-16T05:34:32.459Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "23",
+    "object_repr": "Racial Justice: justice",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2022-11-16T05:34:32.466Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "22",
+    "object_repr": "Mental Health: mentalhealth",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2022-11-16T05:34:32.472Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "21",
+    "object_repr": "Ending Abuse: endabuse",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 9,
+  "fields": {
+    "action_time": "2022-11-16T05:34:32.478Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "20",
+    "object_repr": "Disability Rights: disability",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2022-11-16T05:34:32.486Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "19",
+    "object_repr": "Clean Water: water",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 11,
+  "fields": {
+    "action_time": "2022-11-16T05:34:32.492Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "18",
+    "object_repr": "COVID-19: covid-19",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 12,
+  "fields": {
+    "action_time": "2022-11-16T05:34:32.499Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "17",
+    "object_repr": "LGBTQIA+ Equality: lgbtq",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 13,
+  "fields": {
+    "action_time": "2022-11-16T05:34:32.505Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "16",
+    "object_repr": "Arts and Culture: art",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 14,
+  "fields": {
+    "action_time": "2022-11-16T05:34:32.513Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "15",
+    "object_repr": "Food Security: hunger",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 15,
+  "fields": {
+    "action_time": "2022-11-16T05:34:32.519Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "14",
+    "object_repr": "Digital Literacy: tech",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 16,
+  "fields": {
+    "action_time": "2022-11-16T05:34:32.525Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "13",
+    "object_repr": "Sport: sport",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 17,
+  "fields": {
+    "action_time": "2022-11-16T05:34:32.532Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "12",
+    "object_repr": "Justice and Human Rights: rights",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 18,
+  "fields": {
+    "action_time": "2022-11-16T05:34:32.538Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "11",
+    "object_repr": "Ending Human Trafficking: human",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 19,
+  "fields": {
+    "action_time": "2022-11-16T05:34:32.550Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "10",
+    "object_repr": "Physical Health: health",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 20,
+  "fields": {
+    "action_time": "2022-11-16T05:34:32.567Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "9",
+    "object_repr": "Gender Equality: gender",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 21,
+  "fields": {
+    "action_time": "2022-11-16T05:34:32.580Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "8",
+    "object_repr": "Ecosystem Restoration: env",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 22,
+  "fields": {
+    "action_time": "2022-11-16T05:34:32.587Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "7",
+    "object_repr": "Education: edu",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 23,
+  "fields": {
+    "action_time": "2022-11-16T05:34:32.594Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "6",
+    "object_repr": "Economic Growth: ecdev",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 24,
+  "fields": {
+    "action_time": "2022-11-16T05:34:32.600Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "5",
+    "object_repr": "Disaster Response: disaster",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 25,
+  "fields": {
+    "action_time": "2022-11-16T05:34:32.607Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "4",
+    "object_repr": "Peace and Reconciliation: democ",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 26,
+  "fields": {
+    "action_time": "2022-11-16T05:34:32.613Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "3",
+    "object_repr": "Climate Action: climate",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 27,
+  "fields": {
+    "action_time": "2022-11-16T05:34:32.619Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "2",
+    "object_repr": "Child Protection: children",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 28,
+  "fields": {
+    "action_time": "2022-11-16T05:34:32.626Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "1",
+    "object_repr": "Animal Welfare: animals",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 1,
+  "fields": {
+    "name": "Can add log entry",
+    "content_type": 1,
+    "codename": "add_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 2,
+  "fields": {
+    "name": "Can change log entry",
+    "content_type": 1,
+    "codename": "change_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 3,
+  "fields": {
+    "name": "Can delete log entry",
+    "content_type": 1,
+    "codename": "delete_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 4,
+  "fields": {
+    "name": "Can view log entry",
+    "content_type": 1,
+    "codename": "view_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 5,
+  "fields": {
+    "name": "Can add permission",
+    "content_type": 2,
+    "codename": "add_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 6,
+  "fields": {
+    "name": "Can change permission",
+    "content_type": 2,
+    "codename": "change_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 7,
+  "fields": {
+    "name": "Can delete permission",
+    "content_type": 2,
+    "codename": "delete_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 8,
+  "fields": {
+    "name": "Can view permission",
+    "content_type": 2,
+    "codename": "view_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 9,
+  "fields": {
+    "name": "Can add group",
+    "content_type": 3,
+    "codename": "add_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 10,
+  "fields": {
+    "name": "Can change group",
+    "content_type": 3,
+    "codename": "change_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 11,
+  "fields": {
+    "name": "Can delete group",
+    "content_type": 3,
+    "codename": "delete_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 12,
+  "fields": {
+    "name": "Can view group",
+    "content_type": 3,
+    "codename": "view_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 13,
+  "fields": {
+    "name": "Can add user",
+    "content_type": 4,
+    "codename": "add_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 14,
+  "fields": {
+    "name": "Can change user",
+    "content_type": 4,
+    "codename": "change_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 15,
+  "fields": {
+    "name": "Can delete user",
+    "content_type": 4,
+    "codename": "delete_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 16,
+  "fields": {
+    "name": "Can view user",
+    "content_type": 4,
+    "codename": "view_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 17,
+  "fields": {
+    "name": "Can add content type",
+    "content_type": 5,
+    "codename": "add_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 18,
+  "fields": {
+    "name": "Can change content type",
+    "content_type": 5,
+    "codename": "change_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 19,
+  "fields": {
+    "name": "Can delete content type",
+    "content_type": 5,
+    "codename": "delete_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 20,
+  "fields": {
+    "name": "Can view content type",
+    "content_type": 5,
+    "codename": "view_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 21,
+  "fields": {
+    "name": "Can add session",
+    "content_type": 6,
+    "codename": "add_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 22,
+  "fields": {
+    "name": "Can change session",
+    "content_type": 6,
+    "codename": "change_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 23,
+  "fields": {
+    "name": "Can delete session",
+    "content_type": 6,
+    "codename": "delete_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 24,
+  "fields": {
+    "name": "Can view session",
+    "content_type": 6,
+    "codename": "view_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 25,
+  "fields": {
+    "name": "Can add theme",
+    "content_type": 7,
+    "codename": "add_theme"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 26,
+  "fields": {
+    "name": "Can change theme",
+    "content_type": 7,
+    "codename": "change_theme"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 27,
+  "fields": {
+    "name": "Can delete theme",
+    "content_type": 7,
+    "codename": "delete_theme"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 28,
+  "fields": {
+    "name": "Can view theme",
+    "content_type": 7,
+    "codename": "view_theme"
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$p2voowemzF2Fln24wUbifY$PCJGfz8po1g0yYToVYJfF3aBDKzyf8coeZRHMiDYv8Y=",
+    "last_login": "2022-11-15T06:25:39.299Z",
+    "is_superuser": true,
+    "username": "ronnienm08",
+    "first_name": "",
+    "last_name": "",
+    "email": "veronicanoel12490@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2022-11-15T05:51:53.908Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 1,
+  "fields": {
+    "app_label": "admin",
+    "model": "logentry"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 2,
+  "fields": {
+    "app_label": "auth",
+    "model": "permission"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 3,
+  "fields": {
+    "app_label": "auth",
+    "model": "group"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 4,
+  "fields": {
+    "app_label": "auth",
+    "model": "user"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 5,
+  "fields": {
+    "app_label": "contenttypes",
+    "model": "contenttype"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 6,
+  "fields": {
+    "app_label": "sessions",
+    "model": "session"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 7,
+  "fields": {
+    "app_label": "charity_finder",
+    "model": "theme"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "czyz6a0i4w6tlmis8opgy3igvsyft50m",
+  "fields": {
+    "session_data": ".eJxVjEEOgjAQRe_StWlapAzj0j1nIDOdwaKmTSisjHdXEha6_e-9_zIjbWsat6rLOIu5GG9OvxtTfGjegdwp34qNJa_LzHZX7EGrHYro83q4fweJavrWcHbkRbD33MXQMjqAFrAR0C74gBIDM_ZCRB5ZcGKnUxNEvQA6F8z7A9yNOA4:1oupO7:VU8ahdsS3iaBMUzEV9qRbzkXYe6RTOrpbL_QrBPmLAE",
+    "expire_date": "2022-11-29T06:25:39.308Z"
+  }
+},
+{
+  "model": "charity_finder.theme",
+  "pk": 29,
+  "fields": {
+    "name": "Animal Welfare",
+    "theme_id": "animals"
+  }
+},
+{
+  "model": "charity_finder.theme",
+  "pk": 30,
+  "fields": {
+    "name": "Child Protection",
+    "theme_id": "children"
+  }
+},
+{
+  "model": "charity_finder.theme",
+  "pk": 31,
+  "fields": {
+    "name": "Climate Action",
+    "theme_id": "climate"
+  }
+},
+{
+  "model": "charity_finder.theme",
+  "pk": 32,
+  "fields": {
+    "name": "Peace and Reconciliation",
+    "theme_id": "democ"
+  }
+},
+{
+  "model": "charity_finder.theme",
+  "pk": 33,
+  "fields": {
+    "name": "Disaster Response",
+    "theme_id": "disaster"
+  }
+},
+{
+  "model": "charity_finder.theme",
+  "pk": 34,
+  "fields": {
+    "name": "Economic Growth",
+    "theme_id": "ecdev"
+  }
+},
+{
+  "model": "charity_finder.theme",
+  "pk": 35,
+  "fields": {
+    "name": "Education",
+    "theme_id": "edu"
+  }
+},
+{
+  "model": "charity_finder.theme",
+  "pk": 36,
+  "fields": {
+    "name": "Ecosystem Restoration",
+    "theme_id": "env"
+  }
+},
+{
+  "model": "charity_finder.theme",
+  "pk": 37,
+  "fields": {
+    "name": "Gender Equality",
+    "theme_id": "gender"
+  }
+},
+{
+  "model": "charity_finder.theme",
+  "pk": 38,
+  "fields": {
+    "name": "Physical Health",
+    "theme_id": "health"
+  }
+},
+{
+  "model": "charity_finder.theme",
+  "pk": 39,
+  "fields": {
+    "name": "Ending Human Trafficking",
+    "theme_id": "human"
+  }
+},
+{
+  "model": "charity_finder.theme",
+  "pk": 40,
+  "fields": {
+    "name": "Justice and Human Rights",
+    "theme_id": "rights"
+  }
+},
+{
+  "model": "charity_finder.theme",
+  "pk": 41,
+  "fields": {
+    "name": "Sport",
+    "theme_id": "sport"
+  }
+},
+{
+  "model": "charity_finder.theme",
+  "pk": 42,
+  "fields": {
+    "name": "Digital Literacy",
+    "theme_id": "tech"
+  }
+},
+{
+  "model": "charity_finder.theme",
+  "pk": 43,
+  "fields": {
+    "name": "Food Security",
+    "theme_id": "hunger"
+  }
+},
+{
+  "model": "charity_finder.theme",
+  "pk": 44,
+  "fields": {
+    "name": "Arts and Culture",
+    "theme_id": "art"
+  }
+},
+{
+  "model": "charity_finder.theme",
+  "pk": 45,
+  "fields": {
+    "name": "LGBTQIA+ Equality",
+    "theme_id": "lgbtq"
+  }
+},
+{
+  "model": "charity_finder.theme",
+  "pk": 46,
+  "fields": {
+    "name": "COVID-19",
+    "theme_id": "covid-19"
+  }
+},
+{
+  "model": "charity_finder.theme",
+  "pk": 47,
+  "fields": {
+    "name": "Clean Water",
+    "theme_id": "water"
+  }
+},
+{
+  "model": "charity_finder.theme",
+  "pk": 48,
+  "fields": {
+    "name": "Disability Rights",
+    "theme_id": "disability"
+  }
+},
+{
+  "model": "charity_finder.theme",
+  "pk": 49,
+  "fields": {
+    "name": "Ending Abuse",
+    "theme_id": "endabuse"
+  }
+},
+{
+  "model": "charity_finder.theme",
+  "pk": 50,
+  "fields": {
+    "name": "Mental Health",
+    "theme_id": "mentalhealth"
+  }
+},
+{
+  "model": "charity_finder.theme",
+  "pk": 51,
+  "fields": {
+    "name": "Racial Justice",
+    "theme_id": "justice"
+  }
+},
+{
+  "model": "charity_finder.theme",
+  "pk": 52,
+  "fields": {
+    "name": "Refugee Rights",
+    "theme_id": "refugee"
+  }
+},
+{
+  "model": "charity_finder.theme",
+  "pk": 53,
+  "fields": {
+    "name": "Reproductive Health",
+    "theme_id": "reproductive"
+  }
+},
+{
+  "model": "charity_finder.theme",
+  "pk": 54,
+  "fields": {
+    "name": "Safe Housing",
+    "theme_id": "housing"
+  }
+},
+{
+  "model": "charity_finder.theme",
+  "pk": 55,
+  "fields": {
+    "name": "Sustainable Agriculture",
+    "theme_id": "agriculture"
+  }
+},
+{
+  "model": "charity_finder.theme",
+  "pk": 56,
+  "fields": {
+    "name": "Wildlife Conservation",
+    "theme_id": "wildlife"
+  }
+}
+]
