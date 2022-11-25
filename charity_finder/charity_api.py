@@ -5,11 +5,10 @@ from functools import partial
 
 import requests
 from dotenv import load_dotenv
-from django.conf import settings
 
 load_dotenv()
 
-CHARITY_API_KEY = os.getenv("PROJECT_API_KEY")
+CHARITY_API_KEY = os.environ.get("PROJECT_API_KEY", "")
 
 
 BASE_URL = "https://api.globalgiving.org/api/public/projectservice"

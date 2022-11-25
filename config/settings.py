@@ -130,7 +130,6 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CHARITY_API_KEY = os.environ.get("PROJECT_API_KEY", "")
 
 TAILWIND_APP_NAME = 'theme'
 
