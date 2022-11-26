@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.db import models
+from django_countries.fields import CountryField
 
 # Create your models here.
 class Theme(models.Model):
@@ -11,12 +13,11 @@ class Theme(models.Model):
 
 
 class Country(models.Model):
-    name = models.CharField(max_length=200)
-    country_code = models.CharField(max_length=200)
+    country = CountryField()
 
-    def __str__(self):
-        """String for representing the Model object."""
-        return f"{self.name}: {self.country_code}"
+    # def __str__(self):
+    #    """String for representing the Model object."""
+    #    return f"{self.country.name}: {self.country.code}"
 
 
 class Org(models.Model):
@@ -34,12 +35,12 @@ class Org(models.Model):
     state = models.CharField(max_length=200)
     postal = models.CharField(max_length=200)
     # Country where organization resides.
-    country_home = models.ForeignKey(Country)
+    country_home = models.ForeignKey(Country, on_delete=models.RESTRICT)
     # one or more themes for this organization
-    theme = models.ForeignKey(Theme)
+    theme = models.ForeignKey(Theme, on_delete=models.RESTRICT)
     url = models.CharField(max_length=200)
     # one or more countries the organization operates in
-    country_op = models.ForeignKey(Country)
+    # country_op = models.ForeignKey(Country, on_delete=models.RESTRICT)
 
     def __str__(self):
         """String for representing the Model object."""
