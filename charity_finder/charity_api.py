@@ -11,7 +11,7 @@ load_dotenv()
 CHARITY_API_KEY = os.environ.get("PROJECT_API_KEY", "")
 
 
-BASE_URL = "https://api.globalgiving.org/api/public/projectservice"
+BASE_URL = "https://api.globalgiving.org/api/public"
 
 
 def get_charity_data(endpoint):
@@ -30,13 +30,22 @@ def get_charity_data(endpoint):
     response = requests.get(url, params=params, headers=headers)
     return response.json()
 
+def cache_themes(endpoint):
+    pass
+
+def cache_orgs(endpoint):
+   pass
+
+
+
 def main():
     from utils import dump_charity_data_to_json
      # Returns all GlobalGiving themes, under which projects are categorized
-    data = get_charity_data("/themes")
-    dump_charity_data_to_json("themes.json", data)
-
-
+    theme_data = get_charity_data("/projectservice/themes")
+    dump_charity_data_to_json("themes.json", theme_data)
+    
+    org_data = get_charity_data("/orgservice/all/organizations/active")
+    dump_charity_data_to_json("orgs.json", org_data)
 
 if __name__ == "__main__":
     main()

@@ -32,3 +32,11 @@ def home(request):
     context = {"themes": themes}
 
     return render(request, "home.html", context)
+
+def get_orgs_by_theme():
+
+    print("GENRE NAMES: ", genre_names)
+
+    # Get genre IDs
+    with_genres = Genre.objects.filter(name__in=genre_names).values_list("tmdb_id", flat=True)
+    print("WITH GENRES: ", with_genres)
