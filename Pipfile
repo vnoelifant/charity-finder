@@ -11,6 +11,7 @@ requests = "*"
 django-countries = "*"
 python-decouple = "*"
 django-extensions = "*"
+django-tailwind = "*"
 
 [dev-packages]
 black = "*"
