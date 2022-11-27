@@ -18,7 +18,7 @@ def run():
     # theme_data = charity_api.get_charity_data("/projectservice/themes")
     # dump_charity_data_to_json("output_themes.json", theme_data)
     
-    # Get a subset of active orgnizations
+    # Get a download link of all ctive orgnizations
     # org_data = charity_api.get_charity_xml_data("/orgservice/all/organizations/active/download")
 
     # org_json_url = xmltodict.parse(org_data.content)
