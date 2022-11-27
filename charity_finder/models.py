@@ -13,7 +13,7 @@ class Theme(models.Model):
 
 
 class Country(models.Model):
-    country = CountryField()
+    country = CountryField(blank=True)
 
     # def __str__(self):
     #    """String for representing the Model object."""
@@ -22,10 +22,10 @@ class Country(models.Model):
 
 class Org(models.Model):
     name = models.CharField(max_length=200)
-    org_id = models.IntegerField()
-    mission = models.TextField()
-    activeProjects = models.IntegerField()
-    totalProjects = models.IntegerField()
+    org_id = models.IntegerField(default=0)
+    mission = models.TextField(default="")
+    activeProjects = models.IntegerField(default=0)
+    totalProjects = models.IntegerField(default=0)
     ein = models.CharField(max_length=200)
     logoUrl = models.CharField(max_length=200)
     addressLine1 = models.CharField(max_length=200)
@@ -35,12 +35,12 @@ class Org(models.Model):
     state = models.CharField(max_length=200)
     postal = models.CharField(max_length=200)
     # Country where organization resides.
-    country = models.CharField(max_length=200)
+    country_home = models.CharField(max_length=200)
     # one or more themes for this organization
-    themes = models.JSONField()
+    themes = models.JSONField(default=dict)
     url = models.CharField(max_length=200)
     # one or more countries the organization operates in
-    countries = models.JSONField()
+    countries = models.JSONField(default=dict)
 
     def __str__(self):
         """String for representing the Model object."""
