@@ -11,13 +11,14 @@ class Theme(models.Model):
         """String for representing the Model object."""
         return f"{self.name}: {self.theme_id}"
 
-
 class Country(models.Model):
     country = CountryField(blank=True)
 
     # def __str__(self):
     #    """String for representing the Model object."""
     #    return f"{self.country.name}: {self.country.code}"
+    class Meta:
+        verbose_name_plural = "countries"
 
 
 class Org(models.Model):
@@ -45,3 +46,5 @@ class Org(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return f"{self.name}: {self.org_id}"
+
+    
