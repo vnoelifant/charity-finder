@@ -21,26 +21,26 @@ class Country(models.Model):
 
 
 class Org(models.Model):
-    name = models.CharField(max_length=200)
-    org_id = models.IntegerField(default=0)
-    mission = models.TextField(default="")
-    activeProjects = models.IntegerField(default=0)
-    totalProjects = models.IntegerField(default=0)
-    ein = models.CharField(max_length=200)
-    logoUrl = models.CharField(max_length=200)
-    addressLine1 = models.CharField(max_length=200)
-    addressLine2 = models.CharField(max_length=200)
+    name = models.CharField(max_length=200,null=True, blank=True)
+    org_id = models.IntegerField(default=0,null=True, blank=True)
+    mission = models.TextField(default="", null=True, blank=True)
+    activeProjects = models.IntegerField(default=0,null=True, blank=True)
+    totalProjects = models.IntegerField(default=0,null=True, blank=True)
+    ein = models.CharField(max_length=200,null=True, blank=True)
+    logoUrl = models.CharField(max_length=200,null=True, blank=True)
+    addressLine1 = models.CharField(max_length=200,null=True, blank=True)
+    addressLine2 = models.CharField(max_length=200, null=True, blank=True)
     # City where organization resides.
-    city = models.CharField(max_length=200)
-    state = models.CharField(max_length=200)
-    postal = models.CharField(max_length=200)
+    city = models.CharField(max_length=200,null=True, blank=True)
+    state = models.CharField(max_length=200,null=True, blank=True)
+    postal = models.CharField(max_length=200,null=True, blank=True)
     # Country where organization resides.
-    country_home = models.CharField(max_length=200)
+    country_home = models.CharField(max_length=200,null=True, blank=True)
     # one or more themes for this organization
-    themes = models.JSONField(default=dict)
-    url = models.CharField(max_length=200)
+    themes = models.JSONField(default=dict,null=True, blank=True)
+    url = models.CharField(max_length=200,null=True, blank=True)
     # one or more countries the organization operates in
-    countries = models.JSONField(default=dict)
+    countries = models.JSONField(default=dict,null=True, blank=True)
 
     def __str__(self):
         """String for representing the Model object."""

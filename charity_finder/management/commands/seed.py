@@ -22,26 +22,26 @@ def seed_active_orgs():
         Org.objects.bulk_create(
             [
                 Org(
-                    name=org["name"],
-                    org_id=org["id"],
-                    mission=org["mission"],
-                    activeProjects=org["activeProjects"],
-                    totalProjects=org["totalProjects"],
-                    ein=org["ein"],
-                    logoUrl=org["logoUrl"],
-                    addressLine1=org["addressLine1"],
-                    addressLine2=org["addressLine2"],
+                    name=org.get("name",""),
+                    org_id=org.get("id",0),
+                    mission=org.get("mission",""),
+                    activeProjects=org.get("activeProjects",0),
+                    totalProjects=org.get("totalProjects",0),
+                    ein=org.get('ein',""),
+                    logoUrl=org.get('logoUrl',""),
+                    addressLine1=org.get("addressLine1", ""),
+                    addressLine2=org.get("addressLine2",""),
                     # City where organization resides.
-                    city=org["city"],
-                    state=org["state"],
-                    postal=org["postal"],
+                    city=org.get("city",""),
+                    state=org.get("state",""),
+                    postal=org.get("postal",""),
                     # Country where organization resides.
-                    country_home=org["country"],
+                    country_home=org.get("country",""),
                     # one or more themes for this organization
-                    themes=org["themes"],
-                    url=org["url"],
+                    themes=org.get("themes",""),
+                    url=org.get("url",""),
                     # one or more countries the organization operates in
-                    countries=org["countries"],
+                    countries=org.get("countries",""),
                 )
                 for org in orgs["organizations"]["organization"]
             ]
@@ -50,6 +50,6 @@ def seed_active_orgs():
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        # seed_themes()
+        #seed_themes()
         seed_active_orgs()
         print("completed")
