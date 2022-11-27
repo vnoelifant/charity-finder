@@ -35,12 +35,12 @@ class Org(models.Model):
     state = models.CharField(max_length=200)
     postal = models.CharField(max_length=200)
     # Country where organization resides.
-    country_home = models.ForeignKey(Country, on_delete=models.RESTRICT)
+    country = models.CharField(max_length=200)
     # one or more themes for this organization
-    theme = models.ForeignKey(Theme, on_delete=models.RESTRICT)
+    themes = models.JSONField()
     url = models.CharField(max_length=200)
     # one or more countries the organization operates in
-    # country_op = models.ForeignKey(Country, on_delete=models.RESTRICT)
+    countries = models.JSONField()
 
     def __str__(self):
         """String for representing the Model object."""
