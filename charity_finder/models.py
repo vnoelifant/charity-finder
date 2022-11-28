@@ -38,13 +38,21 @@ class Org(models.Model):
     # Country where organization resides.
     country_home = models.CharField(max_length=200,null=True, blank=True)
     # one or more themes for this organization
-    themes = models.JSONField(default=dict,null=True, blank=True)
+    themes = models.ManyToManyField(Theme, related_name='themes')
     url = models.CharField(max_length=200,null=True, blank=True)
     # one or more countries the organization operates in
-    countries = models.JSONField(default=dict,null=True, blank=True)
+    countries = models.ManyToManyField(Country, related_name='countries')
 
     def __str__(self):
         """String for representing the Model object."""
         return f"{self.name}: {self.org_id}"
 
-    
+
+class Project(models.Model):
+    org = models.ForeignKey(Org, on_delete=models.CASCADE, null=True, blank=True)
+    name = models.CharField(max_length=200,null=True, blank=True)
+    # ...
+
+    def __str__(self):
+        return self.name
+

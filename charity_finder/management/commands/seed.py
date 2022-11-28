@@ -19,33 +19,45 @@ def seed_active_orgs():
     with open("output_active_orgs.json") as data_file:
         orgs = json.load(data_file)
         # pprint(orgs['organizations']['organization'])
-        Org.objects.bulk_create(
-            [
-                Org(
-                    name=org.get("name", ""),
-                    org_id=org.get("id", 0),
-                    mission=org.get("mission", ""),
-                    activeProjects=org.get("activeProjects", 0),
-                    totalProjects=org.get("totalProjects", 0),
-                    ein=org.get("ein", ""),
-                    logoUrl=org.get("logoUrl", ""),
-                    addressLine1=org.get("addressLine1", ""),
-                    addressLine2=org.get("addressLine2", ""),
-                    # City where organization resides.
-                    city=org.get("city", ""),
-                    state=org.get("state", ""),
-                    postal=org.get("postal", ""),
-                    # Country where organization resides.
-                    country_home=org.get("country", ""),
-                    # one or more themes for this organization
-                    themes=org.get("themes", ""),
-                    url=org.get("url", ""),
-                    # one or more countries the organization operates in
-                    countries=org.get("countries", ""),
-                )
-                for org in orgs["organizations"]["organization"]
-            ]
-        )
+        for org_row in orgs["organizations"]["organization"]:
+            org = Org.objects.create(
+                name=org_row.get("name", ""),
+                org_id=org_row.get("id", 0),
+                mission=org_row.get("mission", ""),
+                activeProjects=org_row.get("activeProjects", 0),
+                totalProjects=org_row.get("totalProjects", 0),
+                ein=org_row.get("ein", ""),
+                logoUrl=org_row.get("logoUrl", ""),
+                addressLine1=org_row.get("addressLine1", ""),
+                addressLine2=org_row.get("addressLine2", ""),
+                # City where organization resides.
+                city=org_row.get("city", ""),
+                state=org_row.get("state", ""),
+                postal=org_row.get("postal", ""),
+                # Country where organization resides.
+                country_home=org_row.get("country", ""),
+                # one or more themes for this organization
+                url=org_row.get("url", ""),
+                # one or more countries the organization operates in
+            )
+            """
+            themes = org_row.get("themes", [])
+            if not themes:
+                continue
+            """
+
+            themes_from_json = org_row["themes"]["theme"]
+
+            matching_themes = []
+            for row in themes_from_json:
+                theme, inserted = Theme.objects.get_or_create(name=row["name"], theme_id=row["id"])
+                matching_themes.append(theme)
+
+            org.themes.add(*matching_themes)
+
+            # countries=org_row.get("countries", ""),
+            # TODO: do same for countries and remove break
+            break
 
 
 class Command(BaseCommand):
