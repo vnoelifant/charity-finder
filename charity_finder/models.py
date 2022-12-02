@@ -12,11 +12,12 @@ class Theme(models.Model):
         return f"{self.name}: {self.theme_id}"
 
 class Country(models.Model):
-    country_home = CountryField(blank=True)
-
+    name = CountryField(blank=True)
+    country_code = models.CharField(max_length=200)
+    
     def __str__(self):
         """String for representing the Model object."""
-        return f"{self.country_home}"
+        return f"{self.name}: {self.country_code}"
         class Meta:
             verbose_name_plural = "countries"
 

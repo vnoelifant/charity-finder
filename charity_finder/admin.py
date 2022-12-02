@@ -13,7 +13,7 @@ class OwnerAdmin(admin.ModelAdmin):
 
 @admin.register(Country)
 class OwnerAdmin(admin.ModelAdmin):
-    list_display = ("country_home")
+    list_display = ("country_code", "name")
 
 @admin.register(Organization)
 class OwnerAdmin(admin.ModelAdmin):
