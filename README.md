@@ -9,3 +9,5 @@
 4. Run `python manage.py tailwind start`
 5. Run `python manage.py runserver`
 6. Navigate to `http://127.0.0.1:8000/`
+
+ * **Note**: May also install packages via `pip install -r requirements.txt`

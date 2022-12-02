@@ -8,6 +8,9 @@ django = "*"
 django-bootstrap-v5 = "*"
 python-dotenv = "*"
 requests = "*"
+django-countries = "*"
+python-decouple = "*"
+django-extensions = "*"
 django-tailwind = "*"
 
 [dev-packages]

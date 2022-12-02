@@ -11,10 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
 from pathlib import Path
-
-from dotenv import load_dotenv
-
-load_dotenv()  # hey there is a .env, let me parse and put all in os.environ
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,10 +20,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
-SECRET_KEY = os.environ["SECRET_KEY"]
-DEBUG = os.environ.get("DEBUG", False)
+SECRET_KEY = config("SECRET_KEY")
+DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = ["*"]
-
+CHARITY_API_KEY = config("PROJECT_API_KEY", "")
 
 # Application definition
 
@@ -42,6 +39,7 @@ INSTALLED_APPS = [
     'tailwind',
     'theme',
     'django_browser_reload',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -130,7 +128,6 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CHARITY_API_KEY = os.environ.get("PROJECT_API_KEY", "")
 
 TAILWIND_APP_NAME = 'theme'
 
