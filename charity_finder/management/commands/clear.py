@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from charity_finder.models import Theme, Org
+from charity_finder.models import Theme, Organization
 from charity_finder import charity_api
 
 
@@ -24,7 +24,7 @@ class Command(BaseCommand):
         if options["model"] == "theme":
             print("Clearing theme data")
             clear_themes()
-        else:
+        elif options["model"] == "org":
             print("Clearing organization data")
             clear_active_orgs()
         print("completed")

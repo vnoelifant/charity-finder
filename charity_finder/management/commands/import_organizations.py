@@ -20,22 +20,23 @@ def insert_active_orgs():
         orgs = json.load(data_file)
         for org_row in orgs["organizations"]["organization"]:
             org = Organization.objects.create(
-                name=org.get("name", ""),
-                org_id=org.get("id", 0),
-                mission=org.get("mission", ""),
-                active_projects=org.get("activeProjects", 0),
-                total_projects=org.get("totalProjects", 0),
-                ein=org.get("ein", ""),
-                logo_url=org.get("logoUrl", ""),
-                address_line1=org.get("addressLine1", ""),
-                address_line2=org.get("addressLine2", ""),
-                city=org.get("city", ""),
-                state=org.get("state", ""),
-                postal=org.get("postal", ""),
-                country_home=org.get("country", ""),
-                themes=org.get("themes", ""),
-                url=org.get("url", ""),
-                countries=org.get("countries", ""),
+                name=org_row.get("name", ""),
+                org_id=org_row.get("id", 0),
+                mission=org_row.get("mission", ""),
+                active_projects=org_row.get("activeProjects", 0),
+                total_projects=org_row.get("totalProjects", 0),
+                ein=org_row.get("ein", ""),
+                logo_url=org_row.get("logoUrl", ""),
+                address_line1=org_row.get("addressLine1", ""),
+                address_line2=org_row.get("addressLine2", ""),
+                city=org_row.get("city", ""),
+                state=org_row.get("state", ""),
+                postal=org_row.get("postal", ""),
+                country_home=org_row.get("country", ""),
+                themes=org_row.get("themes", ""),
+                url=org_row.get("url", ""),
+                countries=org_rowgit status
+                .get("countries", ""),
             )
 
             themes_from_json = org_row["themes"]["theme"]
