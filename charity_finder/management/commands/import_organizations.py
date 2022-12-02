@@ -5,22 +5,25 @@ from charity_finder.models import Theme, Organization
 from charity_finder import charity_api
 
 
-def get_matching_data(type, data=None):
+def get_matching_data(data_from_json):
+    matching_data = []
 
-    for row in type:
-        if type == "themes_from_json":
-            theme, inserted = Theme.objects.get_or_create(
-                name=row["name"], theme_id=row["id"]
+    for row in data_from_json:
+        type, inserted = (
+            Theme.objects.get_or_create(
+                name=row.get("name", ""), theme_id=row.get("id", "")
             )
-        else:
-            countries, inserted = Theme.objects.get_or_create(
-                name=row["name"], country_code=row["iso3166CountryCode"]
+            if data_from_json == "themes_from_json"
+            else Theme.objects.get_or_create(
+                name=row.get("name", ""), country_code=row.get("iso3166CountryCode", "")
             )
-        if data is None:
-            data = []
-        data.append(type)
+        )
 
-    return data
+        print("Dict data: ", row)
+
+        matching_data.append(type)
+
+    return matching_data
 
 
 def insert_active_orgs():
