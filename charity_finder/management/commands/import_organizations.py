@@ -18,6 +18,7 @@ def insert_themes():
 def insert_active_orgs():
     with open("output_active_orgs.json") as data_file:
         orgs = json.load(data_file)
+        # pprint(orgs['organizations']['organization'])
         for org_row in orgs["organizations"]["organization"]:
             org = Organization.objects.create(
                 name=org_row.get("name", ""),
@@ -33,19 +34,19 @@ def insert_active_orgs():
                 state=org_row.get("state", ""),
                 postal=org_row.get("postal", ""),
                 country_home=org_row.get("country", ""),
-                themes=org_row.get("themes", ""),
                 url=org_row.get("url", ""),
-                countries=org_rowgit status
-                .get("countries", ""),
             )
+            """
+            themes = org_row.get("themes", [])
+            if not themes:
+                continue
+            """
 
             themes_from_json = org_row["themes"]["theme"]
-
+        
             matching_themes = []
             for row in themes_from_json:
-                theme, inserted = Theme.objects.get_or_create(
-                    name=row["name"], theme_id=row["id"]
-                )
+                theme, inserted = Theme.objects.get_or_create(name=row["name"], theme_id=row["id"])
                 matching_themes.append(theme)
 
             org.themes.add(*matching_themes)
@@ -61,14 +62,14 @@ class Command(BaseCommand):
         # Named (optional) arguments
         parser.add_argument(
             "--model",
-            help="Add model name",
+            help="Add model name to seed",
         )
 
     def handle(self, *args, **options):
         if options["model"] == "theme":
-            print("Inserting theme data to DB")
+            print("Seeding theme data")
             insert_themes()
         elif options["model"] == "org":
-            print("Inserting organization data to DB")
+            print("Seeding organization data")
             insert_active_orgs()
         print("completed")

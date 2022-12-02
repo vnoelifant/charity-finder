@@ -8,7 +8,7 @@ def clear_themes():
 
 
 def clear_active_orgs():
-    Org.objects.all().delete()
+    Organization.objects.all().delete()
 
 
 class Command(BaseCommand):
