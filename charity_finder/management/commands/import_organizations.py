@@ -14,7 +14,7 @@ def get_matching_data(type, data=None):
             )
         else:
             countries, inserted = Theme.objects.get_or_create(
-                name=row["name"], theme_id=row["iso3166CountryCode"]
+                name=row["name"], country_code=row["iso3166CountryCode"]
             )
         if data is None:
             data = []
