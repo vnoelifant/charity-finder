@@ -59,7 +59,9 @@ def insert_active_orgs():
             org.themes.add(*matching_themes)
 
             # countries=org_row.get("countries", ""),
-            matching_countries = get_matching_data(*countries_from_json)
+            matching_countries = get_matching_data(countries_from_json)
+
+            org.themes.add(*matching_countries)
 
 
 class Command(BaseCommand):
