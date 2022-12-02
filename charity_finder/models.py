@@ -12,39 +12,43 @@ class Theme(models.Model):
         return f"{self.name}: {self.theme_id}"
 
 class Country(models.Model):
-    country = CountryField(blank=True)
+    country_home = CountryField(blank=True)
 
-    # def __str__(self):
-    #    """String for representing the Model object."""
-    #    return f"{self.country.name}: {self.country.code}"
-    class Meta:
-        verbose_name_plural = "countries"
+    def __str__(self):
+        """String for representing the Model object."""
+        return f"{self.country_home}"
+        class Meta:
+            verbose_name_plural = "countries"
 
 
-class Org(models.Model):
+class Organization(models.Model):
     name = models.CharField(max_length=200,null=True, blank=True)
     org_id = models.IntegerField(default=0,null=True, blank=True)
     mission = models.TextField(default="", null=True, blank=True)
-    activeProjects = models.IntegerField(default=0,null=True, blank=True)
-    totalProjects = models.IntegerField(default=0,null=True, blank=True)
+    active_projects = models.IntegerField(default=0,null=True, blank=True)
+    total_projects = models.IntegerField(default=0,null=True, blank=True)
     ein = models.CharField(max_length=200,null=True, blank=True)
-    logoUrl = models.CharField(max_length=200,null=True, blank=True)
-    addressLine1 = models.CharField(max_length=200,null=True, blank=True)
-    addressLine2 = models.CharField(max_length=200, null=True, blank=True)
-    # City where organization resides.
+    logo_url = models.CharField(max_length=200,null=True, blank=True)
+    address_line1 = models.CharField(max_length=200,null=True, blank=True)
+    address_line2 = models.CharField(max_length=200, null=True, blank=True)
     city = models.CharField(max_length=200,null=True, blank=True)
     state = models.CharField(max_length=200,null=True, blank=True)
     postal = models.CharField(max_length=200,null=True, blank=True)
-    # Country where organization resides.
     country_home = models.CharField(max_length=200,null=True, blank=True)
-    # one or more themes for this organization
-    themes = models.JSONField(default=dict,null=True, blank=True)
+    themes = models.ManyToManyField(Theme, related_name='themes')
     url = models.CharField(max_length=200,null=True, blank=True)
-    # one or more countries the organization operates in
-    countries = models.JSONField(default=dict,null=True, blank=True)
+    countries = models.ManyToManyField(Country, related_name='countries')
 
     def __str__(self):
         """String for representing the Model object."""
         return f"{self.name}: {self.org_id}"
+
+class Project(models.Model):
+    org = models.ForeignKey(Organization, on_delete=models.CASCADE, null=True, blank=True)
+    name = models.CharField(max_length=200,null=True, blank=True)
+    # ...
+
+    def __str__(self):
+        return self.name
 
     

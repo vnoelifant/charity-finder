@@ -19,13 +19,13 @@ def run():
     # dump_charity_data_to_json("output_themes.json", theme_data)
     
     # Get a download link of all ctive orgnizations
-    # org_data = charity_api.get_charity_xml_data("/orgservice/all/organizations/active/download")
+    org_data = charity_api.get_charity_xml_data("/orgservice/all/organizations/active/download")
 
-    # org_json_url = xmltodict.parse(org_data.content)
-    # dump_charity_data_to_json("output_orgs_url.json", org_json_url)
+    org_json_url = xmltodict.parse(org_data.content)
+    dump_charity_data_to_json("output_orgs_url.json", org_json_url)
 
     # Get all active organizations
-    dump_charity_data_to_json("output_active_orgs.json", get_json_data("output_active_orgs.xml"))
+    # dump_charity_data_to_json("output_active_orgs.json", get_json_data("output_active_orgs.xml"))
 
     
 
