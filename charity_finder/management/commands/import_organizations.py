@@ -4,6 +4,25 @@ from django.core.management.base import BaseCommand
 from charity_finder.models import Theme, Organization
 from charity_finder import charity_api
 
+
+def get_matching_data(type, data=None):
+
+    for row in type:
+        if type == "themes_from_json":
+            theme, inserted = Theme.objects.get_or_create(
+                name=row["name"], theme_id=row["id"]
+            )
+        else:
+            countries, inserted = Theme.objects.get_or_create(
+                name=row["name"], theme_id=row["iso3166CountryCode"]
+            )
+        if data is None:
+            data = []
+        data.append(type)
+
+    return data
+
+
 def insert_active_orgs():
     with open("output_active_orgs.json") as data_file:
         orgs = json.load(data_file)
@@ -32,17 +51,15 @@ def insert_active_orgs():
             """
 
             themes_from_json = org_row["themes"]["theme"]
-        
-            matching_themes = []
-            for row in themes_from_json:
-                theme, inserted = Theme.objects.get_or_create(name=row["name"], theme_id=row["id"])
-                matching_themes.append(theme)
+
+            countries_from_json = org_row["countries"]["country"]
+
+            matching_themes = get_matching_data(themes_from_json)
 
             org.themes.add(*matching_themes)
 
             # countries=org_row.get("countries", ""),
-            # TODO: do same for countries and remove break
-            break
+            matching_countries = get_matching_data(*countries_from_json)
 
 
 class Command(BaseCommand):
@@ -55,10 +72,7 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        if options["model"] == "theme":
-            print("Seeding theme data")
-            insert_themes()
-        elif options["model"] == "org":
+        if options["model"] == "org":
             print("Seeding organization data")
             insert_active_orgs()
         print("completed")
