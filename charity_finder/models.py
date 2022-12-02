@@ -13,7 +13,7 @@ class Theme(models.Model):
 
 class Country(models.Model):
     name = CountryField(blank=True)
-    country_code = models.CharField(max_length=200)
+    country_code = models.CharField(max_length=200,null=True, blank=True)
     
     def __str__(self):
         """String for representing the Model object."""
