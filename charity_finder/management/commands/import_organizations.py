@@ -1,7 +1,7 @@
 import json
 from pprint import pprint
 from django.core.management.base import BaseCommand
-from charity_finder.models import Theme, Organization
+from charity_finder.models import Theme, Organization, Country
 from charity_finder import charity_api
 
 
@@ -9,22 +9,14 @@ def get_matching_data(data_from_json):
     matching_data = []
 
     for row in data_from_json:
-        type, inserted = (
-            Theme.objects.get_or_create(
-                name=row.get("name", ""), theme_id=row.get("id", "")
-            )
-            if data_from_json == "themes_from_json"
-            else Theme.objects.get_or_create(
-                name=row.get("name", ""), country_code=row.get("iso3166CountryCode", "")
-            )
-        )
-
-        print("Dict data: ", row)
-
-        matching_data.append(type)
+        if data_from_json == "themes_from_json":
+            theme, inserted = Theme.objects.get_or_create(name=row["name"], theme_id=row["id"])
+            matching_data.append(theme)
+        else:
+            country, inserted = Country.objects.get_or_create(name=row["name"], theme_id=row["iso3166CountryCode"])
+            matching_data.append(country)
 
     return matching_data
-
 
 def insert_active_orgs():
     with open("output_active_orgs.json") as data_file:
