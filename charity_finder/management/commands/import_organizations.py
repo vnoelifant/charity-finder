@@ -5,6 +5,7 @@ from charity_finder.models import Theme, Organization, Country
 from charity_finder import charity_api
 
 
+"""
 def get_matching_data(data_from_json):
     matching_data = []
 
@@ -17,6 +18,8 @@ def get_matching_data(data_from_json):
             matching_data.append(country)
 
     return matching_data
+
+"""
 
 def insert_active_orgs():
     with open("output_active_orgs.json") as data_file:
@@ -46,15 +49,20 @@ def insert_active_orgs():
             """
 
             themes_from_json = org_row["themes"]["theme"]
-
-            countries_from_json = org_row["countries"]["country"]
-
-            matching_themes = get_matching_data(themes_from_json)
+        
+            matching_themes = []
+            for row in themes_from_json:
+                theme, inserted = Theme.objects.get_or_create(name=row["name"], theme_id=row["id"])
+                matching_themes.append(theme)
 
             org.themes.add(*matching_themes)
-
-            # countries=org_row.get("countries", ""),
-            matching_countries = get_matching_data(countries_from_json)
+           
+            countries_from_json = org_row["countries"]["country"]
+        
+            matching_countries = []
+            for row in countries_from_json:
+                country, inserted = Country.objects.get_or_create(name=row["name"], country_code=row["iso3166CountryCode"])
+                matching_countries.append(country)
 
             org.themes.add(*matching_countries)
 
