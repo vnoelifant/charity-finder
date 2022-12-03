@@ -14,12 +14,13 @@ def get_matching_data(data_from_json):
             theme, inserted = Theme.objects.get_or_create(name=row["name"], theme_id=row["id"])
             matching_data.append(theme)
         else:
-            country, inserted = Country.objects.get_or_create(name=row["name"], theme_id=row["iso3166CountryCode"])
+            country, inserted = Country.objects.get_or_create(name=data_from_json["name"], country_code=data_from_json["iso3166CountryCode"])
             matching_data.append(country)
 
     return matching_data
-
 """
+
+
 
 def insert_active_orgs():
     with open("output_active_orgs.json") as data_file:
@@ -50,7 +51,9 @@ def insert_active_orgs():
 
             themes_from_json = org_row["themes"]["theme"]
         
+            #matching_themes = get_matching_data(themes_from_json)
             matching_themes = []
+            
             for row in themes_from_json:
                 theme, inserted = Theme.objects.get_or_create(name=row["name"], theme_id=row["id"])
                 matching_themes.append(theme)
@@ -58,13 +61,17 @@ def insert_active_orgs():
             org.themes.add(*matching_themes)
            
             countries_from_json = org_row["countries"]["country"]
-        
+            #matching_countries = get_matching_data(countries_from_json)
+            
             matching_countries = []
+
             for row in countries_from_json:
+            
                 country, inserted = Country.objects.get_or_create(name=row["name"], country_code=row["iso3166CountryCode"])
+            
                 matching_countries.append(country)
 
-            org.themes.add(*matching_countries)
+            org.countries.add(*matching_countries)
 
 
 class Command(BaseCommand):
