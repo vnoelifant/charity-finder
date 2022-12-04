@@ -25,6 +25,7 @@ def insert_active_orgs():
     with open("output_active_orgs.json") as data_file:
         orgs = json.load(data_file)
         # pprint(orgs['organizations']['organization'])
+        # print(len(orgs["organizations"]["organization"])) # 3157
         for org_row in orgs["organizations"]["organization"]:
             org = Organization.objects.create(
                 name=org_row.get("name", ""),
@@ -45,9 +46,11 @@ def insert_active_orgs():
             
             themes = org_row.get("themes", dict)
 
+            if themes is None:
+                continue
+
             themes_from_json = themes.get("theme",[])
-
-
+           
             # matching_themes = get_matching_data(themes_from_json)
             matching_themes = []
 
@@ -64,6 +67,9 @@ def insert_active_orgs():
             org.themes.add(*matching_themes)
 
             countries = org_row.get("countries", dict)
+
+            if countries is None:
+                continue
             
             countries_from_json = countries.get("country",[])
             # matching_countries = get_matching_data(countries_from_json)
@@ -83,7 +89,7 @@ def insert_active_orgs():
             matching_countries.append(country)
 
             org.countries.add(*matching_countries)
-
+            org.save
 
 class Command(BaseCommand):
     def add_arguments(self, parser):
