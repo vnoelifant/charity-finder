@@ -17,8 +17,8 @@ class Country(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return f"{self.name}: {self.country_code}"
-        class Meta:
-            verbose_name_plural = "countries"
+    class Meta:
+        verbose_name_plural = "countries"
 
 
 class Organization(models.Model):
