@@ -43,24 +43,23 @@ def insert_active_orgs():
                 country_home=org_row.get("country", ""),
                 url=org_row.get("url", ""),
             )
-            
+
             themes = org_row.get("themes", dict)
 
             if themes is None:
                 continue
 
-            themes_from_json = themes.get("theme",[])
-           
+            themes_from_json = themes.get("theme", [])
+
             # matching_themes = get_matching_data(themes_from_json)
             matching_themes = []
-
 
             if isinstance(themes_from_json, dict):
                 themes_from_json = [themes_from_json]
 
             for row in themes_from_json:
                 theme, inserted = Theme.objects.get_or_create(
-                    name=row.get("name",""), theme_id=row.get("id","")
+                    name=row.get("name", ""), theme_id=row.get("id", "")
                 )
 
             matching_themes.append(theme)
@@ -70,8 +69,8 @@ def insert_active_orgs():
 
             if countries is None:
                 continue
-            
-            countries_from_json = countries.get("country",[])
+
+            countries_from_json = countries.get("country", [])
             # matching_countries = get_matching_data(countries_from_json)
 
             matching_countries = []
@@ -79,17 +78,17 @@ def insert_active_orgs():
             if isinstance(countries_from_json, dict):
                 countries_from_json = [countries_from_json]
 
-
             for row in countries_from_json:
 
                 country, inserted = Country.objects.get_or_create(
-                    name=row.get("name",""), country_code=row.get("iso3166CountryCode","")
+                    name=row.get("name", ""),
+                    country_code=row.get("iso3166CountryCode", ""),
                 )
 
             matching_countries.append(country)
 
             org.countries.add(*matching_countries)
-            org.save
+
 
 class Command(BaseCommand):
     def add_arguments(self, parser):
