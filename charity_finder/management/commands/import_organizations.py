@@ -42,49 +42,46 @@ def insert_active_orgs():
                 country_home=org_row.get("country", ""),
                 url=org_row.get("url", ""),
             )
-            """
-            themes = org_row.get("themes", [])
-            if not themes:
-                continue
-            """
+            
+            themes = org_row.get("themes", dict)
+            #if not themes:
+            #   continue
 
-            themes_from_json = org_row["themes"]["theme"]
+            themes_from_json = themes.get("theme",[])
+
 
             # matching_themes = get_matching_data(themes_from_json)
             matching_themes = []
 
-            if not isinstance(themes_from_json, dict):
 
-                for row in themes_from_json:
-                    theme, inserted = Theme.objects.get_or_create(
-                        name=row["name"], theme_id=row["id"]
-                    )
+            if isinstance(themes_from_json, dict):
+                themes_from_json = [themes_from_json]
 
-            else:
+            for row in themes_from_json:
                 theme, inserted = Theme.objects.get_or_create(
-                    name=themes_from_json["name"], theme_id=themes_from_json["id"]
+                    name=row.get("name",""), theme_id=row.get("id","")
                 )
 
             matching_themes.append(theme)
             org.themes.add(*matching_themes)
 
-            countries_from_json = org_row["countries"]["country"]
+            countries = org_row.get("countries", dict)
+            #if not countries:
+            #    continue
+
+            countries_from_json = countries.get("country",[])
             # matching_countries = get_matching_data(countries_from_json)
 
             matching_countries = []
 
-            if not isinstance(countries_from_json, dict):
+            if isinstance(countries_from_json, dict):
+                countries_from_json = [countries_from_json]
 
-                for row in countries_from_json:
 
-                    country, inserted = Country.objects.get_or_create(
-                        name=row["name"], country_code=row["iso3166CountryCode"]
-                    )
+            for row in countries_from_json:
 
-            else:
                 country, inserted = Country.objects.get_or_create(
-                    name=countries_from_json["name"],
-                    country_code=countries_from_json["iso3166CountryCode"],
+                    name=row.get("name",""), country_code=row.get("iso3166CountryCode","")
                 )
 
             matching_countries.append(country)
