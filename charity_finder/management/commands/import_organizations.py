@@ -44,8 +44,6 @@ def insert_active_orgs():
             )
             
             themes = org_row.get("themes", dict)
-            #if not themes:
-            #   continue
 
             themes_from_json = themes.get("theme",[])
 
@@ -66,9 +64,7 @@ def insert_active_orgs():
             org.themes.add(*matching_themes)
 
             countries = org_row.get("countries", dict)
-            #if not countries:
-            #    continue
-
+            
             countries_from_json = countries.get("country",[])
             # matching_countries = get_matching_data(countries_from_json)
 
