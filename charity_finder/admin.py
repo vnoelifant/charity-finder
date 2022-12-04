@@ -18,3 +18,4 @@ class OwnerAdmin(admin.ModelAdmin):
 @admin.register(Organization)
 class OwnerAdmin(admin.ModelAdmin):
     list_display = ("name","org_id")
+    list_filter = ("name", "org_id")

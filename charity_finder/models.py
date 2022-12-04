@@ -17,8 +17,8 @@ class Country(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return f"{self.name}: {self.country_code}"
-        class Meta:
-            verbose_name_plural = "countries"
+    class Meta:
+        verbose_name_plural = "countries"
 
 
 class Organization(models.Model):
@@ -35,9 +35,9 @@ class Organization(models.Model):
     state = models.CharField(max_length=200,null=True, blank=True)
     postal = models.CharField(max_length=200,null=True, blank=True)
     country_home = models.CharField(max_length=200,null=True, blank=True)
-    themes = models.ManyToManyField(Theme, related_name='themes')
+    themes = models.ManyToManyField(Theme, related_name='themes', blank=True)
     url = models.CharField(max_length=200,null=True, blank=True)
-    countries = models.ManyToManyField(Country, related_name='countries')
+    countries = models.ManyToManyField(Country, related_name='countries',blank=True)
 
     def __str__(self):
         """String for representing the Model object."""

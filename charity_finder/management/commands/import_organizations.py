@@ -1,13 +1,31 @@
 import json
 from pprint import pprint
 from django.core.management.base import BaseCommand
-from charity_finder.models import Theme, Organization
+from charity_finder.models import Theme, Organization, Country
 from charity_finder import charity_api
+
+
+"""
+def get_matching_data(data_from_json):
+    matching_data = []
+
+    for row in data_from_json:
+        if data_from_json == "themes_from_json":
+            theme, inserted = Theme.objects.get_or_create(name=row["name"], theme_id=row["id"])
+            matching_data.append(theme)
+        else:
+            country, inserted = Country.objects.get_or_create(name=data_from_json["name"], country_code=data_from_json["iso3166CountryCode"])
+            matching_data.append(country)
+
+    return matching_data
+"""
+
 
 def insert_active_orgs():
     with open("output_active_orgs.json") as data_file:
         orgs = json.load(data_file)
         # pprint(orgs['organizations']['organization'])
+        # print(len(orgs["organizations"]["organization"])) # 3157
         for org_row in orgs["organizations"]["organization"]:
             org = Organization.objects.create(
                 name=org_row.get("name", ""),
@@ -25,24 +43,51 @@ def insert_active_orgs():
                 country_home=org_row.get("country", ""),
                 url=org_row.get("url", ""),
             )
-            """
-            themes = org_row.get("themes", [])
-            if not themes:
+
+            themes = org_row.get("themes", dict)
+
+            if themes is None:
                 continue
-            """
 
-            themes_from_json = org_row["themes"]["theme"]
-        
+            themes_from_json = themes.get("theme", [])
+
+            # matching_themes = get_matching_data(themes_from_json)
             matching_themes = []
-            for row in themes_from_json:
-                theme, inserted = Theme.objects.get_or_create(name=row["name"], theme_id=row["id"])
-                matching_themes.append(theme)
 
+            if isinstance(themes_from_json, dict):
+                themes_from_json = [themes_from_json]
+
+            for row in themes_from_json:
+                theme, inserted = Theme.objects.get_or_create(
+                    name=row.get("name", ""), theme_id=row.get("id", "")
+                )
+
+            matching_themes.append(theme)
             org.themes.add(*matching_themes)
 
-            # countries=org_row.get("countries", ""),
-            # TODO: do same for countries and remove break
-            break
+            countries = org_row.get("countries", dict)
+
+            if countries is None:
+                continue
+
+            countries_from_json = countries.get("country", [])
+            # matching_countries = get_matching_data(countries_from_json)
+
+            matching_countries = []
+
+            if isinstance(countries_from_json, dict):
+                countries_from_json = [countries_from_json]
+
+            for row in countries_from_json:
+
+                country, inserted = Country.objects.get_or_create(
+                    name=row.get("name", ""),
+                    country_code=row.get("iso3166CountryCode", ""),
+                )
+
+            matching_countries.append(country)
+
+            org.countries.add(*matching_countries)
 
 
 class Command(BaseCommand):
@@ -55,10 +100,7 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        if options["model"] == "theme":
-            print("Seeding theme data")
-            insert_themes()
-        elif options["model"] == "org":
+        if options["model"] == "org":
             print("Seeding organization data")
             insert_active_orgs()
         print("completed")
