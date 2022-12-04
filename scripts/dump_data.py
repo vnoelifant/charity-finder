@@ -13,30 +13,40 @@ def get_json_data(xml_data):
         org_json_data = xmltodict.parse(xml_file.read())
     return org_json_data
 
+def get_url_from_json(input_file):
+    # Get the url from JSON
+    f = open(input_file)
+    url_data = json.load(f)
+    url = url_data["download"]["url"]
+    response = requests.get(url) 
+    return response
+
+def download_url_data(output_file, response):
+    with open(output_file, 'wb') as file:
+        file.write(response.content)
 
 def run():
     # Get all GlobalGiving themes, under which projects are categorized
     # theme_data = charity_api.get_charity_data("/projectservice/themes")
     # dump_charity_data_to_json("output_themes.json", theme_data)
     
-    # Get a download link of all active orgnizations
+    # Get an XML file containing a URL of all active organizations (bulk data download)
+    # Note from GlobalGiving's API:
+    # Note that only the XML format is available for download. 
+    # You may request the URL using JSON, but the URL will always lead to the XML results.
     org_data = charity_api.get_charity_url_data("/orgservice/all/organizations/active/download")
 
-    # Convert the url file from xml to JSON
+    # Convert the XML URL file to JSON
     org_json_url = xmltodict.parse(org_data.content)
     dump_charity_data_to_json("output_orgs_url.json", org_json_url)
 
-    # Get the url from JSON
-    f = open('output_orgs_url.json')
-    url_data = json.load(f)
-    url = url_data["download"]["url"]
-    response = requests.get(url) 
+    # Get the bulk organization url response from JSON
+    url_response = get_url_from_json('output_orgs_url.json')
     
-    # Download url data
-    with open("output_active_orgs.xml", 'wb') as file:
-        file.write(response.content)
+    # Download bulk organization data to XML file
+    download_url_data("output_active_orgs.xml", url_response)
     
-    # Get all active organizations
+    # Dump bulk organization data to JSON file
     dump_charity_data_to_json("output_active_orgs.json", get_json_data("output_active_orgs.xml"))
    
     
