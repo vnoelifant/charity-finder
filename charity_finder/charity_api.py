@@ -22,5 +22,18 @@ def get_charity_data(endpoint):
     
     return response.json() 
 
+def get_charity_url_data(endpoint):
+
+    """This function returns a JSON object charity data"""
+    url = f"{BASE_URL}{endpoint}"
+
+    print("URL: ", url)
+
+    params = {"api_key": settings.CHARITY_API_KEY}
+
+    response = requests.get(url, params=params)
+
+    return response
+
 
    
