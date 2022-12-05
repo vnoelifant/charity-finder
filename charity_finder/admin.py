@@ -8,14 +8,15 @@ from charity_finder.models import Theme, Country, Organization
 # admin.site.register(Organization)
 
 @admin.register(Theme)
-class OwnerAdmin(admin.ModelAdmin):
+class ThemeAdmin(admin.ModelAdmin):
     list_display = ("name", "theme_id")
 
 @admin.register(Country)
-class OwnerAdmin(admin.ModelAdmin):
+class CountryAdmin(admin.ModelAdmin):
     list_display = ("name","country_code")
 
 @admin.register(Organization)
-class OwnerAdmin(admin.ModelAdmin):
+class OrganizationAdmin(admin.ModelAdmin):
     list_display = ("name","org_id")
+    search_fields = ('name',)
     list_filter = ("name", "org_id")
