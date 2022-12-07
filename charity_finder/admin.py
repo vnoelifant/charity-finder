@@ -19,4 +19,4 @@ class CountryAdmin(admin.ModelAdmin):
 class OrganizationAdmin(admin.ModelAdmin):
     list_display = ("name","org_id")
     search_fields = ('name',)
-    list_filter = ("name", "org_id")
+    list_filter = ("themes", "countries")

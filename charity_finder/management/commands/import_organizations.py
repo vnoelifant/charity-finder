@@ -44,13 +44,13 @@ def insert_active_orgs():
 
 
 def get_matching_themes(themes):
-    countries_from_json = themes.get("country", [])
+    themes_from_json = themes.get("theme", [])
     matching_themes = []
 
-    if isinstance(countries_from_json, dict):
+    if isinstance(themes_from_json, dict):
         themes_from_json = [themes_from_json]
 
-    for row in countries_from_json:
+    for row in themes_from_json:
         theme, inserted = Theme.objects.get_or_create(
             name=row.get("name", ""),
             theme_id=row.get("id", ""),
