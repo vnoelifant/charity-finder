@@ -100,7 +100,7 @@ class Project(models.Model):
     latitude = models.DecimalField(max_digits=5, decimal_places=2)
     longitude = models.DecimalField(max_digits=5, decimal_places=2)
     notice = models.TextField(default="", null=True, blank=True)
-    region = models.ManyToManyField(Theme, related_name="regions", blank=True)
+    region = models.ManyToManyField(Region, related_name="regions", blank=True)
 
     def __str__(self):
         """String for representing the Model object."""
