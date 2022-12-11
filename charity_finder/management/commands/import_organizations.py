@@ -12,6 +12,8 @@ def insert_active_orgs():
         # print(len(orgs["organizations"]["organization"])) # 3157
         for org_row in orgs["organizations"]["organization"]:
             name = org_row.get("name", "")
+            if not name:
+                continue
             org, created = Organization.objects.get_or_create(
                 name=name,
                 org_id=org_row.get("id", 0),

@@ -28,7 +28,7 @@ class Region(models.Model):
 
     def __str__(self):
         """String for representing the Model object."""
-        return f"{self.name}"
+        return self.name
 
     class Meta:
         verbose_name_plural = "regions"
@@ -80,27 +80,26 @@ class Project(models.Model):
     contact_state = models.CharField(max_length=200, null=True, blank=True)
     contact_url = models.CharField(max_length=200, null=True, blank=True)
     countries = models.ManyToManyField(Country, related_name="project_countries", blank=True)
-    country_home = models.CharField(max_length=200, null=True, blank=True)
-    country_home_code = models.CharField(max_length=200, null=True, blank=True)
+    primary_country = models.ForeignKey(Country, on_delete=models.CASCADE,null=True, blank=True) 
     date_report = models.DateTimeField(null=True, blank=True)
     donation_options = models.JSONField(default=dict, null=True, blank=True)
-    funding = models.DecimalField(max_digits=5, decimal_places=2)
-    goal = models.DecimalField(max_digits=5, decimal_places=2)
-    goal_remaining = models.DecimalField(max_digits=5, decimal_places=2)
-    image = models.JSONField(default=dict, null=True, blank=True)
-    long_term_impact = models.BooleanField(null=True, blank=True)
-    need = models.BooleanField(null=True, blank=True)
+    funding = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    goal = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    goal_remaining = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    image = models.URLField(max_length = 200, null=True, blank=True)
+    long_term_impact = models.TextField(default="", null=True, blank=True)
+    need = models.TextField(default="", null=True, blank=True)
     modified_date = models.DateTimeField(null=True, blank=True)
     number_donations = models.IntegerField(default=0, null=True, blank=True)
     number_reports = models.IntegerField(default=0, null=True, blank=True)
-    progress_report_link = models.CharField(max_length=200, null=True, blank=True)
+    progress_report_link = models.URLField(max_length = 200, null=True, blank=True)
     themes = models.ManyToManyField(Theme, related_name="project_themes", blank=True)
-    theme_name = models.CharField(max_length=200, null=True, blank=True)
-    videos = models.JSONField(default=dict, null=True, blank=True)
+    primary_theme = models.ForeignKey(Theme, on_delete=models.CASCADE,null=True, blank=True) 
+    videos = models.URLField(max_length = 200, null=True, blank=True)
     latitude = models.DecimalField(max_digits=5, decimal_places=2)
     longitude = models.DecimalField(max_digits=5, decimal_places=2)
     notice = models.TextField(default="", null=True, blank=True)
-    region = models.ManyToManyField(Region, related_name="regions", blank=True)
+    region = models.ForeignKey(Region, on_delete=models.CASCADE,null=True, blank=True)
 
     def __str__(self):
         """String for representing the Model object."""

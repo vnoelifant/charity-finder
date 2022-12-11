@@ -15,10 +15,10 @@ def get_json_data_from_xml(xml_data):
 
 def get_url_from_json(input_file):
     # Get the url from JSON
-    f = open(input_file)
-    url_data = json.load(f)
-    url = url_data["download"]["url"]
-    response = requests.get(url) 
+    with open(input_file) as f:
+        url_data = json.load(f)
+        url = url_data["download"]["url"]
+        response = requests.get(url) 
     return response
 
 def download_bulk_data_to_xml(output_file, response):
