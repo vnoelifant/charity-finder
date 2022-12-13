@@ -1,7 +1,6 @@
 import json
 import requests
 import xmltodict
-from django.core.management.base import BaseCommand
 from charity_finder import charity_api
 
 def dump_charity_data_to_json(output_file, data):
@@ -18,7 +17,7 @@ def get_url_from_json(input_file):
     with open(input_file) as f:
         url_data = json.load(f)
         url = url_data["download"]["url"]
-        response = requests.get(url) 
+        response = requests.get(url)
     return response
 
 def download_bulk_data_to_xml(output_file, response):
@@ -29,10 +28,10 @@ def run():
     # Get all GlobalGiving themes, under which projects are categorized
     # theme_data = charity_api.get_charity_data("/projectservice/themes")
     # dump_charity_data_to_json("output_themes.json", theme_data)
-    
+
     # Get an XML file containing a URL of all active organizations (bulk data download)
     # Note from GlobalGiving's API:
-    # Note that only the XML format is available for download. 
+    # Note that only the XML format is available for download.
     # You may request the URL using JSON, but the URL will always lead to the XML results.
     org_data = charity_api.get_charity_url_data("/orgservice/all/organizations/active/download")
 
@@ -42,10 +41,10 @@ def run():
 
     # Get the bulk organization url from JSON
     org_url = get_url_from_json('output_orgs_url.json')
-    
+
     # Download bulk organization data to XML file
     download_bulk_data_to_xml("output_active_orgs.xml", org_url)
-    
+
     # Dump bulk organization data to JSON file
     dump_charity_data_to_json("output_active_orgs.json", get_json_data_from_xml("output_active_orgs.xml"))
 
@@ -58,15 +57,15 @@ def run():
 
     # Get the bulk project url from JSON
     project_url= get_url_from_json('output_projects_url.json')
-    
+
     # Download bulk project data to XML file
     download_bulk_data_to_xml("output_active_projects.xml", project_url)
-    
+
     # Dump bulk project data to JSON file
     dump_charity_data_to_json("output_active_projects.json", get_json_data_from_xml("output_active_projects.xml"))
 
-   
-    
+
+
 
 
 
