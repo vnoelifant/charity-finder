@@ -120,6 +120,10 @@ def insert_active_projects():
                 notice=project_row.get("notice", ""),
             )
 
+            if not created:
+                print(f"project {title} was already created.")
+                continue
+
             # parse videos dictionary for video link
             videos = project_row.get("videos").get("video", [])
 
@@ -180,18 +184,22 @@ def insert_active_projects():
             date_format = "%Y-%m-%dT%H:%M:%S"
 
             approved_date = project_row.get("approvedDate", "")[:19]
-            approved_date = datetime.datetime.strptime(approved_date, date_format)
-            project.approved_date = approved_date
-            project.save()
+            if approved_date is not None:
+                approved_date = datetime.datetime.strptime(approved_date, date_format)
+                project.approved_date = approved_date
+                project.save()
+            
+            if date_report is not None:
 
-            date_report = project_row.get("dateReport", "")[:19]
-            date_report = datetime.datetime.strptime(date_report, date_format)
-            project.date_report = date_report
+                date_report = project_row.get("dateReport", "")[:19]
+                date_report = datetime.datetime.strptime(date_report, date_format)
+                project.date_report = date_report
 
-            modified_date = project_row.get("modifiedDate", "")[:19]
-            modified_date = datetime.datetime.strptime(modified_date, date_format)
-            project.modified_date = modified_date
-            project.save()
+            if modified_date is not None:
+                modified_date = project_row.get("modifiedDate", "")[:19]
+                modified_date = datetime.datetime.strptime(modified_date, date_format)
+                project.modified_date = modified_date
+                project.save()
 
 
 class Command(BaseCommand):
