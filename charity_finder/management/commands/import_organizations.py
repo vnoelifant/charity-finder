@@ -125,11 +125,16 @@ def insert_active_projects():
                 continue
 
             # parse videos dictionary for video link
-            videos = project_row.get("videos",[])
-            if videos:
-                videos = videos.get("video").get("url","")
+            videos = project_row.get("videos")
+            
+            if videos is not None:
+                video = videos.get("video",[])
+                if isinstance(video, dict):
+                    video= [video]
+                
+                video_url = video[0].get("url","")
 
-                project.videos = videos
+                project.videos = video_url
                 project.save()
 
             # parse images dictionary for image link
@@ -150,7 +155,7 @@ def insert_active_projects():
             organization = project_row.get("organization",[])
            
 
-            if organization:
+            if organization is not None:
                 org_id = organization.get("id","")
                 org = Organization.objects.get(org_id=org_id)
                 project.org = org
