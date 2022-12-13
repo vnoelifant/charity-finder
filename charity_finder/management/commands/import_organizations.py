@@ -121,6 +121,7 @@ def insert_active_projects():
                 notice=project_row.get("notice", ""),
             )
 
+            # parse videos dictionary for video link
             videos = project_row.get("videos").get("video", [])
 
             if videos is not None:
@@ -132,6 +133,7 @@ def insert_active_projects():
                 project.videos = videos
                 project.save()
 
+            # parse images dictionary for image link
             images = project_row.get("image").get("imagelink", [])
 
             if images is not None:
@@ -144,14 +146,16 @@ def insert_active_projects():
 
                 project.image = image
                 project.save()
-
+            
+            # get matching organization from foreign key relationship to Organization model
             org_id = project_row.get("organization").get("id")
 
             if org_id is not None:
                 org = Organization.objects.get(org_id=org_id)
                 project.org = org
                 project.save()
-
+            
+            # get matching themes from M2M relationship
             themes = project_row.get("themes")
 
             if themes is not None:
@@ -159,6 +163,7 @@ def insert_active_projects():
                 project.themes.add(*matching_themes)
                 project.save()
 
+            # get primary theme from foreign key relationship to Theme model
             primary_theme = project_row.get("themeName", "")
 
             if primary_theme is not None:
@@ -166,6 +171,7 @@ def insert_active_projects():
                 project.primary_theme = theme
                 project.save()
 
+             # get matching region from foreign key relationship to Region model
             region = project_row.get("region", "")
             if region is not None:
                 region, inserted = Region.objects.get_or_create(name=region)
