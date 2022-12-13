@@ -1,7 +1,13 @@
 from django.core.management.base import BaseCommand
-from charity_finder.models import Theme, Organization, Country
+from charity_finder.models import Theme, Organization, Country, Project, Region
 from charity_finder import charity_api
 
+
+def clear_projects():
+    Project.objects.all().delete()
+
+def clear_regions():
+    Region.objects.all().delete()
 
 def clear_themes():
     Theme.objects.all().delete()
@@ -32,4 +38,10 @@ class Command(BaseCommand):
         elif options["model"] == "country":
             print("Clearing country data")
             clear_countries()
-        print("completed")
+        elif options["model"] == "project":
+            print("Clearing project data")
+            clear_projects()
+        elif options["model"] == "region":
+            print("Clearing region data")
+            clear_regions()
+        print("Completed")
