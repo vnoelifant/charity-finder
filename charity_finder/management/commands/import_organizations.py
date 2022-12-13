@@ -188,21 +188,21 @@ def insert_active_projects():
 
             approved_date = project_row.get("approvedDate", "")[:19]
             
-            if approved_date:
+            if approved_date is not None:
                 approved_date = datetime.datetime.strptime(approved_date, date_format)
                 project.approved_date = approved_date
                 project.save()
             
             date_report = project_row.get("dateOfMostRecentReport", "")[:19]
             
-            if date_report:
+            if date_report is not None:
                 date_report = datetime.datetime.strptime(date_report, date_format)
                 project.date_report = date_report
                 project.save()
 
             modified_date = project_row.get("modifiedDate", "")[:19]
 
-            if modified_date:
+            if modified_date is not None:
                 modified_date = datetime.datetime.strptime(modified_date, date_format)
                 project.modified_date = modified_date
                 project.save()
