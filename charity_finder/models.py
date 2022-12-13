@@ -66,7 +66,7 @@ class Project(models.Model):
     summary = models.TextField(default="", null=True, blank=True)
     project_id = models.IntegerField(default=0, null=True, blank=True)
     project_link = models.CharField(max_length=200, null=True, blank=True)
-    active = models.BooleanField(null=True, blank=True)
+    active = models.CharField(max_length=200, null=True, blank=True)
     status = models.CharField(max_length=200, null=True, blank=True)
     activities = models.TextField(default="", null=True, blank=True)
     approved_date = models.DateTimeField(null=True, blank=True)
