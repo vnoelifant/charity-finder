@@ -1,7 +1,7 @@
 import json
+import datetime
 from pprint import pprint
 from django.core.management.base import BaseCommand
-from datetime import datetime
 
 from charity_finder.models import Theme, Organization, Country, Project, Region
 from charity_finder import charity_api
@@ -97,7 +97,6 @@ def insert_active_projects():
                 active=project_row.get("active", ""),
                 status=project_row.get("status", ""),
                 activities=project_row.get("activities", ""),
-                approved_date=datetime.fromisoformat(project_row.get("approvedDate", "")),
                 contact_address_1=project_row.get("contactAddress", ""),
                 contact_address_2=project_row.get("contactAddress2", ""),
                 contact_city=project_row.get("contactCity", ""),
@@ -107,14 +106,12 @@ def insert_active_projects():
                 contact_postal=project_row.get("contactPostal", ""),
                 contact_state=project_row.get("contactState", ""),
                 contact_url=project_row.get("contactUrl", ""),
-                date_report=datetime.fromisoformat(project_row.get("dateReport", "")),
                 donation_options=project_row.get("donationOptions", dict),
                 funding=project_row.get("funding", 0),
                 goal=project_row.get("goal", 0),
                 goal_remaining=project_row.get("remaining", 0),
                 long_term_impact=project_row.get("longTermImpact", ""),
                 need=project_row.get("need", ""),
-                modified_date=datetime.fromisoformat(project_row.get("modifiedDate", "")),
                 number_donations=project_row.get("numberOfDonations", 0),
                 number_reports=project_row.get("numberOfReports", ""),
                 progress_report_link=project_row.get("progressReportLink", ""),
@@ -148,7 +145,7 @@ def insert_active_projects():
 
                 project.image = image
                 project.save()
-            
+
             # get matching organization from foreign key relationship to Organization model
             org_id = project_row.get("organization").get("id")
 
@@ -156,7 +153,7 @@ def insert_active_projects():
                 org = Organization.objects.get(org_id=org_id)
                 project.org = org
                 project.save()
-            
+
             # get matching themes from M2M relationship
             themes = project_row.get("themes")
 
@@ -173,12 +170,28 @@ def insert_active_projects():
                 project.primary_theme = theme
                 project.save()
 
-             # get matching region from foreign key relationship to Region model
+            # get matching region from foreign key relationship to Region model
             region = project_row.get("region", "")
             if region is not None:
                 region, inserted = Region.objects.get_or_create(name=region)
                 project.region = region
                 project.save()
+
+            date_format = "%Y-%m-%dT%H:%M:%S"
+
+            approved_date = project_row.get("approvedDate", "")[:19]
+            approved_date = datetime.datetime.strptime(approved_date, date_format)
+            project.approved_date = approved_date
+            project.save()
+
+            date_report = project_row.get("dateReport", "")[:19]
+            date_report = datetime.datetime.strptime(date_report, date_format)
+            project.date_report = date_report
+
+            modified_date = project_row.get("modifiedDate", "")[:19]
+            modified_date = datetime.datetime.strptime(modified_date, date_format)
+            project.modified_date = modified_date
+            project.save()
 
 
 class Command(BaseCommand):
