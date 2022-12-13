@@ -1,7 +1,7 @@
 import json
 from pprint import pprint
 from django.core.management.base import BaseCommand
-from charity_finder.models import Theme, Organization, Country
+from charity_finder.models import Theme, Organization, Country, Project, Region
 from charity_finder import charity_api
 
 
@@ -75,6 +75,103 @@ def get_matching_countries(countries):
         )
         matching_countries.append(country)
     return matching_countries
+
+
+def insert_active_projects():
+    with open("output_active_projects.json") as data_file:
+        projects = json.load(data_file)
+        # org = Organization.objects.all()
+        # pprint(projects["projects"]["project"]))
+        # print(len(projects["projects"]["project"])) #
+        for project_row in projects["projects"]["project"]:
+            title = project_row.get("title", "")
+            if not title:
+                continue
+            project, created = Project.objects.get_or_create(
+                title=title,
+                summary=project_row.get("summary", ""),
+                project_id=project_row.get("id", 0),
+                project_link=project_row.get("projectLink", ""),
+                active=project_row.get("active", ""),
+                status=project_row.get("status", ""),
+                activities=project_row.get("activities", ""),
+                approved_date=project_row.get("approvedDate", ""),
+                contact_address_1=project_row.get("contactAddress", ""),
+                contact_address_2=project_row.get("contactAddress2", ""),
+                contact_city=project_row.get("contactCity", ""),
+                contact_country=project_row.get("contactCountry", ""),
+                contact_name=project_row.get("contactName", ""),
+                contact_title=project_row.get("contactTitle", ""),
+                contact_postal=project_row.get("contactPostal", ""),
+                contact_state=project_row.get("contactState", ""),
+                contact_url=project_row.get("contactUrl", ""),
+                date_report=project_row.get("dateReport", ""),
+                donation_options=project_row.get("donationOptions", dict),
+                funding=project_row.get("funding", 0),
+                goal=project_row.get("goal", 0),
+                goal_remaining=project_row.get("remaining", 0),
+                long_term_impact=project_row.get("longTermImpact", ""),
+                need=project_row.get("need", ""),
+                modified_date=project_row.get("modifiedDate", ""),
+                number_donations=project_row.get("numberOfDonations", 0),
+                number_reports=project_row.get("numberOfReports", ""),
+                progress_report_link=project_row.get("progressReportLink", ""),
+                latitude=project_row.get("latitude", 0),
+                longitude=project_row.get("longitude", 0),
+                notice=project_row.get("notice", ""),
+            )
+
+            videos = project_row.get("videos").get("video", [])
+
+            if videos is not None:
+                if isinstance(videos, dict):
+                    videos = [videos]
+
+                videos = videos[0].get("url")
+
+                project.videos = videos
+                project.save()
+
+            images = project_row.get("image").get("imagelink", [])
+
+            if images is not None:
+                if isinstance(images, dict):
+                    images = [images]
+
+                image = [
+                    row.get("url") for row in images if row.get("@size") == "large"
+                ][0]
+
+                project.image = image
+                project.save()
+
+            org_id = project_row.get("organization").get("id")
+
+            if org_id is not None:
+                org = Organization.objects.get(org_id=org_id)
+                project.org = org
+                project.save()
+
+            themes = project_row.get("themes")
+
+            if themes is not None:
+                matching_themes = get_matching_themes(themes)
+                project.themes.add(*matching_themes)
+                project.save()
+
+            primary_theme = project_row.get("themeName", "")
+
+            if primary_theme is not None:
+                theme = Theme.objects.get(name=primary_theme)
+                project.primary_theme = theme
+                project.save()
+
+            region = project_row.get("region", "")
+            if region is not None:
+                region, inserted = Region.objects.get_or_create(name=region)
+                project.region = region
+                project.save()
+
 
 class Command(BaseCommand):
     def add_arguments(self, parser):
