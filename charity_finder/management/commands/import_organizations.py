@@ -125,13 +125,9 @@ def insert_active_projects():
                 continue
 
             # parse videos dictionary for video link
-            videos = project_row.get("videos").get("video", dict)
-
-            if videos is not None:
-                if isinstance(videos, dict):
-                    videos = [videos]
-
-                videos = videos[0].get("url")
+            videos = project_row.get("videos",[])
+            if videos:
+                videos = videos.get("video").get("url","")
 
                 project.videos = videos
                 project.save()
@@ -185,21 +181,21 @@ def insert_active_projects():
 
             approved_date = project_row.get("approvedDate", "")[:19]
             
-            if approved_date is not None:
+            if approved_date:
                 approved_date = datetime.datetime.strptime(approved_date, date_format)
                 project.approved_date = approved_date
                 project.save()
             
             date_report = project_row.get("dateOfMostRecentReport", "")[:19]
             
-            if date_report is not None:
+            if date_report:
                 date_report = datetime.datetime.strptime(date_report, date_format)
                 project.date_report = date_report
                 project.save()
 
             modified_date = project_row.get("modifiedDate", "")[:19]
 
-            if modified_date is not None:
+            if modified_date:
                 modified_date = datetime.datetime.strptime(modified_date, date_format)
                 project.modified_date = modified_date
                 project.save()
