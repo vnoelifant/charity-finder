@@ -147,9 +147,11 @@ def insert_active_projects():
                 project.save()
 
             # get matching organization from foreign key relationship to Organization model
-            org_id = project_row.get("organization").get("id")
+            organization = project_row.get("organization",[])
+           
 
-            if org_id is not None:
+            if organization:
+                org_id = organization.get("id","")
                 org = Organization.objects.get(org_id=org_id)
                 project.org = org
                 project.save()
