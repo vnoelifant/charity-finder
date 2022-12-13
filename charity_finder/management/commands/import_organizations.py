@@ -186,4 +186,7 @@ class Command(BaseCommand):
         if options["model"] == "org":
             print("Seeding organization data")
             insert_active_orgs()
+        elif options["model"] == "project":
+            print("Seeding organization data")
+            insert_active_projects()
         print("Completed")
