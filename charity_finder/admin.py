@@ -1,5 +1,5 @@
 from django.contrib import admin
-from charity_finder.models import Theme, Country, Organization
+from charity_finder.models import Theme, Country, Organization, Region, Project
 
 
 # Register your models here.
@@ -7,15 +7,43 @@ from charity_finder.models import Theme, Country, Organization
 # admin.site.register(Country)
 # admin.site.register(Organization)
 
+
 @admin.register(Theme)
-class OwnerAdmin(admin.ModelAdmin):
+class ThemeAdmin(admin.ModelAdmin):
     list_display = ("name", "theme_id")
 
+
 @admin.register(Country)
-class OwnerAdmin(admin.ModelAdmin):
-    list_display = ("name","country_code")
+class CountryAdmin(admin.ModelAdmin):
+    list_display = (
+        "name",
+        "country_code",
+    )
+
+
+@admin.register(Region)
+class RegionAdmin(admin.ModelAdmin):
+    list_display = ("name",)
+
 
 @admin.register(Organization)
-class OwnerAdmin(admin.ModelAdmin):
-    list_display = ("name","org_id")
-    list_filter = ("name", "org_id")
+class OrganizationAdmin(admin.ModelAdmin):
+    list_display = (
+        "name",
+        "org_id",
+    )
+    search_fields = ("name",)
+    list_filter = (
+        "themes",
+        "countries",
+    )
+
+
+@admin.register(Project)
+class ProjectAdmin(admin.ModelAdmin):
+    list_display = (
+        "title",
+        "project_id",
+    )
+    search_fields = ("title",)
+    list_filter = ("region",)
