@@ -84,41 +84,36 @@ def insert_active_projects():
             title = project_row.get("title", "")
             if not title:
                 continue
-            try:
-                project, created = Project.objects.get_or_create(
-                    title=title,
-                    summary=project_row.get("summary", ""),
-                    project_id=project_row.get("id", 0),
-                    project_link=project_row.get("projectLink", ""),
-                    active=project_row.get("active", ""),
-                    status=project_row.get("status", ""),
-                    activities=project_row.get("activities", ""),
-                    contact_address_1=project_row.get("contactAddress", ""),
-                    contact_address_2=project_row.get("contactAddress2", ""),
-                    contact_city=project_row.get("contactCity", ""),
-                    contact_country=project_row.get("contactCountry", ""),
-                    contact_name=project_row.get("contactName", ""),
-                    contact_title=project_row.get("contactTitle", ""),
-                    contact_postal=project_row.get("contactPostal", ""),
-                    contact_state=project_row.get("contactState", ""),
-                    contact_url=project_row.get("contactUrl", ""),
-                    donation_options=project_row.get("donationOptions", {}),
-                    funding=project_row.get("funding", 0),
-                    goal=project_row.get("goal", 0),
-                    goal_remaining=project_row.get("remaining", 0),
-                    long_term_impact=project_row.get("longTermImpact", ""),
-                    need=project_row.get("need", ""),
-                    number_donations=project_row.get("numberOfDonations", 0),
-                    number_reports=project_row.get("numberOfReports", ""),
-                    progress_report_link=project_row.get("progressReportLink", ""),
-                    latitude=project_row.get("latitude", 0),
-                    longitude=project_row.get("longitude", 0),
-                    notice=project_row.get("notice", ""),
-                )
-            except Exception as exc:
-                print(exc)
-                # breakpoint()
-                print()
+            project, created = Project.objects.get_or_create(
+                title=title,
+                summary=project_row.get("summary", ""),
+                project_id=project_row.get("id", 0),
+                project_link=project_row.get("projectLink", ""),
+                active=project_row.get("active", ""),
+                status=project_row.get("status", ""),
+                activities=project_row.get("activities", ""),
+                contact_address_1=project_row.get("contactAddress", ""),
+                contact_address_2=project_row.get("contactAddress2", ""),
+                contact_city=project_row.get("contactCity", ""),
+                contact_country=project_row.get("contactCountry", ""),
+                contact_name=project_row.get("contactName", ""),
+                contact_title=project_row.get("contactTitle", ""),
+                contact_postal=project_row.get("contactPostal", ""),
+                contact_state=project_row.get("contactState", ""),
+                contact_url=project_row.get("contactUrl", ""),
+                donation_options=project_row.get("donationOptions", {}),
+                funding=project_row.get("funding", 0),
+                goal=project_row.get("goal", 0),
+                goal_remaining=project_row.get("remaining", 0),
+                long_term_impact=project_row.get("longTermImpact", ""),
+                need=project_row.get("need", ""),
+                number_donations=project_row.get("numberOfDonations", 0),
+                number_reports=project_row.get("numberOfReports", ""),
+                progress_report_link=project_row.get("progressReportLink", ""),
+                latitude=project_row.get("latitude", 0),
+                longitude=project_row.get("longitude", 0),
+                notice=project_row.get("notice", ""),
+            )
 
             if not created:
                 print(f"project {title} was already created.")
