@@ -10,8 +10,6 @@ from charity_finder import charity_api
 def insert_active_orgs():
     with open("output_active_orgs.json") as data_file:
         orgs = json.load(data_file)
-        # pprint(orgs['organizations']['organization'])
-        # print(len(orgs["organizations"]["organization"])) # 3157
         for org_row in orgs["organizations"]["organization"]:
             name = org_row.get("name", "")
             if not name:
@@ -82,9 +80,6 @@ def get_matching_countries(countries):
 def insert_active_projects():
     with open("output_active_projects.json") as data_file:
         projects = json.load(data_file)
-        # org = Organization.objects.all()
-        # pprint(projects["projects"]["project"]))
-        # print(len(projects["projects"]["project"])) #
         for project_row in projects["projects"]["project"]:
             title = project_row.get("title", "")
             if not title:
@@ -133,11 +128,11 @@ def insert_active_projects():
             videos = project_row.get("videos")
 
             if videos is not None:
-                video = videos.get("video",[])
+                video = videos.get("video", [])
                 if isinstance(video, dict):
-                    video= [video]
+                    video = [video]
 
-                video_url = video[0].get("url","")
+                video_url = video[0].get("url", "")
 
                 project.videos = video_url
 
@@ -155,11 +150,10 @@ def insert_active_projects():
                 project.image = image
 
             # get matching organization from foreign key relationship to Organization model
-            organization = project_row.get("organization",[])
+            organization = project_row.get("organization")
 
-
-            if organization:
-                org_id = organization.get("id","")
+            if organization is not None:
+                org_id = organization.get("id", "")
                 try:
                     org = Organization.objects.get(org_id=org_id)
                 except Organization.DoesNotExist:
@@ -187,21 +181,21 @@ def insert_active_projects():
                 region, inserted = Region.objects.get_or_create(name=region)
                 project.region = region
 
-            date_format = "%Y-%m-%dT%H:%M:%S"
+            date_format = "%Y-%m-%dT%H:%M:%S%z"
 
-            approved_date = project_row.get("approvedDate", "")[:19]
+            approved_date = project_row.get("approvedDate", "")
 
             if approved_date:
                 approved_date = datetime.datetime.strptime(approved_date, date_format)
                 project.approved_date = approved_date
 
-            date_report = project_row.get("dateOfMostRecentReport", "")[:19]
+            date_report = project_row.get("dateOfMostRecentReport", "")
 
             if date_report:
                 date_report = datetime.datetime.strptime(date_report, date_format)
                 project.date_report = date_report
 
-            modified_date = project_row.get("modifiedDate", "")[:19]
+            modified_date = project_row.get("modifiedDate", "")
 
             if modified_date:
                 modified_date = datetime.datetime.strptime(modified_date, date_format)
