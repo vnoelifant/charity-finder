@@ -89,36 +89,41 @@ def insert_active_projects():
             title = project_row.get("title", "")
             if not title:
                 continue
-            project, created = Project.objects.get_or_create(
-                title=title,
-                summary=project_row.get("summary", ""),
-                project_id=project_row.get("id", 0),
-                project_link=project_row.get("projectLink", ""),
-                active=project_row.get("active", ""),
-                status=project_row.get("status", ""),
-                activities=project_row.get("activities", ""),
-                contact_address_1=project_row.get("contactAddress", ""),
-                contact_address_2=project_row.get("contactAddress2", ""),
-                contact_city=project_row.get("contactCity", ""),
-                contact_country=project_row.get("contactCountry", ""),
-                contact_name=project_row.get("contactName", ""),
-                contact_title=project_row.get("contactTitle", ""),
-                contact_postal=project_row.get("contactPostal", ""),
-                contact_state=project_row.get("contactState", ""),
-                contact_url=project_row.get("contactUrl", ""),
-                donation_options=project_row.get("donationOptions", dict),
-                funding=project_row.get("funding", 0),
-                goal=project_row.get("goal", 0),
-                goal_remaining=project_row.get("remaining", 0),
-                long_term_impact=project_row.get("longTermImpact", ""),
-                need=project_row.get("need", ""),
-                number_donations=project_row.get("numberOfDonations", 0),
-                number_reports=project_row.get("numberOfReports", ""),
-                progress_report_link=project_row.get("progressReportLink", ""),
-                latitude=project_row.get("latitude", 0),
-                longitude=project_row.get("longitude", 0),
-                notice=project_row.get("notice", ""),
-            )
+            try:
+                project, created = Project.objects.get_or_create(
+                    title=title,
+                    summary=project_row.get("summary", ""),
+                    project_id=project_row.get("id", 0),
+                    project_link=project_row.get("projectLink", ""),
+                    active=project_row.get("active", ""),
+                    status=project_row.get("status", ""),
+                    activities=project_row.get("activities", ""),
+                    contact_address_1=project_row.get("contactAddress", ""),
+                    contact_address_2=project_row.get("contactAddress2", ""),
+                    contact_city=project_row.get("contactCity", ""),
+                    contact_country=project_row.get("contactCountry", ""),
+                    contact_name=project_row.get("contactName", ""),
+                    contact_title=project_row.get("contactTitle", ""),
+                    contact_postal=project_row.get("contactPostal", ""),
+                    contact_state=project_row.get("contactState", ""),
+                    contact_url=project_row.get("contactUrl", ""),
+                    donation_options=project_row.get("donationOptions", {}),
+                    funding=project_row.get("funding", 0),
+                    goal=project_row.get("goal", 0),
+                    goal_remaining=project_row.get("remaining", 0),
+                    long_term_impact=project_row.get("longTermImpact", ""),
+                    need=project_row.get("need", ""),
+                    number_donations=project_row.get("numberOfDonations", 0),
+                    number_reports=project_row.get("numberOfReports", ""),
+                    progress_report_link=project_row.get("progressReportLink", ""),
+                    latitude=project_row.get("latitude", 0),
+                    longitude=project_row.get("longitude", 0),
+                    notice=project_row.get("notice", ""),
+                )
+            except Exception as exc:
+                print(exc)
+                # breakpoint()
+                print()
 
             if not created:
                 print(f"project {title} was already created.")
@@ -126,16 +131,15 @@ def insert_active_projects():
 
             # parse videos dictionary for video link
             videos = project_row.get("videos")
-            
+
             if videos is not None:
                 video = videos.get("video",[])
                 if isinstance(video, dict):
                     video= [video]
-                
+
                 video_url = video[0].get("url","")
 
                 project.videos = video_url
-                project.save()
 
             # parse images dictionary for image link
             images = project_row.get("image").get("imagelink", [])
@@ -149,17 +153,19 @@ def insert_active_projects():
                 ][0]
 
                 project.image = image
-                project.save()
 
             # get matching organization from foreign key relationship to Organization model
             organization = project_row.get("organization",[])
-           
+
 
             if organization:
                 org_id = organization.get("id","")
-                org = Organization.objects.get(org_id=org_id)
+                try:
+                    org = Organization.objects.get(org_id=org_id)
+                except Organization.DoesNotExist:
+                    print("SKIP: cannot find org id so skipping project", org)
+                    continue
                 project.org = org
-                project.save()
 
             # get matching themes from M2M relationship
             themes = project_row.get("themes")
@@ -167,7 +173,6 @@ def insert_active_projects():
             if themes is not None:
                 matching_themes = get_matching_themes(themes)
                 project.themes.add(*matching_themes)
-                project.save()
 
             # get primary theme from foreign key relationship to Theme model
             primary_theme = project_row.get("themeName", "")
@@ -175,37 +180,34 @@ def insert_active_projects():
             if primary_theme is not None:
                 theme = Theme.objects.get(name=primary_theme)
                 project.primary_theme = theme
-                project.save()
 
             # get matching region from foreign key relationship to Region model
             region = project_row.get("region", "")
             if region is not None:
                 region, inserted = Region.objects.get_or_create(name=region)
                 project.region = region
-                project.save()
 
             date_format = "%Y-%m-%dT%H:%M:%S"
 
             approved_date = project_row.get("approvedDate", "")[:19]
-            
+
             if approved_date:
                 approved_date = datetime.datetime.strptime(approved_date, date_format)
                 project.approved_date = approved_date
-                project.save()
-            
+
             date_report = project_row.get("dateOfMostRecentReport", "")[:19]
-            
+
             if date_report:
                 date_report = datetime.datetime.strptime(date_report, date_format)
                 project.date_report = date_report
-                project.save()
 
             modified_date = project_row.get("modifiedDate", "")[:19]
 
             if modified_date:
                 modified_date = datetime.datetime.strptime(modified_date, date_format)
                 project.modified_date = modified_date
-                project.save()
+
+            project.save()
 
 
 class Command(BaseCommand):
