@@ -5,9 +5,8 @@
 {% block body %}
 
 <ul>
-    {% for organization in organizations %}
-        <li>{{organization.id}}</li>
-        <li>{{organization.name}}</li>
+    {% for organization in orgs_by_theme %}
+        <li>{{organization.id}}: {{organization.name}}</li>
     {% endfor %}
 </ul>
 
