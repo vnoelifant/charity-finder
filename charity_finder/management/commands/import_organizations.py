@@ -209,7 +209,7 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        if options["model"] == "org":
+        if options["model"] == "organization":
             print("Seeding organization data")
             insert_active_orgs()
         elif options["model"] == "project":
