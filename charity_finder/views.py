@@ -12,7 +12,7 @@ def home(request):
 
 
 def get_orgs_by_theme(request):
-    organizations = Organization.objects.filter(themes__name="Education")
+    organizations = Organization.objects.filter(themes__id=59)
    
     context = {
       "orgs_by_theme": organizations
