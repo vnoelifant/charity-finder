@@ -11,8 +11,9 @@ def home(request):
     return render(request, "home.html")
 
 
-def get_orgs_by_theme(request):
-    organizations = Organization.objects.filter(themes__id=59)
+def get_orgs_by_theme(request, theme_pk):
+    organizations = Organization.objects.filter(themes__id=theme_pk)
+    print("Theme pk: ", theme_pk)
    
     context = {
       "orgs_by_theme": organizations
