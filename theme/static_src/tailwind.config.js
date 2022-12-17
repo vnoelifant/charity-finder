@@ -42,7 +42,11 @@ module.exports = {
         // '../../**/*.py'
     ],
     theme: {
-        extend: {},
+        extend: {
+            fontFamily: {
+                lusistana: ['Lucistana', 'sans-serif']
+            }
+        },
         colors: {
             'blue': '#1fb6ff',
             'purple': '#7e5bef',
@@ -53,6 +57,7 @@ module.exports = {
             'gray-dark': '#273444',
             'gray': '#8492a6',
             'gray-light': '#d3dce6',
+            'indigo-600': '#4f46e5',
           },
     },
     plugins: [
