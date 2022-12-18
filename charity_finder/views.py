@@ -10,18 +10,28 @@ from charity_finder import charity_api
 def home(request):
     return render(request, "home.html")
 
-
-def get_orgs_by_theme(request):
+def search(request):
+    print("REQUEST: ", request.GET)
 
     themes = request.GET.getlist("themes")
+    keyword = request.GET.get("keyword")
 
-    # Get Theme Organizations matching selected theme names
-    organizations = Organization.objects.filter(themes__name__in=themes).distinct()
+    if themes:
 
-    context = {"orgs_by_theme": organizations}
+        # Get Theme Organizations matching selected theme names
+        organizations = Organization.objects.filter(themes__name__in=themes).distinct()
 
-    return render(request, "orgs_theme.html", context)
+        context = {"orgs_by_theme": organizations, "option": "themes"}
 
+    else:
+
+        # Get Organizations matching search keyword
+        orgs_by_keyword = Organization.objects.filter(name__contains=keyword)
+
+        context = {"orgs_by_keyword": orgs_by_keyword, "option": "keyword"}
+
+
+    return render(request, "orgs_search.html", context)
 
 def get_project_detail(request, org_id):
     project_detail = Project.objects.filter(org__id=org_id)
@@ -31,15 +41,3 @@ def get_project_detail(request, org_id):
     }
 
     return render(request, "project_detail.html", context)
-
-
-def search(request):
-
-    query = request.GET.get("query")
-
-    # Get Organizations matching search query
-    orgs_by_search = Organization.objects.filter(name__contains=query)
-
-    context = {"orgs_by_search": orgs_by_search}
-
-    return render(request, "orgs_search.html", context)
