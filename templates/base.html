@@ -24,19 +24,24 @@
       </button>
     </div>
     <nav :class="{'flex': open, 'hidden': !open}" class="flex-col flex-grow pb-4 md:pb-0 hidden md:flex md:justify-end md:flex-row">
+      <form action="{% url 'orgs_search' %}" method="get" >
+        <div class="container flex mx-auto">
+          <div class="flex border-2 rounded">
+              <button class="flex items-center justify-center px-4 border-r">
+                  <svg class="w-6 h-6 text-gray-600" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24">
+                      <path
+                          d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z">
+                      </path>
+                  </svg>
+              </button>
+              <input type="text" class="px-4 py-2 w-80" placeholder="Search for Organization by Keyword">
+          </div>
+      </div>
+      </form>
       <a class="px-4 py-2 mt-2 text-sm font-lusistana font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">Log In</a>
       <a class="px-4 py-2 mt-2 text-sm font-lusistana font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">Sign Up</a>
       <a class="px-4 py-2 mt-2 text-sm font-lusistana font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">Contact</a>    
-      <form action="{% url 'orgs_search' %}" method="get" >
-        <div class="flex justify-center">
-          <div class="mb-3 xl:w-96">
-            <div class="input-group relative flex flex-wrap items-stretch w-full mb-4">
-              <input type="search" name="query" class="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Search for Organization by Keywork" aria-label="Search" aria-describedby="button-addon3">
-              <button class="btn inline-block px-4 py-2 mt-2 text-sm font-lusistana font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline">Search</button>
-            </div>
-          </div>
-        </div>
-      </form>
     </nav>
   </div>
 </div>
