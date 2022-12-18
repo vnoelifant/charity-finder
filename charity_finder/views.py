@@ -16,15 +16,11 @@ def get_orgs_by_theme(request):
     themes = request.GET.getlist("themes")
 
     # Get Theme Organizations matching selected theme names
-    organizations= Organization.objects.filter(
-        themes__name__in=themes
-    ).distinct()
+    organizations = Organization.objects.filter(themes__name__in=themes).distinct()
 
-    context = {
-      "orgs_by_theme": organizations
-    }
+    context = {"orgs_by_theme": organizations}
 
-    return render(request, "orgs_theme.html" , context)
+    return render(request, "orgs_theme.html", context)
 
 
 def get_project_detail(request, org_id):
@@ -37,7 +33,13 @@ def get_project_detail(request, org_id):
     return render(request, "project_detail.html", context)
 
 
+def search(request):
 
+    query = request.GET.get("query")
 
+    # Get Organizations matching search query
+    orgs_by_search = Organization.objects.filter(name__contains=query)
 
+    context = {"orgs_by_search": orgs_by_search}
 
+    return render(request, "orgs_search.html", context)
