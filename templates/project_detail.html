@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Projects for Organization{% endblock %}
+
+{% block body %}
+
+ <!-- Container -->
+<div class="container my-12 mx-auto px-4 md:px-12">
+
+    <!-- Grid -->
+    <div class="p-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-5">
+
+        <!-- Card -->
+        {% for project in project_detail %}
+        
+        <div class="rounded-lg shadow-lg bg-white w-full border-indigo-600">
+            <a href="{{project.project_link}}">
+                <img class="rounded-t-lg" src="{{project.image}}" alt="Project Image"/>
+            </a>
+            <div class="p-6">
+                <h5 class="text-gray-900 text-xl font-semibold mb-2 font-lusistana">
+                    <a href="{{project.project_link}}">{{project.title}}</a>
+                </h5>
+                <p class="text-gray-700 text-base mb-4 font-lusistana">
+                {{project.summary}}
+                </p>
+            </div>
+
+        </div> 
+        <!-- End Card -->
+        {% endfor %}
+        
+    <div>
+    <!--End Grid -->
+    
+
+</div>
+ <!-- End Container -->
+
+{% endblock %}
+

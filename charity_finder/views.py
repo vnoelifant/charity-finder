@@ -27,4 +27,17 @@ def get_orgs_by_theme(request):
     return render(request, "orgs_theme.html" , context)
 
 
+def get_project_detail(request, org_id):
+    project_detail = Project.objects.filter(org__id=org_id)
+
+    context = {
+        "project_detail": project_detail,
+    }
+
+    return render(request, "project_detail.html", context)
+
+
+
+
+
 
