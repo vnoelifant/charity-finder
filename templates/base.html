@@ -45,27 +45,31 @@
     </nav>
   </div>
 </div>
+<div class="pt-12 lg:flex">
+  <div class="flex flex-col w-full px-4 py-8 overflow-y-auto border-b lg:border-r lg:h-screen lg:w-64">
 
-<br>
-<div>
-  <form action="{% url 'orgs_theme' %}" method="get" class="w-64 mx-auto">
-    <label class="block text-left" style="max-width: 300px">
-      <span class="text-gray-700 font-lusistana">Select Philanthropic Interests</span>
-      {% load themes %}
-      {% get_themes as themes %}
-      <select class="form-multiselect block w-full mt-1" name="themes" multiple>
-        {% for theme in themes %}
-          <option>{{theme.name}}</option>
-        {% endfor %}
-      </select>
-      <span> 
-        <button class="px-4 py-2 mt-2 text-sm font-lusistana font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
-          Search by Theme
-        </button>
-      </span>
-    </label>
-  </form>
-</div>
+    <div class="flex flex-col justify-between mt-6">
+      <aside>
+        <form action="{% url 'orgs_theme' %}" method="get" class="w-64 mx-auto">
+          <label class="block text-left" style="max-width: 300px">
+            <span class="text-gray-700 font-lusistana">Select Philanthropic Interests</span>
+            {% load themes %}
+            {% get_themes as themes %}
+            <select class="form-multiselect block w-full mt-1" name="themes" multiple>
+              {% for theme in themes %}
+                <option>{{theme.name}}</option>
+              {% endfor %}
+            </select>
+            <span> 
+              <button class="px-4 py-2 mt-2 text-sm font-lusistana font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
+                Search by Theme
+              </button>
+            </span>
+          </label>
+        </form>
+      </aside>
+    </div>
+  </div>
 
 <div>
   {% block body %}{% endblock %}

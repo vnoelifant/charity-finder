@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from pprint import pprint
 from functools import partial
 
@@ -43,3 +43,17 @@ def search(request):
     context = {"orgs_by_search": orgs_by_search}
 
     return render(request, "orgs_search.html", context)
+
+def heat_map(request):
+    data = []
+    
+    projects = Project.objects.filter(goal_remaining__gte=10000).values("latitude", "longitude", "goal_remaining")
+  
+    for project in projects:
+        if project['latitude'] and project['longitude'] and project['goal_remaining']:
+            project_set = list(project['latitude'], project['longitude'], project["goal_remaining"])
+            data.append(project_set)
+    
+    return JsonResponse({'map_remaining': data}, safe=False)
+
+    
