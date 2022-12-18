@@ -51,8 +51,9 @@ def heat_map(request):
   
     for project in projects:
         if project['latitude'] and project['longitude'] and project['goal_remaining']:
-            project_set = list(project['latitude'], project['longitude'], project["goal_remaining"])
+            project_set = [(project['latitude'], project['longitude'], project["goal_remaining"])]
             data.append(project_set)
+    print(data)
     
     return JsonResponse({'map_remaining': data}, safe=False)
 
