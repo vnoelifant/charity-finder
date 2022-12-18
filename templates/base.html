@@ -38,23 +38,33 @@
             </button>
           </div>
         </div>
-        <label class="block text-left" style="max-width: 300px">
-          <span class="text-gray-700 font-lusistana">Discover Organizations by Interest</span>
-          {% load themes %}
-          {% get_themes as themes %}
-          <select class="form-multiselect block w-full mt-1" name="themes" multiple>
-            {% for theme in themes %}
-              <option>{{theme.name}}</option>
-            {% endfor %}
-          </select>
-        </label>
       </form>
       <a class="px-4 py-2 mt-2 text-sm font-lusistana font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">Log In</a>
       <a class="px-4 py-2 mt-2 text-sm font-lusistana font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">Sign Up</a>
       <a class="px-4 py-2 mt-2 text-sm font-lusistana font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">Contact</a>    
     </nav>
- 
   </div>
+</div>
+
+<br>
+<div>
+  <form action="{% url 'orgs_theme' %}" method="get" class="w-64 mx-auto">
+    <label class="block text-left" style="max-width: 300px">
+      <span class="text-gray-700 font-lusistana">Select Philanthropic Interests</span>
+      {% load themes %}
+      {% get_themes as themes %}
+      <select class="form-multiselect block w-full mt-1" name="themes" multiple>
+        {% for theme in themes %}
+          <option>{{theme.name}}</option>
+        {% endfor %}
+      </select>
+      <span> 
+        <button class="px-4 py-2 mt-2 text-sm font-lusistana font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
+          Search by Theme
+        </button>
+      </span>
+    </label>
+  </form>
 </div>
 
 <div>
