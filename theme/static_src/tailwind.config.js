@@ -57,8 +57,13 @@ module.exports = {
             'gray-dark': '#273444',
             'gray': '#8492a6',
             'gray-light': '#d3dce6',
-            'indigo-600': '#4f46e5',
-            'white': '#FFFFFF'
+            'indigo-900': '#312e81',
+            'white': '#FFFFFF',
+            'black': '#000000',
+            'blue-600':'#2563eb',
+            'gray-600': '#4b5563',
+            'blue-50': '#eff6ff',
+            'slate-700': '#334155',
           },
     },
     plugins: [

@@ -13,7 +13,7 @@
 <body>    
 <!-- component -->
 <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
-<div class="w-full text-gray-700 bg-white dark-mode:text-gray-200 dark-mode:bg-gray-800">
+<div class="w-full text-gray-700 bg-blue-50 dark-mode:text-gray-200 dark-mode:bg-gray-800">
   <div x-data="{ open: false }" class="flex flex-col max-w-screen-xl px-4 mx-auto md:items-center md:justify-between md:flex-row md:px-6 lg:px-8">
     <div class="p-4 flex flex-row items-center justify-between">
       <div class="h-10 w-10 self-center mr-2">
@@ -43,9 +43,9 @@
           </div>
         </div>
       </form>
-      <a class="px-4 py-2 mt-2 text-sm font-lusistana font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">Log In</a>
-      <a class="px-4 py-2 mt-2 text-sm font-lusistana font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">Sign Up</a>
-      <a class="px-4 py-2 mt-2 text-sm font-lusistana font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">Contact</a>    
+      <a class="px-4 py-2 mt-2 bg-gray-light outline outline-slate-700 text-sm font-lusistana font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">Log In</a>
+      <a class="px-4 py-2 mt-2 bg-gray-light outline outline-slate-700 text-sm font-lusistana font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">Sign Up</a>
+      <a class="px-4 py-2 mt-2 bg-gray-light outline outline-slate-700 text-sm font-lusistana font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">Contact</a>    
     </nav>
   </div>
 </div>
@@ -56,7 +56,7 @@
       <aside>
         <form action="{% url 'orgs_theme' %}" method="get" class="w-64 mx-auto">
           <label class="block text-left" style="max-width: 300px">
-            <span class="text-gray-700 font-lusistana">Select Charity Category</span>
+            <span class="text-gray-700 font-lusistana font-bold">Select Charity Category</span>
             {% load themes %}
             {% get_themes as themes %}
             <select class="form-multiselect block w-full mt-1" name="themes" multiple>
@@ -65,7 +65,7 @@
               {% endfor %}
             </select>
             <span> 
-              <button class="px-4 py-2 mt-2 text-sm font-lusistana font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
+              <button class="px-4 py-2 mt-2 bg-gray-light outline outline-slate-700 text-sm font-lusistana font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
                 Find Organizations
               </button>
             </span>
@@ -74,21 +74,6 @@
       </aside>
     </div>
   </div>
-
-<!--
-<div class="bg-[url('../static/img/charity.jpg')]"></div>
--->
- 
-<div class="container">
-  <div class="flex justify-center items-center h-full">
-    <div class="text-right text-blue px-6 md:px-12">
-      <h2 class="text-5xl font-bold tracking-tight leading-tight mb-12">
-        Search to Save Lives
-      </h2>
-      <img src="{% static 'img/kitchen.jpg' %}" class="max-w-lg h-auto rounded-lg" alt="..." />
-    <div>
-  <div>
-</div>
 
 <div>
   {% block body %}{% endblock %}
