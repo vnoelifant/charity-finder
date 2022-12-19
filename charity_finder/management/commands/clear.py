@@ -32,7 +32,7 @@ class Command(BaseCommand):
         if options["model"] == "theme":
             print("Clearing theme data")
             clear_themes()
-        elif options["model"] == "org":
+        elif options["model"] == "organization":
             print("Clearing organization data")
             clear_active_orgs()
         elif options["model"] == "country":

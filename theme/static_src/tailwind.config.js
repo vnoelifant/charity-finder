@@ -42,7 +42,29 @@ module.exports = {
         // '../../**/*.py'
     ],
     theme: {
-        extend: {},
+        extend: {
+            fontFamily: {
+                lusistana: ['Lucistana', 'sans-serif']
+            }
+        },
+        colors: {
+            'blue': '#1fb6ff',
+            'purple': '#7e5bef',
+            'pink': '#ff49db',
+            'orange': '#ff7849',
+            'green': '#13ce66',
+            'yellow': '#ffc82c',
+            'gray-dark': '#273444',
+            'gray': '#8492a6',
+            'gray-light': '#d3dce6',
+            'indigo-900': '#312e81',
+            'white': '#FFFFFF',
+            'black': '#000000',
+            'blue-600':'#2563eb',
+            'gray-600': '#4b5563',
+            'blue-50': '#eff6ff',
+            'slate-700': '#334155',
+          },
     },
     plugins: [
         /**
@@ -55,4 +77,7 @@ module.exports = {
         require('@tailwindcss/line-clamp'),
         require('@tailwindcss/aspect-ratio'),
     ],
+    variants: {
+        display: ['responsive', 'group-hover', 'group-focus'],
+       },
 }

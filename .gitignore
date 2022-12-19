@@ -206,4 +206,7 @@ cython_debug/
 # Ignore test output files
 output*
 
+# Dependency directories
+node_modules/
+
 # End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,linux
