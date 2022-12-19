@@ -1,4 +1,5 @@
 {% load tailwind_tags %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -52,7 +53,7 @@
       <aside>
         <form action="{% url 'orgs_theme' %}" method="get" class="w-64 mx-auto">
           <label class="block text-left" style="max-width: 300px">
-            <span class="text-gray-700 font-lusistana">Select Philanthropic Interests</span>
+            <span class="text-gray-700 font-lusistana">Select Charity Category</span>
             {% load themes %}
             {% get_themes as themes %}
             <select class="form-multiselect block w-full mt-1" name="themes" multiple>
@@ -70,6 +71,21 @@
       </aside>
     </div>
   </div>
+
+<!--
+<div class="bg-[url('../static/img/charity.jpg')]"></div>
+-->
+ 
+<div class="container">
+  <div class="flex justify-center items-start h-full">
+    <div class="text-right text-blue px-6 md:px-12">
+      <h2 class="text-5xl font-bold tracking-tight leading-tight mb-12">
+        Search to Save Lives
+      </h2>
+      <img src="{% static 'img/kitchen.jpg' %}" class="max-w-lg h-auto rounded-lg" alt="..." />
+    <div>
+  <div>
+</div>
 
 <div>
   {% block body %}{% endblock %}
