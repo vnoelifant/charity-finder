@@ -5,7 +5,7 @@
  <title>
   Heatmap with Leaflet
  </title>
- <!-- link to leaflet css --> 
+ <!-- link to leaflet css -->
  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
  <!-- map is full width and height of device -->
  <meta name="viewport" content="width=device-width, maximum-scale=1.0, user-scalable=no" />
@@ -21,6 +21,7 @@
 </head>
 <body>
  <!-- leaflet js -->
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
  <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
  <script src="{% static 'js/leaflet-heat.js' %}"></script>
  <script src="{% static 'js/leaflet.ajax.js' %}"></script>
@@ -28,13 +29,30 @@
  </div>
 
  <script>
-  var map = L.map('map',{center: [53.15, -6.7], zoom: 10});
- 
-  // OSM Baselayer
-  L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map);
- </script>
+  var toCenterPoint = [59.09827437369457, 13.115860356662202];
+  var map = L.map('map',{center: toCenterPoint, zoom: 2});
 
-<script src="{% static 'js/heat_points.js' %}"></script>
+  L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map);
+
+  $.getJSON("/heat_map_data",
+    function(obj) {
+      var markers = obj.data.map(function(arr) {
+          var _popups = L.circleMarker([arr.lat, arr.lon], {
+              radius: 5,
+              fillColor: 'blue',
+              color: 'blue',
+              weight: 0.5,
+              opacity: 0.1,
+              fillOpacity: 0.1,
+              pane: 'markerPane'  }
+          )//.bindPopup(arr.goal, { maxWidth: "auto" }).openPopup()
+          return _popups
+      });
+      layer = L.layerGroup(markers);
+      map.addLayer(layer);
+  });
+
+ </script>
 
 </body>
 </html>

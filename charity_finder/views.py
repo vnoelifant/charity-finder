@@ -44,17 +44,25 @@ def search(request):
 
     return render(request, "orgs_search.html", context)
 
-def heat_map(request):
+
+def heat_map_data(request):
     data = []
-    
+
     projects = Project.objects.filter(goal_remaining__gte=10000).values("latitude", "longitude", "goal_remaining")
-  
+
     for project in projects:
         if project['latitude'] and project['longitude'] and project['goal_remaining']:
-            project_set = [(project['latitude'], project['longitude'], project["goal_remaining"])]
-            data.append(project_set)
+            row = {
+                "lat": float(project['latitude']),
+                "lon": float(project['longitude']),
+                "goal": project["goal_remaining"],
+            }
+            data.append(row)
     print(data)
-    
-    return JsonResponse({'map_remaining': data}, safe=False)
 
-    
+    return JsonResponse({'data': data}, safe=False)
+
+
+def heat_map(request):
+    # TODO: possible use plugin for loading in leaflet lib: https://django-leaflet.readthedocs.io/en/latest/index.html
+    return render(request, "heat_map.html", {})
