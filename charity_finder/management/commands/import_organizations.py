@@ -132,8 +132,7 @@ def insert_active_projects():
                 project.videos = video_url
 
             # parse images dictionary for image link
-            images = project_row.get("image").get("imagelink", [])
-
+            images = project_row.get("image", {}).get("imagelink", [])
             if images is not None:
                 if isinstance(images, dict):
                     images = [images]
@@ -146,12 +145,14 @@ def insert_active_projects():
 
             # get matching organization from foreign key relationship to Organization model
             organization = project_row.get("organization")
-            
+
             # try query outside the loop and give back a dictionary
             if organization is not None:
                 org_id = organization.get("id", "")
                 try:
-                    org = Organization.objects.get(org_id=org_id) # doing this for every loop row
+                    org = Organization.objects.get(
+                        org_id=org_id
+                    )  # doing this for every loop row
                 except Organization.DoesNotExist:
                     print("SKIP: cannot find org id so skipping project", org)
                     continue
