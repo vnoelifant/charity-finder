@@ -87,7 +87,9 @@ def insert_active_projects():
     organizations_objs = Organization.objects.values("org_id")
         
     for organization_obj in organizations_objs:
-        organizations["org_id"] = organization_obj
+        organizations[organization_obj["org_id"]] = organization_obj
+
+    print(organizations)
         
     with open("output_active_projects.json") as data_file:
         projects = json.load(data_file)
@@ -158,7 +160,9 @@ def insert_active_projects():
             project_org_id = project_row.get("organization", {}).get("id", "")
 
             if project_org_id:
-                project.org = organizations.get("project_org_id","")
+                for organization_id in organizations:
+                    if organization_id == project_org_id:
+                        project.org = organizations.get(organization_id,"")
 
             # get matching themes from M2M relationship
             themes = project_row.get("themes")
