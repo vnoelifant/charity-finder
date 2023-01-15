@@ -9,9 +9,6 @@ from charity_finder.models import Theme, Organization, Country, Project, Region
 from charity_finder import charity_api
 
 
-# Dictionary to store project organization ids and matching organization object
-project_organizations = {}
-
 def insert_active_orgs():
     with open("output_active_orgs.json") as data_file:
         orgs = json.load(data_file)
@@ -85,6 +82,9 @@ def get_matching_countries(countries):
 
 def insert_active_projects():
 
+    # List to store project organization ids a
+    project_org_ids= []
+
     with open("output_active_projects.json") as data_file:
         projects = json.load(data_file)
         for project_row in projects["projects"]["project"]:
@@ -155,9 +155,7 @@ def insert_active_projects():
 
             # Store project organization ids
             if project_org_id:
-                project_organizations[project_org_id] = (
-                    project_organizations.get(project_org_id, "") + ""
-                )
+                project_org_ids.append(project_org_id)
 
             # get matching themes from M2M relationship
             themes = project_row.get("themes")
@@ -202,12 +200,19 @@ def insert_active_projects():
 
         # try query outside the loop and give back a dictionary
         # but will I need to loop either way for each project's organization ID?
-        project.org = get_matching_orgs()
+        project_organizations = get_matching_orgs(project_org_ids)
+        project.org = project_organizations.get(project_org_id, "")
+
+        print("Project organizations: ", project_organizations)
+        
         project.save()
 
-def get_matching_orgs():
+
+def get_matching_orgs(organization_ids):
+    # Dictionary to store project organization ids and matching organization objects
+    project_organizations = {}
         
-    for project_org_id in project_organizations:
+    for project_org_id in organization_ids:
         try:
             org = Organization.objects.get(
                 org_id=project_org_id
@@ -218,9 +223,7 @@ def get_matching_orgs():
         
         project_organizations[project_org_id] = org
         
-        print("Project organizations: ",project_organizations)
-        
-        return project_organizations.get(project_org_id, "")
+    return project_organizations
 
 
 def dump_charity_data_to_json(output_file, data):
