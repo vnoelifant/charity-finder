@@ -89,7 +89,7 @@ def insert_active_projects():
     for organization_obj in organizations_objs:
         organizations[organization_obj["org_id"]] = organization_obj
 
-    print(organizations)
+    # print(organizations)
         
     with open("output_active_projects.json") as data_file:
         projects = json.load(data_file)
@@ -157,12 +157,16 @@ def insert_active_projects():
                 project.image = image
 
             # get matching organization from foreign key relationship to Organization model
-            project_org_id = project_row.get("organization", {}).get("id", "")
-
-            if project_org_id:
-                for organization_id in organizations:
-                    if organization_id == project_org_id:
-                        project.org = organizations.get(organization_id,"")
+            project_orgs = project_row.get("organization")
+            if project_orgs is not None:
+                project_org_id = project_orgs.get("id","")
+                project_org_id = int(project_org_id)
+        
+                if project_org_id:
+                    if project_org_id in organizations:
+                        print("Found project org ID in dict......", project_org_id)
+                        project.org = organizations.get(project_org_id)
+                        print("Project org ID: ", project_org_id, "Project org obj: ", project.org)
 
             # get matching themes from M2M relationship
             themes = project_row.get("themes")

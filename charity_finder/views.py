@@ -25,6 +25,7 @@ def get_orgs_by_theme(request):
 
 def get_project_detail(request, org_id):
     project_detail = Project.objects.filter(org_id=org_id)
+    print("Project detail object: ",project_detail)
 
     context = {
         "project_detail": project_detail,
