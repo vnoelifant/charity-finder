@@ -84,13 +84,15 @@ def insert_active_projects():
 
     # Create organization dictionary to store organization id and object
     organizations = {}
-    organizations_objs = Organization.objects.values("org_id")
-        
-    for organization_obj in organizations_objs:
-        organizations[organization_obj["org_id"]] = organization_obj
+    organization_objs = Organization.objects.values("org_id")
+
+    for organization_obj in organization_objs:
+        organizations[organization_obj["org_id"]] = Organization.objects.get(
+            org_id=organization_obj["org_id"]
+        )
 
     # print(organizations)
-        
+
     with open("output_active_projects.json") as data_file:
         projects = json.load(data_file)
         for project_row in projects["projects"]["project"]:
@@ -159,14 +161,19 @@ def insert_active_projects():
             # get matching organization from foreign key relationship to Organization model
             project_orgs = project_row.get("organization")
             if project_orgs is not None:
-                project_org_id = project_orgs.get("id","")
+                project_org_id = project_orgs.get("id", "")
                 project_org_id = int(project_org_id)
-        
+
                 if project_org_id:
                     if project_org_id in organizations:
                         print("Found project org ID in dict......", project_org_id)
                         project.org = organizations.get(project_org_id)
-                        print("Project org ID: ", project_org_id, "Project org obj: ", project.org)
+                        print(
+                            "Project org ID: ",
+                            project_org_id,
+                            "Project org obj: ",
+                            project.org,
+                        )
 
             # get matching themes from M2M relationship
             themes = project_row.get("themes")
@@ -184,7 +191,7 @@ def insert_active_projects():
 
             # get matching region from foreign key relationship to Region model
             region = project_row.get("region", "")
-            
+
             if region is not None:
                 region, inserted = Region.objects.get_or_create(name=region)
                 project.region = region
@@ -211,11 +218,11 @@ def insert_active_projects():
 
             project.save()
 
-    
+
 def get_matching_orgs(organization_ids):
     # Dictionary to store project organization ids and matching organization objects
     project_organizations = {}
-        
+
     for project_org_id in organization_ids:
         try:
             org = Organization.objects.get(
@@ -224,9 +231,9 @@ def get_matching_orgs(organization_ids):
         except Organization.DoesNotExist:
             print("SKIP: cannot find org id", org)
             continue
-        
+
         project_organizations[project_org_id] = org
-        
+
     return project_organizations
 
 
