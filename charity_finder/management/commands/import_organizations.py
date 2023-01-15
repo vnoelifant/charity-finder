@@ -161,19 +161,8 @@ def insert_active_projects():
             # get matching organization from foreign key relationship to Organization model
             project_orgs = project_row.get("organization")
             if project_orgs is not None:
-                project_org_id = project_orgs.get("id", "")
-                project_org_id = int(project_org_id)
-
-                if project_org_id:
-                    if project_org_id in organizations:
-                        print("Found project org ID in dict......", project_org_id)
-                        project.org = organizations.get(project_org_id)
-                        print(
-                            "Project org ID: ",
-                            project_org_id,
-                            "Project org obj: ",
-                            project.org,
-                        )
+                matching_org = get_matching_organization(project_orgs, organizations)
+                project.org = matching_org
 
             # get matching themes from M2M relationship
             themes = project_row.get("themes")
@@ -219,22 +208,12 @@ def insert_active_projects():
             project.save()
 
 
-def get_matching_orgs(organization_ids):
-    # Dictionary to store project organization ids and matching organization objects
-    project_organizations = {}
+def get_matching_organization(project_orgs, organizations):
+    project_org_id = project_orgs.get("id", "")
+    project_org_id = int(project_org_id)
 
-    for project_org_id in organization_ids:
-        try:
-            org = Organization.objects.get(
-                org_id=project_org_id
-            )  # doing this for every loop row
-        except Organization.DoesNotExist:
-            print("SKIP: cannot find org id", org)
-            continue
-
-        project_organizations[project_org_id] = org
-
-    return project_organizations
+    if project_org_id:
+        return organizations.get(project_org_id)
 
 
 def dump_charity_data_to_json(output_file, data):
