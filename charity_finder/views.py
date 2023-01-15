@@ -60,7 +60,7 @@ def heat_map_data(request):
                 "goal": project["goal_remaining"],
             }
             data.append(row)
-    print(data)
+    # print(data)
 
     return JsonResponse({"data": data}, safe=False)
 
