@@ -79,6 +79,13 @@ def get_matching_countries(countries):
         matching_countries.append(country)
     return matching_countries
 
+def get_matching_organization(project_orgs, organizations):
+    project_org_id = project_orgs.get("id", "")
+    project_org_id = int(project_org_id)
+
+    if project_org_id:
+        return organizations.get(project_org_id)
+
 
 def insert_active_projects():
 
@@ -90,8 +97,6 @@ def insert_active_projects():
         organizations[organization_obj["org_id"]] = Organization.objects.get(
             org_id=organization_obj["org_id"]
         )
-
-    # print(organizations)
 
     with open("output_active_projects.json") as data_file:
         projects = json.load(data_file)
@@ -206,14 +211,6 @@ def insert_active_projects():
                 project.modified_date = modified_date
 
             project.save()
-
-
-def get_matching_organization(project_orgs, organizations):
-    project_org_id = project_orgs.get("id", "")
-    project_org_id = int(project_org_id)
-
-    if project_org_id:
-        return organizations.get(project_org_id)
 
 
 def dump_charity_data_to_json(output_file, data):
