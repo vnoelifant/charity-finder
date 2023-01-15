@@ -82,9 +82,13 @@ def get_matching_countries(countries):
 
 def insert_active_projects():
 
-    # List to store project organization ids a
-    project_org_ids= []
-
+    # Create organization dictionary to store organization id and object
+    organizations = {}
+    organizations_objs = Organization.objects.values("org_id")
+        
+    for organization_obj in organizations_objs:
+        organizations["org_id"] = organization_obj
+        
     with open("output_active_projects.json") as data_file:
         projects = json.load(data_file)
         for project_row in projects["projects"]["project"]:
@@ -153,9 +157,8 @@ def insert_active_projects():
             # get matching organization from foreign key relationship to Organization model
             project_org_id = project_row.get("organization", {}).get("id", "")
 
-            # Store project organization ids
             if project_org_id:
-                project_org_ids.append(project_org_id)
+                project.org = organizations.get("project_org_id","")
 
             # get matching themes from M2M relationship
             themes = project_row.get("themes")
@@ -198,16 +201,9 @@ def insert_active_projects():
                 modified_date = datetime.datetime.strptime(modified_date, date_format)
                 project.modified_date = modified_date
 
-        # try query outside the loop and give back a dictionary
-        # but will I need to loop either way for each project's organization ID?
-        project_organizations = get_matching_orgs(project_org_ids)
-        project.org = project_organizations.get(project_org_id, "")
+            project.save()
 
-        print("Project organizations: ", project_organizations)
-        
-        project.save()
-
-
+    
 def get_matching_orgs(organization_ids):
     # Dictionary to store project organization ids and matching organization objects
     project_organizations = {}
