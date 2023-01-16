@@ -91,12 +91,10 @@ def insert_active_projects():
 
     # Create organization dictionary to store organization id and object
     organizations = {}
-    organization_objs = Organization.objects.values("org_id")
+    organization_objs = Organization.objects.only("org_id")
 
     for organization_obj in organization_objs:
-        organizations[organization_obj["org_id"]] = Organization.objects.get(
-            org_id=organization_obj["org_id"]
-        )
+        organizations[organization_obj.org_id] = organization_obj
 
     with open("output_active_projects.json") as data_file:
         projects = json.load(data_file)
