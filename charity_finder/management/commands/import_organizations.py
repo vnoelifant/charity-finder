@@ -1,3 +1,4 @@
+from pathlib import Path
 import json
 import datetime
 import requests
@@ -7,8 +8,10 @@ from django.core.management.base import BaseCommand
 
 from charity_finder.models import Theme, Organization, Country, Project, Region
 from charity_finder import charity_api
+from charity_finder.decorators import timing
 
 
+@timing
 def insert_active_orgs():
     with open("output_active_orgs.json") as data_file:
         orgs = json.load(data_file)
@@ -48,6 +51,7 @@ def insert_active_orgs():
                 org.countries.add(*matching_countries)
 
 
+@timing
 def get_matching_themes(themes):
     themes_from_json = themes.get("theme", [])
     matching_themes = []
@@ -64,6 +68,7 @@ def get_matching_themes(themes):
     return matching_themes
 
 
+@timing
 def get_matching_countries(countries):
     countries_from_json = countries.get("country", [])
     matching_countries = []
@@ -79,6 +84,7 @@ def get_matching_countries(countries):
         matching_countries.append(country)
     return matching_countries
 
+@timing
 def get_matching_organization(project_orgs, organizations):
     project_org_id = project_orgs.get("id", "")
     project_org_id = int(project_org_id)
@@ -87,6 +93,7 @@ def get_matching_organization(project_orgs, organizations):
         return organizations.get(project_org_id)
 
 
+@timing
 def insert_active_projects():
 
     # Create organization dictionary to store organization id and object
@@ -96,16 +103,26 @@ def insert_active_projects():
     for organization_obj in organization_objs:
         organizations[organization_obj.org_id] = organization_obj
 
+    project_ids_in_db = set(
+        Project.objects.values_list('project_id', flat=True)
+    )  # O(1)
+
     with open("output_active_projects.json") as data_file:
         projects = json.load(data_file)
         for project_row in projects["projects"]["project"]:
             title = project_row.get("title", "")
             if not title:
                 continue
-            project, created = Project.objects.get_or_create(
+
+            project_id = int(project_row.get("id", 0))
+            if project_id in project_ids_in_db:
+                print(f"project {title} was already created.")
+                continue
+
+            project = Project.objects.create(
                 title=title,
                 summary=project_row.get("summary", ""),
-                project_id=project_row.get("id", 0),
+                project_id=project_id,
                 project_link=project_row.get("projectLink", ""),
                 active=project_row.get("active", ""),
                 status=project_row.get("status", ""),
@@ -132,10 +149,6 @@ def insert_active_projects():
                 longitude=project_row.get("longitude", 0),
                 notice=project_row.get("notice", ""),
             )
-
-            if not created:
-                print(f"project {title} was already created.")
-                continue
 
             # parse videos dictionary for video link
             videos = project_row.get("videos")
@@ -211,17 +224,20 @@ def insert_active_projects():
             project.save()
 
 
+@timing
 def dump_charity_data_to_json(output_file, data):
     with open(output_file, "w") as charity_data:
         json.dump(data, charity_data, indent=4, sort_keys=True)
 
 
+@timing
 def get_json_data_from_xml(xml_data):
     with open(xml_data) as xml_file:
         org_json_data = xmltodict.parse(xml_file.read())
     return org_json_data
 
 
+@timing
 def get_url_from_json(input_file):
     # Get the url from JSON
     with open(input_file) as f:
@@ -231,11 +247,13 @@ def get_url_from_json(input_file):
     return response
 
 
+@timing
 def download_bulk_data_to_xml(output_file, response):
     with open(output_file, "wb") as file:
         file.write(response.content)
 
 
+@timing
 def download_organizations():
 
     # Get an XML file containing a URL of all active organizations (bulk data download)
@@ -262,17 +280,20 @@ def download_organizations():
     )
 
 
+@timing
 def download_projects():
     # Get an XML file containting a URL of all active projects (bulk data download)
-    project_data = charity_api.get_charity_url_data(
-        "/projectservice/all/projects/active/download.xml"
-    )
+    if not Path("output_projects_url.json").exists():
+        project_data = charity_api.get_charity_url_data(
+            "/projectservice/all/projects/active/download.xml"
+        )
 
-    # Convert the XML URL file to JSON
-    project_file = xmltodict.parse(project_data.content)
-    dump_charity_data_to_json("output_projects_url.json", project_file)
+        # Convert the XML URL file to JSON
+        project_file = xmltodict.parse(project_data.content)
+        dump_charity_data_to_json("output_projects_url.json", project_file)
 
     # Get the bulk project url from JSON
+    # TODO: is this doing the same as the code above?
     project_url = get_url_from_json("output_projects_url.json")
 
     # Download bulk project data to XML file
