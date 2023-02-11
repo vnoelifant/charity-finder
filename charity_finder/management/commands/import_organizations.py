@@ -97,11 +97,7 @@ def get_matching_organization(project_orgs, organizations):
 def insert_active_projects():
 
     # Create organization dictionary to store organization id and object
-    organizations = {}
-    organization_objs = Organization.objects.only("org_id")
-
-    for organization_obj in organization_objs:
-        organizations[organization_obj.org_id] = organization_obj
+    organizations = {org.id: org for org in Organization.objects.all()}
 
     project_ids_in_db = set(
         Project.objects.values_list('project_id', flat=True)
