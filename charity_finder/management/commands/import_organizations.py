@@ -97,7 +97,14 @@ def get_matching_organization(project_orgs, organizations):
 def insert_active_projects():
 
     # Create organization dictionary to store organization id and object
-    organizations = {org.id: org for org in Organization.objects.all()}
+    # organizations = {org.id: org for org in Organization.objects.all()} # Using this doesn't 
+    # match all project organizations
+
+    organizations = {}
+    organization_objs = Organization.objects.only("org_id")
+
+    for organization_obj in organization_objs:
+        organizations[organization_obj.org_id] = organization_obj
 
     project_ids_in_db = set(
         Project.objects.values_list('project_id', flat=True)
@@ -175,6 +182,7 @@ def insert_active_projects():
             if project_orgs is not None:
                 matching_org = get_matching_organization(project_orgs, organizations)
                 project.org = matching_org
+                # print(project.org)
 
             # get matching themes from M2M relationship
             themes = project_row.get("themes")
@@ -279,14 +287,15 @@ def download_organizations():
 @timing
 def download_projects():
     # Get an XML file containting a URL of all active projects (bulk data download)
-    if not Path("output_projects_url.json").exists():
-        project_data = charity_api.get_charity_url_data(
-            "/projectservice/all/projects/active/download.xml"
-        )
+    # if not Path("output_projects_url.json").exists():
+    # TODO: Check above logic again as it prints KeyError: 'projects'
+    project_data = charity_api.get_charity_url_data(
+        "/projectservice/all/projects/active/download.xml"
+    )
 
-        # Convert the XML URL file to JSON
-        project_file = xmltodict.parse(project_data.content)
-        dump_charity_data_to_json("output_projects_url.json", project_file)
+    # Convert the XML URL file to JSON
+    project_file = xmltodict.parse(project_data.content)
+    dump_charity_data_to_json("output_projects_url.json", project_file)
 
     # Get the bulk project url from JSON
     # TODO: is this doing the same as the code above?
