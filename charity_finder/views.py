@@ -25,6 +25,7 @@ def get_orgs_by_theme(request):
 
 def get_project_detail(request, org_id):
     project_detail = Project.objects.filter(org_id=org_id)
+    print("Project detail object: ",project_detail)
 
     context = {
         "project_detail": project_detail,
@@ -60,7 +61,7 @@ def heat_map_data(request):
                 "goal": project["goal_remaining"],
             }
             data.append(row)
-    print(data)
+    # print(data)
 
     return JsonResponse({"data": data}, safe=False)
 
