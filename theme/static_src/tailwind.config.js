@@ -4,7 +4,6 @@
  * If you need the full config, get it from here:
  * https://unpkg.com/browse/tailwindcss@latest/stubs/defaultConfig.stub.js
  */
-const colors = require('tailwindcss/colors')
 
 module.exports = {
     content: [
@@ -48,35 +47,6 @@ module.exports = {
                 lusistana: ['Lucistana', 'sans-serif']
             }
         },
-        colors: {
-            'blue': '#1fb6ff',
-            'purple': '#7e5bef',
-            'pink': '#ff49db',
-            'orange': '#ff7849',
-            'green': '#13ce66',
-            'yellow': '#ffc82c',
-            'gray-dark': '#273444',
-            'gray': '#8492a6',
-            'gray-light': '#d3dce6',
-            'indigo-900': '#312e81',
-            'white': '#FFFFFF',
-            'black': '#000000',
-            'blue-600':'#2563eb',
-            'gray-600': '#4b5563',
-            'gray-200': '#e5e7eb',
-            'blue-50': '#eff6ff',
-            'slate-700': '#334155',
-            'gray-900': '#111827',
-            'bg-purple-700': '#7e22ce',
-             transparent: 'transparent',
-             current: 'currentColor',
-             black: colors.black,
-             white: colors.white,
-             gray: colors.gray,
-             emerald: colors.emerald,
-             indigo: colors.indigo,
-             yellow: colors.yellow,
-          },
     },
     plugins: [
         /**
