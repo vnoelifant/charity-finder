@@ -11,16 +11,26 @@ def home(request):
     return render(request, "home.html")
 
 
-def get_orgs_by_theme(request):
+def discover_orgs(request):
 
+    print("REQUEST: ", request.GET)
     themes = request.GET.getlist("themes")
+    countries = request.GET.getlist("countries")
 
-    # Get Theme Organizations matching selected theme names
-    organizations = Organization.objects.filter(themes__name__in=themes).distinct()
+    
+    if "themes" in request.GET:
 
-    context = {"orgs_by_theme": organizations}
+        # Get Organizations matching selected theme names
+        organizations = Organization.objects.filter(themes__name__in=themes).distinct()
+    
+    else:
+        # Get Organizations matching selected region names
+        organizations = Organization.objects.filter(countries__name__in=countries).distinct()
 
-    return render(request, "orgs_theme.html", context)
+
+    context = {"orgs_discover": organizations}
+
+    return render(request, "orgs_discover.html", context)
 
 
 def get_project_detail(request, org_id):
