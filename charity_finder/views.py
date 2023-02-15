@@ -17,12 +17,12 @@ def discover_orgs(request):
     themes = request.GET.getlist("themes")
     countries = request.GET.getlist("countries")
 
-    
+
     if "themes" in request.GET:
 
         # Get Organizations matching selected theme names
         organizations = Organization.objects.filter(themes__name__in=themes).distinct()
-    
+
     else:
         # Get Organizations matching selected region names
         organizations = Organization.objects.filter(countries__name__in=countries).distinct()
@@ -59,19 +59,23 @@ def search(request):
 def heat_map_data(request):
     data = []
 
-    projects = Project.objects.filter(goal_remaining__gte=10000).values(
-        "latitude", "longitude", "goal_remaining"
+    # TODO: have smaller goals but then limit it to continent or country
+    projects = Project.objects.filter(
+        goal_remaining__gte=100_000
+    ).values(
+        "title", "latitude", "longitude", "goal_remaining"
     )
 
     for project in projects:
         if project["latitude"] and project["longitude"] and project["goal_remaining"]:
             row = {
+                "title": project["title"],
                 "lat": float(project["latitude"]),
                 "lon": float(project["longitude"]),
                 "goal": project["goal_remaining"],
             }
             data.append(row)
-    # print(data)
+    print(len(data))
 
     return JsonResponse({"data": data}, safe=False)
 
