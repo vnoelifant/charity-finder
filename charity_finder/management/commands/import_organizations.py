@@ -97,7 +97,7 @@ def get_matching_organization(project_orgs, organizations):
 def insert_active_projects():
 
     # Create organization dictionary to store organization id and object
-    organizations = {org.org_id: org for org in Organization.objects.all()} 
+    organizations = {org.org_id: org for org in Organization.objects.all()}
 
     project_ids_in_db = set(
         Project.objects.values_list('project_id', flat=True)
@@ -314,15 +314,20 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        if options["model"] == "organization":
+        model = options["model"]
+        if model == "organization":
             print("Downloading latest active organizations")
             download_organizations()
             print("Seeding organization data")
             insert_active_orgs()
 
-        elif options["model"] == "project":
+        elif model == "project":
             print("Downloading latest active projects")
             download_projects()
             print("Seeding project data")
             insert_active_projects()
+
+        else:
+            raise RuntimeError(f"Model {model} not supported")
+
         print("Completed")
