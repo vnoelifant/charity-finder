@@ -12,6 +12,7 @@ django-countries = "*"
 python-decouple = "*"
 django-extensions = "*"
 django-tailwind = "*"
+folium = "*"
 
 [dev-packages]
 black = "*"

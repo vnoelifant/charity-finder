@@ -1,66 +1,17 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
- <title>
-  Heatmap with Leaflet
- </title>
- <!-- link to leaflet css -->
- <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
- <!-- map is full width and height of device -->
- <meta name="viewport" content="width=device-width, maximum-scale=1.0, user-scalable=no" />
- <style>
-  body{
-   padding: 0;
-   margin: 0;
-  }
-  html, body, #map {
-   height: 100%;
-  }
- </style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heatmap</title>
 </head>
 <body>
- <!-- leaflet js -->
 
-
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tachyons/4.11.1/tachyons.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css">
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.0/papaparse.min.js"></script>
-
-
- <div id="map">
- </div>
-
- <script>
-  var toCenterPoint = [59.09827437369457, 13.115860356662202];
-  var map = L.map('map',{center: toCenterPoint, zoom: 2});
-
-  L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map);
-
-  $.getJSON("/heat_map_data",
-    function(obj) {
-
-      // Add all points into a heat layer
-      var heat = L.heatLayer(obj.data, {
-        radius: 25
-      })
-
-      // Add the heatlayer to the map
-      heat.addTo(map)
-
-      for (var i = 0; i < obj.data.length; i++) {
-           // todo: add links
-        marker = new L.marker([obj.data[i].lat, obj.data[i].lon])
-            .bindPopup(obj.data[i].title + " " + obj.data[i].goal)
-            .addTo(map);
-      }
-  });
-
- </script>
+    <div class="grid grid-cols-4 gap-4">
+        <div>{{m | safe}}</div>
+    </div>
 
 </body>
 </html>
