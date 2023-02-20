@@ -14,8 +14,7 @@
         <img src="{% static 'img/kitchen.jpg' %}" class="max-w-lg h-auto rounded-lg" alt="..." />
     </div>
     <div class="py-12">
-      <h3>View Projects in Most Need</h3>
-      {% include "heat_map.html" %}
+      {{m | safe}}
     </div>
   </div>
 </div>

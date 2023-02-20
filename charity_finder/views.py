@@ -10,7 +10,52 @@ from charity_finder import charity_api
 
 # Create your views here.
 def home(request):
-    return render(request, "home.html")
+
+    m = folium.Map(location=[59.09827437369457, 13.115860356662202], zoom_start=3)
+
+    # TODO: have smaller goals but then limit it to continent or country
+    projects = Project.objects.filter(goal_remaining__gte=500_000).values(
+        "title", "project_link", "latitude", "longitude", "goal_remaining"
+    )
+
+    for project in projects:
+        if project["latitude"] and project["longitude"] and project["goal_remaining"]:
+
+            lats_longs = [
+                [
+                    int(project["latitude"]),
+                    int(project["longitude"]),
+                    int(project["goal_remaining"]),
+                ],
+            ]
+
+            title = project["title"]
+            url = project["project_link"]
+
+            html = """
+                    Project Title: {title} <br>
+                    <a href={url}>Project Link</a>
+                    """.format(
+                title=title, url=url
+            )
+
+            iframe = folium.IFrame(html, width=200, height=100)
+
+            popup = folium.Popup(iframe, max_width=200)
+
+            folium.Marker(
+                location=[int(project["latitude"]), int(project["longitude"])],
+                tooltip="Click to view Project Summary",
+                popup=popup,
+            ).add_to(m)
+            HeatMap(lats_longs).add_to(m)
+
+    m = m._repr_html_()
+
+    context = {
+        "m": m,
+    }
+    return render(request, "home.html", context)
 
 
 def discover_orgs(request):
@@ -56,53 +101,3 @@ def search(request):
     context = {"orgs_by_search": orgs_by_search}
 
     return render(request, "orgs_search.html", context)
-
-
-def heat_map(request):
-    m = folium.Map(location=[59.09827437369457, 13.115860356662202], zoom_start=3)
-
-    # TODO: have smaller goals but then limit it to continent or country
-    projects = Project.objects.filter(goal_remaining__gte=500_000).values(
-        "title", "project_link", "latitude", "longitude", "goal_remaining"
-    )
-
-    for project in projects:
-        if project["latitude"] and project["longitude"] and project["goal_remaining"]:
-
-            lats_longs = [
-                [
-                    int(project["latitude"]),
-                    int(project["longitude"]),
-                    int(project["goal_remaining"]),
-                ],
-            ]
-
-            title = project["title"]
-            url = project["project_link"]
-
-            html = """
-                    Project Title: {title} <br>
-                    <a href={url}>Project Link</a>
-                    """.format(
-                title=title, url=url
-            )
-
-            iframe = folium.IFrame(html, width=200, height=100)
-
-            popup = folium.Popup(iframe, max_width=200)
-
-            folium.Marker(
-                location=[int(project["latitude"]), int(project["longitude"])],
-                tooltip="Click to view Project Summary",
-                popup=popup,
-            ).add_to(m)
-            HeatMap(lats_longs).add_to(m)
-
-    m = m._repr_html_()
-
-    context = {
-        "m": m,
-    }
-
-    # TODO: possible use plugin for loading in leaflet lib: https://django-leaflet.readthedocs.io/en/latest/index.html
-    return render(request, "heat_map.html", context)
