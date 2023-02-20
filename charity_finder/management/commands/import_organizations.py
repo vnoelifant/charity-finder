@@ -84,6 +84,7 @@ def get_matching_countries(countries):
         matching_countries.append(country)
     return matching_countries
 
+
 @timing
 def get_matching_organization(project_orgs, organizations):
     project_org_id = project_orgs.get("id", "")
@@ -100,7 +101,7 @@ def insert_active_projects():
     organizations = {org.org_id: org for org in Organization.objects.all()}
 
     project_ids_in_db = set(
-        Project.objects.values_list('project_id', flat=True)
+        Project.objects.values_list("project_id", flat=True)
     )  # O(1)
 
     with open("output_active_projects.json") as data_file:

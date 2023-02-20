@@ -1,14 +1,61 @@
+import folium
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from pprint import pprint
 from functools import partial
+from folium.plugins import HeatMap
 
 from charity_finder.models import Theme, Organization, Project
 from charity_finder import charity_api
 
 # Create your views here.
 def home(request):
-    return render(request, "home.html")
+
+    m = folium.Map(location=[59.09827437369457, 13.115860356662202], zoom_start=3)
+
+    # TODO: have smaller goals but then limit it to continent or country
+    projects = Project.objects.filter(goal_remaining__gte=500_000).values(
+        "title", "project_link", "latitude", "longitude", "goal_remaining"
+    )
+
+    for project in projects:
+        if project["latitude"] and project["longitude"] and project["goal_remaining"]:
+
+            lats_longs = [
+                [
+                    int(project["latitude"]),
+                    int(project["longitude"]),
+                    int(project["goal_remaining"]),
+                ],
+            ]
+
+            title = project["title"]
+            url = project["project_link"]
+
+            html = """
+                    <b>Project Title:</b>{title} <br>
+                    <a href={url}>Project Link</a>
+                    """.format(
+                title=title, url=url
+            )
+
+            iframe = folium.IFrame(html, width=200, height=100)
+
+            popup = folium.Popup(iframe, max_width=200)
+
+            folium.Marker(
+                location=[int(project["latitude"]), int(project["longitude"])],
+                tooltip="Click to view Project Summary",
+                popup=popup,
+            ).add_to(m)
+            HeatMap(lats_longs).add_to(m)
+
+    m = m._repr_html_()
+
+    context = {
+        "m": m,
+    }
+    return render(request, "home.html", context)
 
 
 def discover_orgs(request):
@@ -17,7 +64,6 @@ def discover_orgs(request):
     themes = request.GET.getlist("themes")
     countries = request.GET.getlist("countries")
 
-
     if "themes" in request.GET:
 
         # Get Organizations matching selected theme names
@@ -25,8 +71,9 @@ def discover_orgs(request):
 
     else:
         # Get Organizations matching selected region names
-        organizations = Organization.objects.filter(countries__name__in=countries).distinct()
-
+        organizations = Organization.objects.filter(
+            countries__name__in=countries
+        ).distinct()
 
     context = {"orgs_discover": organizations}
 
@@ -35,7 +82,7 @@ def discover_orgs(request):
 
 def get_project_detail(request, org_id):
     project_detail = Project.objects.filter(org_id=org_id)
-    print("Project detail object: ",project_detail)
+    print("Project detail object: ", project_detail)
 
     context = {
         "project_detail": project_detail,
@@ -54,32 +101,3 @@ def search(request):
     context = {"orgs_by_search": orgs_by_search}
 
     return render(request, "orgs_search.html", context)
-
-
-def heat_map_data(request):
-    data = []
-
-    # TODO: have smaller goals but then limit it to continent or country
-    projects = Project.objects.filter(
-        goal_remaining__gte=100_000
-    ).values(
-        "title", "latitude", "longitude", "goal_remaining"
-    )
-
-    for project in projects:
-        if project["latitude"] and project["longitude"] and project["goal_remaining"]:
-            row = {
-                "title": project["title"],
-                "lat": float(project["latitude"]),
-                "lon": float(project["longitude"]),
-                "goal": project["goal_remaining"],
-            }
-            data.append(row)
-    print(len(data))
-
-    return JsonResponse({"data": data}, safe=False)
-
-
-def heat_map(request):
-    # TODO: possible use plugin for loading in leaflet lib: https://django-leaflet.readthedocs.io/en/latest/index.html
-    return render(request, "heat_map.html", {})

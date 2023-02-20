@@ -12,6 +12,4 @@ urlpatterns = [
     ),
     path("orgs_discover/", views.discover_orgs, name="orgs_discover"),
     path("orgs_search/", views.search, name="orgs_search"),
-    path("heat_map/", views.heat_map, name="heat_map"),
-    path("heat_map_data", views.heat_map_data, name="heat_map_data"),
 ]

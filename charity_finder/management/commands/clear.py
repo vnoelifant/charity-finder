@@ -6,14 +6,18 @@ from charity_finder import charity_api
 def clear_projects():
     Project.objects.all().delete()
 
+
 def clear_regions():
     Region.objects.all().delete()
+
 
 def clear_themes():
     Theme.objects.all().delete()
 
+
 def clear_countries():
     Country.objects.all().delete()
+
 
 def clear_active_orgs():
     Organization.objects.all().delete()

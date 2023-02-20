@@ -6,12 +6,16 @@
 {% block body %}
 
 <div class="container">
-  <div class="flex justify-center items-center h-full">
+  <div class="flex justify-center items-start h-full">
     <div class="text-right text-indigo-900 px-6 md:px-12">
       <h2 class="text-5xl font-bold tracking-tight leading-tight mb-12">
         Search to Save Lives
       </h2>
         <img src="{% static 'img/kitchen.jpg' %}" class="max-w-lg h-auto rounded-lg" alt="..." />
+    </div>
+    <div class="py-12">
+      <h3><b>Underserved Areas</h3></b>
+      {{m | safe}}
     </div>
   </div>
 </div>
