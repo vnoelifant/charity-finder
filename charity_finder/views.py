@@ -77,10 +77,24 @@ def heat_map(request):
                 ],
             ]
 
+            title = project["title"]
+            url = project["project_link"]
+
+            html = """
+                    Project Title: {title} <br>
+                    <a href={url}>Project Link</a>
+                    """.format(
+                title=title, url=url
+            )
+
+            iframe = folium.IFrame(html, width=200, height=100)
+
+            popup = folium.Popup(iframe, max_width=200)
+
             folium.Marker(
                 location=[int(project["latitude"]), int(project["longitude"])],
-                tooltip="Click to view Project Link",
-                popup=project["project_link"],
+                tooltip="Click to view Project Summary",
+                popup=popup,
             ).add_to(m)
             HeatMap(lats_longs).add_to(m)
 
