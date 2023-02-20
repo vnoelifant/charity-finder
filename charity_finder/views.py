@@ -33,7 +33,7 @@ def home(request):
             url = project["project_link"]
 
             html = """
-                    Project Title: {title} <br>
+                    <b>Project Title:</b>{title} <br>
                     <a href={url}>Project Link</a>
                     """.format(
                 title=title, url=url
