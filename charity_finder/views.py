@@ -59,16 +59,13 @@ def search(request):
 
 
 def heat_map(request):
-    m = folium.Map(location=[59.09827437369457, 13.115860356662202], zoom_start=5)
-    
-    folium.Marker(location=[59.09827437369457, 13.115860356662202]).add_to(m)
+    m = folium.Map(location=[59.09827437369457, 13.115860356662202], zoom_start=3)
 
     # TODO: have smaller goals but then limit it to continent or country
     projects = Project.objects.filter(goal_remaining__gte=500_000).values(
-        "title", "latitude", "longitude", "goal_remaining"
+        "title", "project_link", "latitude", "longitude", "goal_remaining"
     )
 
-    
     for project in projects:
         if project["latitude"] and project["longitude"] and project["goal_remaining"]:
 
@@ -79,10 +76,13 @@ def heat_map(request):
                     int(project["goal_remaining"]),
                 ],
             ]
-            
 
+            folium.Marker(
+                location=[int(project["latitude"]), int(project["longitude"])],
+                tooltip="Click to view Project Link",
+                popup=project["project_link"],
+            ).add_to(m)
             HeatMap(lats_longs).add_to(m)
-    
 
     m = m._repr_html_()
 
