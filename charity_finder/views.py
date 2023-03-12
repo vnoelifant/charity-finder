@@ -35,13 +35,9 @@ def get_map():
     for project in projects:
         if project["latitude"] and project["longitude"] and project["goal_remaining"]:
 
-            print("Goal Remaining: ", project["goal_remaining"])
-
             goal_norm = float(
                 project["goal_remaining"] / goal_remaining_max["goal_remaining__max"]
             )
-
-            print("Goal Remaining Normalized: ", goal_norm)
 
             lats_longs = [
                 [
