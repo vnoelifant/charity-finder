@@ -12,29 +12,32 @@ from charity_finder import charity_api
 # Create your views here.
 def home(request):
 
-    m = get_map()
+    project_map = get_map()
 
     context = {
-        "m": m,
+        "project_map": project_map,
     }
     return render(request, "home.html", context)
 
 
 def get_map():
 
+    goal_limit = 500000
+
     # TODO: have smaller goals but then limit it to continent or country
-    projects = Project.objects.filter(goal_remaining__gte=500000).values(
+    projects = Project.objects.filter(goal_remaining__gte=goal_limit).values(
         "title", "project_link", "latitude", "longitude", "goal_remaining"
     )
+
+    # For normalizing data for heat map
     goal_remaining_max = projects.aggregate(Max("goal_remaining"))
 
-    print("Goal Remaining Max: ", goal_remaining_max)
-
-    m = folium.Map(location=[59.09827437369457, 13.115860356662202], zoom_start=3)
+    project_map = folium.Map(location=[59.09827437369457, 13.115860356662202], zoom_start=3)
 
     for project in projects:
         if project["latitude"] and project["longitude"] and project["goal_remaining"]:
 
+            # Normalize data for heat map
             goal_norm = float(
                 project["goal_remaining"] / goal_remaining_max["goal_remaining__max"]
             )
@@ -68,11 +71,11 @@ def get_map():
                 location=[int(project["latitude"]), int(project["longitude"])],
                 tooltip="Click to view Project Summary",
                 popup=popup,
-            ).add_to(m)
-            HeatMap(lats_longs).add_to(m)
+            ).add_to(project_map)
+            HeatMap(lats_longs).add_to(project_map)
 
-    m = m._repr_html_()
-    return m
+    project_map = project_map._repr_html_()
+    return project_map
 
 
 def discover_orgs(request):
