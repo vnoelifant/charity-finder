@@ -55,8 +55,8 @@ def get_map():
             goal_remaining = int(project["goal_remaining"])
 
             html = """
-                    <b>Project Title:</b>{title} <br>
-                    <a href={url}>Project Link</a> <br>
+                    <b>Project Title:</b>{title}<br>
+                    <a href={url}>Project Link</a><br>
                     <b>Funding Needed:</b>{goal_remaining}
                     <b>Funding Weight:</b>{goal_norm}
                     """.format(
