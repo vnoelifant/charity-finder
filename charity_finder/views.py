@@ -11,32 +11,49 @@ from charity_finder import charity_api
 # Create your views here.
 def home(request):
 
-    m = folium.Map(location=[59.09827437369457, 13.115860356662202], zoom_start=3)
+    m = get_map()
+
+    context = {
+        "m": m,
+    }
+    return render(request, "home.html", context)
+
+
+def get_map():
 
     # TODO: have smaller goals but then limit it to continent or country
     projects = Project.objects.filter(goal_remaining__gte=500_000).values(
         "title", "project_link", "latitude", "longitude", "goal_remaining"
     )
+    goal_remaining_data = []
+
+    m = folium.Map(location=[59.09827437369457, 13.115860356662202], zoom_start=3)
 
     for project in projects:
         if project["latitude"] and project["longitude"] and project["goal_remaining"]:
+
+            goal_remaining_data.append(project["goal_remaining"])
+
+            goal_norm = normalize_data(goal_remaining_data)
 
             lats_longs = [
                 [
                     int(project["latitude"]),
                     int(project["longitude"]),
-                    int(project["goal_remaining"]),
+                    int(goal_norm),
                 ],
             ]
 
             title = project["title"]
             url = project["project_link"]
+            goal_remaining = int(project["goal_remaining"])
 
             html = """
                     <b>Project Title:</b>{title} <br>
-                    <a href={url}>Project Link</a>
+                    <a href={url}>Project Link</a> <br>
+                    <b>Funding Needed:</b>{goal_remaining}
                     """.format(
-                title=title, url=url
+                title=title, url=url, goal_remaining=goal_remaining
             )
 
             iframe = folium.IFrame(html, width=200, height=100)
@@ -52,10 +69,16 @@ def home(request):
 
     m = m._repr_html_()
 
-    context = {
-        "m": m,
-    }
-    return render(request, "home.html", context)
+    return m
+
+
+def normalize_data(data):
+
+    goal_norm_all = [val / max(data) for val in data]
+    print("goal_norm_all: ", goal_norm_all)
+    print("Length goal normalized: ", len(goal_norm_all))
+    for goal_norm in goal_norm_all:
+        return goal_norm
 
 
 def discover_orgs(request):
