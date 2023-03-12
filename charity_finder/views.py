@@ -1,6 +1,7 @@
 import folium
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
+from django.db.models import Avg, Max, Min, Sum
 from pprint import pprint
 from functools import partial
 from folium.plugins import HeatMap
@@ -22,25 +23,31 @@ def home(request):
 def get_map():
 
     # TODO: have smaller goals but then limit it to continent or country
-    projects = Project.objects.filter(goal_remaining__gte=500_000).values(
+    projects = Project.objects.filter(goal_remaining__gte=500000).values(
         "title", "project_link", "latitude", "longitude", "goal_remaining"
     )
-    goal_remaining_data = []
+    goal_remaining_max = projects.aggregate(Max("goal_remaining"))
+
+    print("Goal Remaining Max: ", goal_remaining_max)
 
     m = folium.Map(location=[59.09827437369457, 13.115860356662202], zoom_start=3)
 
     for project in projects:
         if project["latitude"] and project["longitude"] and project["goal_remaining"]:
 
-            goal_remaining_data.append(project["goal_remaining"])
+            print("Goal Remaining: ", project["goal_remaining"])
 
-            goal_norm = normalize_data(goal_remaining_data)
+            goal_norm = float(
+                project["goal_remaining"] / goal_remaining_max["goal_remaining__max"]
+            )
+
+            print("Goal Remaining Normalized: ", goal_norm)
 
             lats_longs = [
                 [
                     int(project["latitude"]),
                     int(project["longitude"]),
-                    int(goal_norm),
+                    goal_norm,
                 ],
             ]
 
@@ -52,8 +59,9 @@ def get_map():
                     <b>Project Title:</b>{title} <br>
                     <a href={url}>Project Link</a> <br>
                     <b>Funding Needed:</b>{goal_remaining}
+                    <b>Funding Weight:</b>{goal_norm}
                     """.format(
-                title=title, url=url, goal_remaining=goal_remaining
+                title=title, url=url, goal_remaining=goal_remaining, goal_norm=goal_norm
             )
 
             iframe = folium.IFrame(html, width=200, height=100)
@@ -68,17 +76,7 @@ def get_map():
             HeatMap(lats_longs).add_to(m)
 
     m = m._repr_html_()
-
     return m
-
-
-def normalize_data(data):
-
-    goal_norm_all = [val / max(data) for val in data]
-    print("goal_norm_all: ", goal_norm_all)
-    print("Length goal normalized: ", len(goal_norm_all))
-    for goal_norm in goal_norm_all:
-        return goal_norm
 
 
 def discover_orgs(request):
