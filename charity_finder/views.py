@@ -28,7 +28,7 @@ def get_map():
 
     projects = Project.objects.filter(
         goal_remaining__gte=goal_limit, region__name="Africa"
-    ).values("title", "project_link", "latitude", "longitude", "goal_remaining")
+    )
 
     # For normalizing data for heat map
     goal_remaining_max = projects.aggregate(Max("goal_remaining"))
@@ -38,24 +38,24 @@ def get_map():
     )
 
     for project in projects:
-        if project["latitude"] and project["longitude"] and project["goal_remaining"]:
+        if project.has_map_data:
 
             # Normalize data for heat map
             goal_norm = float(
-                project["goal_remaining"] / goal_remaining_max["goal_remaining__max"]
+                project.goal_remaining / goal_remaining_max["goal_remaining__max"]
             )
 
             lats_longs = [
                 [
-                    int(project["latitude"]),
-                    int(project["longitude"]),
+                    int(project.latitude),
+                    int(project.longitude),
                     goal_norm,
                 ],
             ]
 
-            title = project["title"]
-            url = project["project_link"]
-            goal_remaining = int(project["goal_remaining"])
+            title = project.title
+            url = project.project_link
+            goal_remaining = int(project.goal_remaining)
 
             html = """
                     <b>Project Title:</b>{title}<br>
@@ -71,7 +71,7 @@ def get_map():
             popup = folium.Popup(iframe, max_width=200)
 
             folium.Marker(
-                location=[int(project["latitude"]), int(project["longitude"])],
+                location=[int(project.latitude), int(project.longitude)],
                 tooltip="Click to view Project Summary",
                 popup=popup,
             ).add_to(project_map)
