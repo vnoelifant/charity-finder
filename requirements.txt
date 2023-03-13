@@ -35,3 +35,4 @@ tomli==2.0.1
 typing_extensions==4.4.0
 urllib3==1.26.13
 xmltodict==0.13.0
+folium==0.14.0
