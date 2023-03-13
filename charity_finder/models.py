@@ -79,7 +79,7 @@ class Project(models.Model):
     contact_postal = models.CharField(max_length=200, null=True, blank=True)
     contact_state = models.CharField(max_length=200, null=True, blank=True)
     contact_url = models.CharField(max_length=200, null=True, blank=True)
-    countries = models.ManyToManyField(Country, related_name="project_countries", blank=True)
+    countries = models.ManyToManyField(Country, related_name="projects", blank=True)
     primary_country = models.ForeignKey(Country, on_delete=models.CASCADE,null=True, blank=True) 
     date_report = models.DateTimeField(null=True, blank=True)
     donation_options = models.JSONField(default=dict, null=True, blank=True)
@@ -104,3 +104,4 @@ class Project(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return f"{self.title}: {self.project_id}"
+    
