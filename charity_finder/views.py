@@ -38,7 +38,8 @@ def get_map():
     )
 
     for project in projects:
-        if project.has_map_data:
+        if project["latitude"] and project["longitude"] and project["goal_remaining"]:
+
             # Normalize data for heat map
             goal_norm = float(
                 project["goal_remaining"] / goal_remaining_max["goal_remaining__max"]
