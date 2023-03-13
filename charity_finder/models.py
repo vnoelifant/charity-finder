@@ -80,7 +80,7 @@ class Project(models.Model):
     contact_state = models.CharField(max_length=200, null=True, blank=True)
     contact_url = models.CharField(max_length=200, null=True, blank=True)
     countries = models.ManyToManyField(Country, related_name="projects", blank=True)
-    primary_country = models.ForeignKey(Country, on_delete=models.CASCADE,null=True, blank=True) 
+    primary_country = models.ForeignKey(Country, on_delete=models.CASCADE,null=True, blank=True)
     date_report = models.DateTimeField(null=True, blank=True)
     donation_options = models.JSONField(default=dict, null=True, blank=True)
     funding = models.DecimalField(max_digits=13, decimal_places=2, null=True, blank=True)
@@ -94,7 +94,7 @@ class Project(models.Model):
     number_reports = models.IntegerField(default=0, null=True, blank=True)
     progress_report_link = models.URLField(max_length = 200, null=True, blank=True)
     themes = models.ManyToManyField(Theme, related_name="projects", blank=True)
-    primary_theme = models.ForeignKey(Theme, on_delete=models.CASCADE,null=True, blank=True) 
+    primary_theme = models.ForeignKey(Theme, on_delete=models.CASCADE,null=True, blank=True)
     videos = models.URLField(max_length = 200, null=True, blank=True)
     latitude = models.DecimalField(max_digits=13, decimal_places=2)
     longitude = models.DecimalField(max_digits=13, decimal_places=2)
@@ -104,4 +104,7 @@ class Project(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return f"{self.title}: {self.project_id}"
-    
+
+    @property
+    def has_map_data(self) -> bool:
+        return bool(self.latitude and self.longitude and self.goal_remaining)
