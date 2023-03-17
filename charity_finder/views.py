@@ -1,10 +1,10 @@
 import folium
+from folium.plugins import HeatMap
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from django.db.models import Avg, Max, Min, Sum
 from pprint import pprint
 from functools import partial
-from folium.plugins import HeatMap
 
 from charity_finder.models import Theme, Organization, Project
 from charity_finder import charity_api
@@ -24,10 +24,11 @@ def get_map():
 
     # Filtering by remaining funding money by Region
     # TODO:  Include more regions
-    goal_limit = 100000
+    GOAL_LIMIT = 100_000
+    REGION_NAME = "Africa"
 
     projects = Project.objects.filter(
-        goal_remaining__gte=goal_limit, region__name="Africa"
+        goal_remaining__gte=GOAL_LIMIT, region__name=REGION_NAME
     )
 
     # For normalizing data for heat map
@@ -36,6 +37,10 @@ def get_map():
     project_map = folium.Map(
         location=[59.09827437369457, 13.115860356662202], zoom_start=3
     )
+
+    # fg1 = folium.FeatureGroup(name='Group 1', show = True)
+    # folium.Marker([20.5937,78.9629], tooltip="India").add_to(fg1)
+    # fg1.add_to(project_map)
 
     for project in projects:
         if project.has_map_data:
@@ -76,6 +81,8 @@ def get_map():
                 popup=popup,
             ).add_to(project_map)
             HeatMap(lats_longs).add_to(project_map)
+
+    folium.LayerControl().add_to(project_map)
 
     project_map = project_map._repr_html_()
     return project_map
