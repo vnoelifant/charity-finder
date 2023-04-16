@@ -1,9 +1,11 @@
 import folium
+from folium.plugins import HeatMap
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
+from django.db.models import Avg, Max, Min, Sum
 from pprint import pprint
 from functools import partial
-from folium.plugins import HeatMap
+from typing import Final
 
 from charity_finder.models import Theme, Organization, Project
 from charity_finder import charity_api
@@ -11,51 +13,80 @@ from charity_finder import charity_api
 # Create your views here.
 def home(request):
 
-    m = folium.Map(location=[59.09827437369457, 13.115860356662202], zoom_start=3)
+    project_map = get_map()
 
-    # TODO: have smaller goals but then limit it to continent or country
-    projects = Project.objects.filter(goal_remaining__gte=500_000).values(
-        "title", "project_link", "latitude", "longitude", "goal_remaining"
+    context = {
+        "project_map": project_map,
+    }
+    return render(request, "home.html", context)
+
+
+def get_map():
+
+    # Filtering by remaining funding money by Region
+    # TODO:  Include more regions
+    GOAL_LIMIT: Final[
+        int
+    ] = 100_000  # constant marked final, can't assign another value to it
+    REGION_NAME: Final[str] = "Africa"
+    # Starting Latitude, Longitude coordinates
+    LAT_LON_INIT: Final[list] = [59.09827437369457, 13.115860356662202]
+
+    projects = Project.objects.filter(
+        goal_remaining__gte=GOAL_LIMIT, region__name=REGION_NAME
     )
 
+    # For normalizing data for heat map
+    goal_remaining_max = projects.aggregate(Max("goal_remaining"))
+
+    project_map = folium.Map(location=LAT_LON_INIT, zoom_start=3)
+
+    # fg1 = folium.FeatureGroup(name='Group 1', show = True)
+    # folium.Marker([20.5937,78.9629], tooltip="India").add_to(fg1)
+    # fg1.add_to(project_map)
+
     for project in projects:
-        if project["latitude"] and project["longitude"] and project["goal_remaining"]:
+        if project.has_map_data:
+
+            # Normalize data for heat map
+            goal_norm = float(
+                project.goal_remaining / goal_remaining_max["goal_remaining__max"]
+            )
 
             lats_longs = [
                 [
-                    int(project["latitude"]),
-                    int(project["longitude"]),
-                    int(project["goal_remaining"]),
+                    int(project.latitude),
+                    int(project.longitude),
+                    goal_norm,
                 ],
             ]
 
-            title = project["title"]
-            url = project["project_link"]
+            title = project.title
+            url = project.project_link
+            goal_remaining = int(project.goal_remaining)
 
-            html = """
-                    <b>Project Title:</b>{title} <br>
-                    <a href={url}>Project Link</a>
-                    """.format(
-                title=title, url=url
-            )
+            html = f"""
+                    <b>Project Title:</b>{title}<br>
+                    <a href={url}>Project Link</a><br>
+                    <b>Funding Needed:</b>{goal_remaining}
+                    <b>Funding Weight:</b>{goal_norm}
+                    """
 
             iframe = folium.IFrame(html, width=200, height=100)
 
             popup = folium.Popup(iframe, max_width=200)
 
             folium.Marker(
-                location=[int(project["latitude"]), int(project["longitude"])],
+                location=[int(project.latitude), int(project.longitude)],
                 tooltip="Click to view Project Summary",
                 popup=popup,
-            ).add_to(m)
-            HeatMap(lats_longs).add_to(m)
+            ).add_to(project_map)
+            HeatMap(lats_longs).add_to(project_map)
 
-    m = m._repr_html_()
+    folium.LayerControl().add_to(project_map)
 
-    context = {
-        "m": m,
-    }
-    return render(request, "home.html", context)
+    project_map = project_map._repr_html_()
+    return project_map
 
 
 def discover_orgs(request):

@@ -13,6 +13,7 @@ python-decouple = "*"
 django-extensions = "*"
 django-tailwind = "*"
 folium = "*"
+pytest = "*"
 
 [dev-packages]
 black = "*"

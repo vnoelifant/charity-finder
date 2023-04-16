@@ -1,0 +1,77 @@
+[
+  {
+    "model": "charity_finder.organization",
+    "pk": 1,
+    "fields": {
+      "name": "CFK Africa",
+      "type": null,
+      "org_id": 15,
+      "mission": "CFK Africa's mission is to improve public health and economic prosperity in informal settlements.\n\nCFK envisions healthy informal settlements where community members have a voice and opportunity. Areas where every person, regardless of background, has a voice in his or her future and access to opportunities and resources to realize that future. Communities that find strength in diversity and individuals who are empowered to pursue opportunities both locally and across the globe.",
+      "active_projects": 1,
+      "total_projects": 17,
+      "ein": "56-2248495",
+      "logo_url": "https://www.globalgiving.org/pfil/organ/15/orglogo.png",
+      "address_line1": "FedEx Global Education Center UNC-Chapel Hill Campus Box 5145",
+      "address_line2": "CB#5145",
+      "city": "Chapel Hill",
+      "state": "North Carolina",
+      "postal": "27599",
+      "country_home": "United States",
+      "url": "http://www.cfkafrica.org",
+      "themes": [
+      ],
+      "countries": [
+      ]
+    }
+  },
+  {
+    "model": "charity_finder.organization",
+    "pk": 2,
+    "fields": {
+      "name": "Instituto Dara",
+      "type": null,
+      "org_id": 35,
+      "mission": "Dara Institute is a civil society organization that works to promote health and human development by implementing and promoting an integrated multidisciplinary approach to fight poverty. A world pioneer in intersectoral work with social determinants of health, it was founded by Dr. Vera Cordeiro, in 1991, in Rio de Janeiro, Brazil. Our objective is to contribute to changing the  health and human development framework in society, incorporating an integrated multisectoral approach to fight poverty. For the 8th consecutive year, SC ranked best NGO in Latin America and 21st in the world, according to NGO Advisor, a Swiss publication.",
+      "active_projects": 3,
+      "total_projects": 9,
+      "ein": "",
+      "logo_url": "https://www.globalgiving.org/pfil/organ/35/orglogo.png",
+      "address_line1": "Rua das Palmeiras 65",
+      "address_line2": null,
+      "city": "Rio de Janeiro",
+      "state": "RJ",
+      "postal": "22270-070",
+      "country_home": "Brazil",
+      "url": "http://www.dara.org.br/en",
+      "themes": [
+      ],
+      "countries": [
+      ]
+    }
+  },
+  {
+    "model": "charity_finder.organization",
+    "pk": 3,
+    "fields": {
+      "name": "The River Fund",
+      "type": null,
+      "org_id": 46,
+      "mission": "The River Fund is dedicated to providing physical, emotional and spiritual support, to people living with or affected by HIV/AIDS and other life challenging illnesses and circumstances, as well as their loved ones and caregivers. We serve the poor, those who often are alone and in need - regardless of a person's religion, race, ethnicity, sexual orientation, gender or age.",
+      "active_projects": 3,
+      "total_projects": 10,
+      "ein": "59-3212877",
+      "logo_url": "https://www.globalgiving.org/pfil/organ/46/orglogo.jpg",
+      "address_line1": "11155 Roseland Road, Unit 16",
+      "address_line2": "Unit 16",
+      "city": "Sebastian",
+      "state": "Florida",
+      "postal": "32958",
+      "country_home": "United States",
+      "url": "https://www.riverfund.org",
+      "themes": [
+      ],
+      "countries": [
+      ]
+    }
+  }
+]
