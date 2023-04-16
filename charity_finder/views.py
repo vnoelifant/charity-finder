@@ -5,6 +5,7 @@ from django.http import HttpResponse, JsonResponse
 from django.db.models import Avg, Max, Min, Sum
 from pprint import pprint
 from functools import partial
+from typing import Final
 
 from charity_finder.models import Theme, Organization, Project
 from charity_finder import charity_api
@@ -24,8 +25,12 @@ def get_map():
 
     # Filtering by remaining funding money by Region
     # TODO:  Include more regions
-    GOAL_LIMIT = 100_000
-    REGION_NAME = "Africa"
+    GOAL_LIMIT: Final[
+        int
+    ] = 100_000  # constant marked final, can't assign another value to it
+    REGION_NAME: Final[str] = "Africa"
+    # Starting Latitude, Longitude coordinates
+    LAT_LON_INIT: Final[list] = [59.09827437369457, 13.115860356662202]
 
     projects = Project.objects.filter(
         goal_remaining__gte=GOAL_LIMIT, region__name=REGION_NAME
@@ -34,9 +39,7 @@ def get_map():
     # For normalizing data for heat map
     goal_remaining_max = projects.aggregate(Max("goal_remaining"))
 
-    project_map = folium.Map(
-        location=[59.09827437369457, 13.115860356662202], zoom_start=3
-    )
+    project_map = folium.Map(location=LAT_LON_INIT, zoom_start=3)
 
     # fg1 = folium.FeatureGroup(name='Group 1', show = True)
     # folium.Marker([20.5937,78.9629], tooltip="India").add_to(fg1)
@@ -62,14 +65,12 @@ def get_map():
             url = project.project_link
             goal_remaining = int(project.goal_remaining)
 
-            html = """
+            html = f"""
                     <b>Project Title:</b>{title}<br>
                     <a href={url}>Project Link</a><br>
                     <b>Funding Needed:</b>{goal_remaining}
                     <b>Funding Weight:</b>{goal_norm}
-                    """.format(
-                title=title, url=url, goal_remaining=goal_remaining, goal_norm=goal_norm
-            )
+                    """
 
             iframe = folium.IFrame(html, width=200, height=100)
 
