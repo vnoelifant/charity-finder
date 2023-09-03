@@ -11,9 +11,11 @@ requests = "*"
 django-countries = "*"
 python-decouple = "*"
 django-extensions = "*"
-django-tailwind = "*"
 folium = "*"
 pytest = "*"
+django-tailwind = {extras = ["reload"], version = "*"}
+whitenoise = "*"
+xmltodict = "*"
 
 [dev-packages]
 black = "*"

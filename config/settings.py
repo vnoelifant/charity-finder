@@ -16,6 +16,7 @@ from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+PROJECT_DIR = Path(__file__).resolve().parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -36,10 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "bootstrap5",
     "charity_finder.apps.CharityFinderConfig",
+    'django_extensions',
     'tailwind',
     'theme',
     'django_browser_reload',
-    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -50,7 +51,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "django_browser_reload.middleware.BrowserReloadMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django_browser_reload.middleware.BrowserReloadMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -121,6 +123,8 @@ USE_TZ = True
 
 
 STATIC_URL = "static/"
+
+STATIC_ROOT = PROJECT_DIR / "staticfiles"
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
