@@ -58,7 +58,7 @@
             <span class="text-gray-700 font-lusistana font-bold">Select Charity Category</span>
             {% load themes %}
             {% get_themes as themes %}
-            <select class="form-multiselect block mt-1 side-select" name="themes" multiple>
+            <select class="form-multiselect block mt-1 side-select" style="width: 215px" name="themes" multiple>
               {% for theme in themes %}
                 <option>{{theme.name}}</option>
               {% endfor %}
@@ -68,7 +68,7 @@
             <span class="text-gray-700 font-lusistana font-bold">Select Country</span>
             {% load countries %}
             {% get_countries as countries %}
-            <select class="form-multiselect block mt-1 side-select" name="countries" multiple>
+            <select class="form-multiselect block mt-1 side-select" style="width: 215px" name="countries" multiple>
               {% for country in countries %}
                 <option>{{country.name}}</option>
               {% endfor %}

@@ -70,7 +70,7 @@ def get_map():
                     <a href={url}>Project Link</a><br>
                     <b>Funding Needed:</b>{goal_remaining}
                     <b>Funding Weight:</b>{goal_norm}
-                    """
+                   """
 
             iframe = folium.IFrame(html, width=200, height=100)
 
