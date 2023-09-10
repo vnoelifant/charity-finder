@@ -67,7 +67,7 @@ def get_map():
 
             html = f"""
                     <b>Project Title:</b>{title}<br>
-                    <a href={url}>Project Link</a><br>
+                    <a href={url} target="_blank">Project Link</a><br>
                     <b>Funding Needed:</b>{goal_remaining}
                     <b>Funding Weight:</b>{goal_norm}
                    """
