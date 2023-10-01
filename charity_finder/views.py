@@ -49,7 +49,7 @@ def get_map():
                 project.goal_remaining / goal_remaining_max["goal_remaining__max"]
             )
 
-            lats_longs = [
+            heat_map_data = [
                 [
                     int(project.latitude),
                     int(project.longitude),
@@ -77,9 +77,7 @@ def get_map():
                 tooltip="Click to view Project Summary",
                 popup=popup,
             ).add_to(project_map)
-            HeatMap(lats_longs).add_to(project_map)
-
-    folium.LayerControl().add_to(project_map)
+            HeatMap(heat_map_data).add_to(project_map)
 
     project_map = project_map._repr_html_()
     return project_map
