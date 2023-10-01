@@ -41,10 +41,6 @@ def get_map():
 
     project_map = folium.Map(location=LAT_LON_INIT, zoom_start=3)
 
-    # fg1 = folium.FeatureGroup(name='Group 1', show = True)
-    # folium.Marker([20.5937,78.9629], tooltip="India").add_to(fg1)
-    # fg1.add_to(project_map)
-
     for project in projects:
         if project.has_map_data:
 

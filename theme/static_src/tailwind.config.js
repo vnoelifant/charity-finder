@@ -59,7 +59,4 @@ module.exports = {
         require('@tailwindcss/line-clamp'),
         require('@tailwindcss/aspect-ratio'),
     ],
-    variants: {
-        display: ['responsive', 'group-hover', 'group-focus'],
-       },
 }
