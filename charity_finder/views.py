@@ -10,13 +10,18 @@ from charity_finder import charity_api
 
 def add_heat_points_and_popups(project_map: folium.Map, projects: List[Project], goal_remaining_max: float) -> None:
     """
-    Adds normalized heat points and popups to a Folium map based on provided projects.
+    Adds normalized heat points and popups to the provided Folium map based on the provided projects.
+    
+    This function is responsible for normalizing the goal_remaining values and adding the corresponding heat points
+    and popups to the map, with each popup containing details of the project. Higher weighted normalized values
+    result in higher color intensity on the heat map, indicating a higher amount of funding needed.
     
     Args:
         project_map (folium.Map): The map object to which elements will be added.
-        projects (List[Project]): Projects containing data for the elements to be added.
+        projects (List[Project]): List of projects containing data for the elements to be added.
         goal_remaining_max (float): Maximum goal_remaining value among the projects for normalization.
     """
+
     for project in projects:
         if project.has_map_data:
             # Normalizing the goal_remaining value for the heat map
@@ -45,14 +50,29 @@ def add_heat_points_and_popups(project_map: folium.Map, projects: List[Project],
                 tooltip="Click to view Project Summary",
                 popup=popup,
             ).add_to(project_map)
-            
+
+def calculate_goal_remaining_max(projects: List[Project]) -> float:
+    """
+    Calculates and returns the maximum goal_remaining value among the provided projects.
+    
+    Args:
+        projects (List[Project]): List of projects to calculate the maximum goal_remaining value from.
+        
+    Returns:
+        float: The maximum goal_remaining value among the provided projects.
+    """
+    return projects.aggregate(Max("goal_remaining"))["goal_remaining__max"]
+
 
 def get_map() -> folium.Map:
     """
-    Generates and returns a Folium map with normalized heat points and popups representing projects in need of funding.
+    Generates a Folium map with heat points and popups representing projects in need of funding.
     
-    The heat points are normalized based on the maximum remaining goal among the retrieved projects, allowing
-    the color intensity of each point to represent the normalized goal remaining of the project.
+    This function handles the initial preparation of the map, including retrieving and filtering project data,
+    and obtaining the maximum goal_remaining for normalization using a helper function. The normalization is 
+    specifically used for representing the relative funding needs of each project on the heat map, where 
+    higher normalized values indicate higher amounts of funding needed. It delegates the actual addition of 
+    heat points and popups to the add_heat_points_and_popups function.
     
     Returns:
         folium.Map: A map object with normalized heat points and popups based on filtered project data.
@@ -66,8 +86,8 @@ def get_map() -> folium.Map:
     # Fetching and filtering projects from the database
     projects = Project.objects.filter(goal_remaining__gte=GOAL_MIN, region__name=REGION_NAME)
 
-    # Finding the maximum goal_remaining value among the filtered projects for normalization
-    goal_remaining_max = projects.aggregate(Max("goal_remaining"))["goal_remaining__max"]
+    # Retrieve the maximum goal_remaining value among the filtered projects for normalization
+    goal_remaining_max = calculate_goal_remaining_max(projects)
     
     # Create a Folium map object centered at the initial latitude and longitude.
     project_map = folium.Map(location=LAT_LON_INIT, zoom_start=3)
