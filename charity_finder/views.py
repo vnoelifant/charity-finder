@@ -8,13 +8,14 @@ from typing import List, Tuple, Final
 from charity_finder.models import Theme, Organization, Project
 from charity_finder import charity_api
 
-def add_heat_points_and_popups(project_map: folium.Map, projects: List[Project], goal_remaining_max) -> None:
+def add_heat_points_and_popups(project_map: folium.Map, projects: List[Project], goal_remaining_max: float) -> None:
     """
     Adds heat points and popups to the given Folium map based on the provided list of projects.
     
     Args:
         project_map (folium.Map): The Folium map object to which heat points and popups will be added.
         projects (List[Project]): A list of project objects containing data for the heat points and popups.
+         goal_remaining_max (float): The maximum goal_remaining value among the projects, used for normalizing the goal_remaining values.
     """
     for project in projects:
         if project.has_map_data:
@@ -57,12 +58,12 @@ def get_map() -> folium.Map:
     """
 
     # Constants
-    GOAL_LIMIT: Final[int] = 100_000  # Minimum goal_remaining to include a project in the map
+    GOAL_MIN: Final[int] = 100_000  # Minimum goal_remaining to include a project in the map
     REGION_NAME: Final[str] = "Africa"  # The name of the region to filter projects by
     LAT_LON_INIT: Final[Tuple[float, float]] = (59.09827437369457, 13.115860356662202)  # Initial coordinates for the map
     
     # Fetching and filtering projects from the database
-    projects = Project.objects.filter(goal_remaining__gte=GOAL_LIMIT, region__name=REGION_NAME)
+    projects = Project.objects.filter(goal_remaining__gte=GOAL_MIN, region__name=REGION_NAME)
 
     # Finding the maximum goal_remaining value among the filtered projects for normalization
     goal_remaining_max = projects.aggregate(Max("goal_remaining"))["goal_remaining__max"]
