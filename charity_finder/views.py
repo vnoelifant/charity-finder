@@ -10,12 +10,12 @@ from charity_finder import charity_api
 
 def add_heat_points_and_popups(project_map: folium.Map, projects: List[Project], goal_remaining_max: float) -> None:
     """
-    Adds heat points and popups to the given Folium map based on the provided list of projects.
+    Adds normalized heat points and popups to a Folium map based on provided projects.
     
     Args:
-        project_map (folium.Map): The Folium map object to which heat points and popups will be added.
-        projects (List[Project]): A list of project objects containing data for the heat points and popups.
-         goal_remaining_max (float): The maximum goal_remaining value among the projects, used for normalizing the goal_remaining values.
+        project_map (folium.Map): The map object to which elements will be added.
+        projects (List[Project]): Projects containing data for the elements to be added.
+        goal_remaining_max (float): Maximum goal_remaining value among the projects for normalization.
     """
     for project in projects:
         if project.has_map_data:
@@ -32,8 +32,8 @@ def add_heat_points_and_popups(project_map: folium.Map, projects: List[Project],
             html = f"""
                     <b>Project Title:</b>{project.title}<br>
                     <a href={project.project_link} target="_blank">Project Link</a><br>
-                    <b>Funding Needed:</b>{project.goal_remaining}
-                    <b>Funding Weight:</b>{int(project.goal_remaining)}
+                    <b>Funding Needed:</b>{int(project.goal_remaining)}
+                    <b>Funding Weight:</b>{goal_norm}
                     """
 
             # Creating an iframe with the HTML content and adding it as a popup to the map
@@ -49,12 +49,13 @@ def add_heat_points_and_popups(project_map: folium.Map, projects: List[Project],
 
 def get_map() -> folium.Map:
     """
-    Creates and returns a Folium heat map object highlighting underserved regions.
-    The map is filtered by remaining funding money by Region and normalized data for the heat map.
-    The function also adds popups to the map with embedded iframes containing project details.
+    Generates and returns a Folium map with normalized heat points and popups representing projects in need of funding.
+    
+    The heat points are normalized based on the maximum remaining goal among the retrieved projects, allowing
+    the color intensity of each point to represent the normalized goal remaining of the project.
     
     Returns:
-        folium.Map: A Folium map object with heat points and popups based on project data.
+        folium.Map: A map object with normalized heat points and popups based on filtered project data.
     """
 
     # Constants
