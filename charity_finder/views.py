@@ -69,9 +69,7 @@ def get_map() -> folium.Map:
     Generates a Folium map with heat points and popups representing projects in need of funding.
     
     This function handles the initial preparation of the map, including retrieving and filtering project data,
-    and obtaining the maximum goal_remaining for normalization using a helper function. The normalization is 
-    specifically used for representing the relative funding needs of each project on the heat map, where 
-    higher normalized values indicate higher amounts of funding needed. It delegates the actual addition of 
+    and obtaining the maximum goal_remaining across all projects for data normalization purposes. It delegates the actual addition of 
     heat points and popups to the add_heat_points_and_popups function.
     
     Returns:
