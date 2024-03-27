@@ -9,6 +9,6 @@ def timing(f):
         start = time()
         result = f(*args, **kwargs)
         end = time()
-        # print(f'Elapsed time {f.__name__}: {end - start}')
+        print(f'Elapsed time {f.__name__}: {end - start}')
         return result
     return wrapper
