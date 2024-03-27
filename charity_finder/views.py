@@ -9,13 +9,21 @@ from charity_finder.models import Theme, Organization, Project
 from charity_finder import charity_api
 from .map_visualizer import ProjectMapVisualizer
 
-# These values are considered constant throughout the program's execution but can be
-# updated by developers as necessary to reflect changes in requirements or configurations.
+# Constants for project filtering by funding and region, modifiable by developers for configuration adjustments.
 GOAL_MIN: Final[int] = 100_000  # Minimum goal_remaining to include a project in the map
 REGION_NAME: Final[str] = "Africa"  # The name of the region to filter projects by
 
 def fetch_filtered_projects(goal_min: int = GOAL_MIN, region_name: str = REGION_NAME):
-    """Fetch and filter projects from the database based on given criteria."""
+    """
+    Fetch and filter projects from the database based on given criteria.
+
+    Args:
+        goal_min (int): The minimum remaining goal amount for projects to be included. Defaults to GOAL_MIN.
+        region_name (str): The name of the region to filter projects by. Defaults to REGION_NAME.
+
+    Returns:
+        Iterable[Project]: A queryset of Project objects that meet the specified criteria.
+    """
     projects = Project.objects.filter(
         goal_remaining__gte=goal_min, region__name=region_name
     )
@@ -31,6 +39,7 @@ def calculate_goal_remaining_max(projects: Iterable[Project]) -> float:
     Returns:
         float: The maximum goal_remaining value among the provided projects.
     """
+     # Calculate the maximum 'goal_remaining' from the iterable of Project instances for normalization purposes.
     return max(project.goal_remaining for project in projects)
 
 
@@ -48,7 +57,8 @@ def home(request):
     # Fetching and filtering projects from the database
     projects = fetch_filtered_projects()
 
-    # Retrieve the maximum goal_remaining value among the filtered projects for normalization
+    # Calculate the maximum 'goal_remaining' value among projects. This value is later used 
+    # to normalize project funding goals for comparative purposes in visualization.
     goal_remaining_max = calculate_goal_remaining_max(projects)
 
     # Instantiate ProjectMapVisualizer
@@ -67,7 +77,15 @@ def home(request):
 
 
 def discover_orgs(request):
+    """
+    Renders a page to discover organizations based on user-selected themes or countries.
 
+    Args:
+        request (HttpRequest): The request object containing GET parameters for themes or countries.
+
+    Returns:
+        HttpResponse: The HTTP response object with the rendered organization discovery page.
+    """
     print("REQUEST: ", request.GET)
     themes = request.GET.getlist("themes")
     countries = request.GET.getlist("countries")
@@ -89,6 +107,17 @@ def discover_orgs(request):
 
 
 def get_project_detail(request, org_id):
+    """
+    Renders the detail page for projects associated with a specific organization ID.
+
+    Args:
+        request (HttpRequest): The request object.
+        org_id (int): The ID of the organization to retrieve projects for.
+
+    Returns:
+        HttpResponse: The HTTP response object with the rendered project detail page.
+    """
+    # Retrieve details for projects associated with a given organization ID.
     project_detail = Project.objects.filter(org_id=org_id)
     print("Project detail object: ", project_detail)
 
@@ -100,7 +129,15 @@ def get_project_detail(request, org_id):
 
 
 def search(request):
+    """
+    Renders a search results page for organizations based on a user's query.
 
+    Args:
+        request (HttpRequest): The request object containing a search query in GET parameters.
+
+    Returns:
+        HttpResponse: The HTTP response object with the rendered search results page.
+    """
     query = request.GET.get("query")
 
     # Get Organizations matching search query
