@@ -13,6 +13,7 @@ from .map_visualizer import ProjectMapVisualizer
 GOAL_MIN: Final[int] = 100_000  # Minimum goal_remaining to include a project in the map
 REGION_NAME: Final[str] = "Africa"  # The name of the region to filter projects by
 
+
 def fetch_filtered_projects(goal_min: int = GOAL_MIN, region_name: str = REGION_NAME):
     """
     Fetch and filter projects from the database based on given criteria.
@@ -29,6 +30,7 @@ def fetch_filtered_projects(goal_min: int = GOAL_MIN, region_name: str = REGION_
     )
     return projects
 
+
 def calculate_goal_remaining_max(projects: Iterable[Project]) -> float:
     """
     Calculates and returns the maximum goal_remaining value among the provided projects.
@@ -39,7 +41,7 @@ def calculate_goal_remaining_max(projects: Iterable[Project]) -> float:
     Returns:
         float: The maximum goal_remaining value among the provided projects.
     """
-     # Calculate the maximum 'goal_remaining' from the iterable of Project instances for normalization purposes.
+    # Calculate the maximum 'goal_remaining' from the iterable of Project instances for normalization purposes.
     return max(project.goal_remaining for project in projects)
 
 
@@ -57,7 +59,7 @@ def home(request):
     # Fetching and filtering projects from the database
     projects = fetch_filtered_projects()
 
-    # Calculate the maximum 'goal_remaining' value among projects. This value is later used 
+    # Calculate the maximum 'goal_remaining' value among projects. This value is later used
     # to normalize project funding goals for comparative purposes in visualization.
     goal_remaining_max = calculate_goal_remaining_max(projects)
 
