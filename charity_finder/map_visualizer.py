@@ -37,11 +37,13 @@ class ProjectMapVisualizer:
     ):
         """
         Initializes a new ProjectMapVisualizer instance with an empty folium Map,
-        centered at a specified location with a given zoom level. The map is populated
-        with project data using other methods of this class.
+        centered at a specified location with a given zoom level. The `project_map`
+        attribute stores the Folium map instance, which can be accessed directly to
+        retrieve or modify the map.
 
         The map starts with no data (empty) and uses default values for its initial
-        location and zoom level unless specified otherwise.
+        location and zoom level unless specified otherwise. Project data can be
+        added to the map using other methods of this class.
 
         Args:
             initial_location: The center point of the map. Uses INITIAL_LOCATION if not provided,
@@ -98,11 +100,4 @@ class ProjectMapVisualizer:
                     popup=popup,
                 ).add_to(self.project_map)
 
-    def get_map(self) -> folium.Map:
-        """
-        Returns the map object with all visualizations added.
 
-        Returns:
-            The Folium map object.
-        """
-        return self.project_map

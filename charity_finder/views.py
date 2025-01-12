@@ -71,7 +71,7 @@ def home(request):
 
     # Creating a context dictionary to pass data to the template
     context = {
-        "project_map": visualizer.get_map()._repr_html_()
+        "project_map": visualizer.project_map._repr_html_()
     }  # Get the HTML representation of the Folium map object
 
     # Rendering the home.html template with the context dictionary
