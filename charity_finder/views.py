@@ -3,111 +3,52 @@ from folium.plugins import HeatMap
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from django.db.models import Max
-from typing import List, Tuple, Final
+from typing import List, Tuple, Final, Iterable
 
 from charity_finder.models import Theme, Organization, Project
 from charity_finder import charity_api
+from .map_visualizer import ProjectMapVisualizer
+
+# Constants for project filtering by funding and region, modifiable by developers for configuration adjustments.
+GOAL_MIN: Final[int] = 100_000  # Minimum goal_remaining to include a project in the map
+REGION_NAME: Final[str] = "Africa"  # The name of the region to filter projects by
 
 
-def add_heat_points_and_popups(
-    project_map: folium.Map, projects: List[Project], goal_remaining_max: float
-) -> None:
+def fetch_filtered_projects(goal_min: int = GOAL_MIN, region_name: str = REGION_NAME):
     """
-    Adds normalized heat points and popups to the provided Folium map based on the provided projects.
+    Fetch and filter projects from the database based on given criteria.
 
     Args:
-        project_map (folium.Map): The map object to which elements will be added.
-        projects (List[Project]): List of projects containing data for the elements to be added.
-        goal_remaining_max (float): Maximum goal_remaining value among the projects for normalization.
+        goal_min (int): The minimum remaining goal amount for projects to be included. Defaults to GOAL_MIN.
+        region_name (str): The name of the region to filter projects by. Defaults to REGION_NAME.
+
+    Returns:
+        Iterable[Project]: A queryset of Project objects that meet the specified criteria.
     """
-
-    for project in projects:
-        if project.has_map_data:
-            # Normalizing the goal_remaining value for the heat map
-            goal_norm = float(project.goal_remaining / goal_remaining_max)
-
-            # Creating a list of latitude, longitude, and normalized goal_remaining for the heat point data
-            heat_map_data = [[int(project.latitude), int(project.longitude), goal_norm]]
-
-            # Adding a heat point data to the map
-            HeatMap(heat_map_data).add_to(project_map)
-
-            # Creating HTML content for the popup with project details
-            html = f"""
-                    <b>Project Title:</b>{project.title}<br>
-                    <a href={project.project_link} target="_blank">Project Link</a><br>
-                    <b>Funding Needed:</b>{int(project.goal_remaining)}
-                    <b>Funding Weight:</b>{goal_norm}
-                    """
-
-            # Creating an iframe with the HTML content and adding it as a popup to the map
-            iframe = folium.IFrame(html, width=200, height=100)
-            popup = folium.Popup(iframe, max_width=200)
-
-            # Add a clickable marker at a specified location on the map, which displays a popup
-            folium.Marker(
-                location=[int(project.latitude), int(project.longitude)],
-                tooltip="Click to view Project Summary",
-                popup=popup,
-            ).add_to(project_map)
+    projects = Project.objects.filter(
+        goal_remaining__gte=goal_min, region__name=region_name
+    )
+    return projects
 
 
-def calculate_goal_remaining_max(projects: List[Project]) -> float:
+def calculate_goal_remaining_max(projects: Iterable[Project]) -> float:
     """
     Calculates and returns the maximum goal_remaining value among the provided projects.
 
     Args:
-        projects (List[Project]): List of projects to calculate the maximum goal_remaining value from.
+        projects (Iterable[Project]): Iterable of projects to calculate the maximum goal_remaining value from.
 
     Returns:
         float: The maximum goal_remaining value among the provided projects.
     """
-    return projects.aggregate(Max("goal_remaining"))["goal_remaining__max"]
-
-
-def get_map() -> folium.Map:
-    """
-    Generates a Folium map with heat points and popups representing projects in need of funding.
-
-    This function handles the initial preparation of the map, including retrieving and filtering project data,
-    and obtaining the maximum goal_remaining across all projects for data normalization purposes. It delegates the actual addition of
-    heat points and popups to the add_heat_points_and_popups function.
-
-    Returns:
-        folium.Map: A map object with normalized heat points and popups based on filtered project data.
-    """
-
-    # Constants
-    GOAL_MIN: Final[
-        int
-    ] = 100_000  # Minimum goal_remaining to include a project in the map
-    REGION_NAME: Final[str] = "Africa"  # The name of the region to filter projects by
-    LAT_LON_INIT: Final[Tuple[float, float]] = (
-        59.09827437369457,
-        13.115860356662202,
-    )  # Initial coordinates for the map
-
-    # Fetching and filtering projects from the database
-    projects = Project.objects.filter(
-        goal_remaining__gte=GOAL_MIN, region__name=REGION_NAME
-    )
-
-    # Retrieve the maximum goal_remaining value among the filtered projects for normalization
-    goal_remaining_max = calculate_goal_remaining_max(projects)
-
-    # Create a Folium map object centered at the initial latitude and longitude.
-    project_map = folium.Map(location=LAT_LON_INIT, zoom_start=3)
-
-    # Adding heat points and popups to the map based on the filtered projects
-    add_heat_points_and_popups(project_map, projects, goal_remaining_max)
-
-    return project_map
+    # Calculate the maximum 'goal_remaining' from the iterable of Project instances for normalization purposes.
+    return max(project.goal_remaining for project in projects)
 
 
 def home(request):
     """
     Django view function to render the home page of the application.
-    Calls the get_map function to create a Folium map object and passes it to the home.html template.
+    Instantiates ProjectMapVisualizer to create a Folium map object and passes it to the home.html template.
 
     Args:
         request (HttpRequest): The HTTP request object containing metadata about the request.
@@ -115,12 +56,22 @@ def home(request):
     Returns:
         HttpResponse: The HTTP response object used to render the home.html template with the Folium map.
     """
-    # Creating a Folium map object with the get_map function
-    project_map = get_map()
-    # Creating a context dictionary to pass data to the template
+    # Fetching and filtering projects from the database
+    projects = fetch_filtered_projects()
 
+    # Calculate the maximum 'goal_remaining' value among projects. This value is later used
+    # to normalize project funding goals for comparative purposes in visualization.
+    goal_remaining_max = calculate_goal_remaining_max(projects)
+
+    # Instantiate ProjectMapVisualizer
+    visualizer = ProjectMapVisualizer()
+
+    # Adding heat points and popups to the map based on the filtered projects
+    visualizer.add_heat_points_and_popups(projects, goal_remaining_max)
+
+    # Creating a context dictionary to pass data to the template
     context = {
-        "project_map": project_map._repr_html_()
+        "project_map": visualizer.project_map._repr_html_()
     }  # Get the HTML representation of the Folium map object
 
     # Rendering the home.html template with the context dictionary
@@ -128,7 +79,15 @@ def home(request):
 
 
 def discover_orgs(request):
+    """
+    Renders a page to discover organizations based on user-selected themes or countries.
 
+    Args:
+        request (HttpRequest): The request object containing GET parameters for themes or countries.
+
+    Returns:
+        HttpResponse: The HTTP response object with the rendered organization discovery page.
+    """
     print("REQUEST: ", request.GET)
     themes = request.GET.getlist("themes")
     countries = request.GET.getlist("countries")
@@ -150,6 +109,17 @@ def discover_orgs(request):
 
 
 def get_project_detail(request, org_id):
+    """
+    Renders the detail page for projects associated with a specific organization ID.
+
+    Args:
+        request (HttpRequest): The request object.
+        org_id (int): The ID of the organization to retrieve projects for.
+
+    Returns:
+        HttpResponse: The HTTP response object with the rendered project detail page.
+    """
+    # Retrieve details for projects associated with a given organization ID.
     project_detail = Project.objects.filter(org_id=org_id)
     print("Project detail object: ", project_detail)
 
@@ -161,7 +131,15 @@ def get_project_detail(request, org_id):
 
 
 def search(request):
+    """
+    Renders a search results page for organizations based on a user's query.
 
+    Args:
+        request (HttpRequest): The request object containing a search query in GET parameters.
+
+    Returns:
+        HttpResponse: The HTTP response object with the rendered search results page.
+    """
     query = request.GET.get("query")
 
     # Get Organizations matching search query
