@@ -16,6 +16,8 @@ pytest = "*"
 django-tailwind = {extras = ["reload"], version = "*"}
 whitenoise = "*"
 xmltodict = "*"
+psycopg2-binary = "*"
+dj-database-url = "*"
 
 [dev-packages]
 black = "*"

@@ -29,23 +29,33 @@ class Command(BaseCommand):
         # Named (optional) arguments
         parser.add_argument(
             "--model",
-            help="Add model name to clear",
+            help="Specify model to clear, or use 'all' to clear all tables.",
         )
 
     def handle(self, *args, **options):
-        if options["model"] == "theme":
+        model = options["model"]
+        if model == "theme":
             print("Clearing theme data")
             clear_themes()
-        elif options["model"] == "organization":
+        elif model == "organization":
             print("Clearing organization data")
             clear_active_orgs()
-        elif options["model"] == "country":
+        elif model == "country":
             print("Clearing country data")
             clear_countries()
-        elif options["model"] == "project":
+        elif model == "project":
             print("Clearing project data")
             clear_projects()
-        elif options["model"] == "region":
+        elif model == "region":
             print("Clearing region data")
             clear_regions()
+        elif model == "all":
+            print("Clearing all data...")
+            clear_projects()
+            clear_regions()
+            clear_themes()
+            clear_countries()
+            clear_active_orgs()
+        else:
+            print("Invalid model specified. Use --model with a valid value.")
         print("Completed")
