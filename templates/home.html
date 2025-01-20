@@ -15,7 +15,15 @@
     </div>
     <div class="py-12">
       <h3><b>Underserved Areas</h3></b>
-      {{project_map | safe}}
+      {% if error_message %}
+        {% with error_message|linebreaksbr as formatted_message %}
+        <p class="text-center text-red-500 mt-4 font-semibold">
+          {{ formatted_message|safe }}
+        </p>
+        {% endwith %}
+      {% else %}
+        {{ project_map | safe }}
+      {% endif %}
     </div>
   </div>
 </div>

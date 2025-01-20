@@ -59,6 +59,14 @@ def home(request):
     # Fetching and filtering projects from the database
     projects = fetch_filtered_projects()
 
+    if not projects.exists():
+        # Handle the case where no projects are found
+        context = {
+            "project_map": None,  
+            "error_message": "No projects available to display on the map.\nPlease check back later.",
+        }
+        return render(request, "home.html", context)
+
     # Calculate the maximum 'goal_remaining' value among projects. This value is later used
     # to normalize project funding goals for comparative purposes in visualization.
     goal_remaining_max = calculate_goal_remaining_max(projects)
