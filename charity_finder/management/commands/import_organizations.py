@@ -11,7 +11,6 @@ from charity_finder import charity_api
 from charity_finder.decorators import timing
 
 
-@timing
 def insert_active_orgs():
     with open("output_active_orgs.json") as data_file:
         orgs = json.load(data_file)
@@ -51,7 +50,6 @@ def insert_active_orgs():
                 org.countries.add(*matching_countries)
 
 
-@timing
 def get_matching_themes(themes):
     themes_from_json = themes.get("theme", [])
     matching_themes = []
@@ -68,7 +66,6 @@ def get_matching_themes(themes):
     return matching_themes
 
 
-@timing
 def get_matching_countries(countries):
     countries_from_json = countries.get("country", [])
     matching_countries = []
@@ -85,7 +82,6 @@ def get_matching_countries(countries):
     return matching_countries
 
 
-@timing
 def get_matching_organization(project_orgs, organizations):
     project_org_id = project_orgs.get("id", "")
     project_org_id = int(project_org_id)
@@ -94,7 +90,6 @@ def get_matching_organization(project_orgs, organizations):
         return organizations.get(project_org_id)
 
 
-@timing
 def insert_active_projects():
 
     # Create organization dictionary to store organization id and object
@@ -222,20 +217,17 @@ def insert_active_projects():
             project.save()
 
 
-@timing
 def dump_charity_data_to_json(output_file, data):
     with open(output_file, "w") as charity_data:
         json.dump(data, charity_data, indent=4, sort_keys=True)
 
 
-@timing
 def get_json_data_from_xml(xml_data):
     with open(xml_data) as xml_file:
         org_json_data = xmltodict.parse(xml_file.read())
     return org_json_data
 
 
-@timing
 def get_url_from_json(input_file):
     # Get the url from JSON
     with open(input_file) as f:
@@ -245,13 +237,11 @@ def get_url_from_json(input_file):
     return response
 
 
-@timing
 def download_bulk_data_to_xml(output_file, response):
     with open(output_file, "wb") as file:
         file.write(response.content)
 
 
-@timing
 def download_organizations():
 
     # Get an XML file containing a URL of all active organizations (bulk data download)
@@ -278,7 +268,6 @@ def download_organizations():
     )
 
 
-@timing
 def download_projects():
     # Get an XML file containting a URL of all active projects (bulk data download)
     # if not Path("output_projects_url.json").exists():

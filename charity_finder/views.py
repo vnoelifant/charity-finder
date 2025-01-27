@@ -62,7 +62,7 @@ def home(request):
     if not projects.exists():
         # Handle the case where no projects are found
         context = {
-            "project_map": None,  
+            "project_map": None,
             "error_message": "No projects available to display on the map.\nPlease check back later.",
         }
         return render(request, "home.html", context)
