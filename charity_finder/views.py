@@ -98,25 +98,27 @@ def discover_orgs(request):
     themes = request.GET.getlist("themes")
     countries = request.GET.getlist("countries")
 
-    if "themes" in request.GET:
+    try:
 
-        # Get Organizations matching selected theme names
-        organizations = Organization.objects.filter(themes__name__in=themes).distinct()
+        if "themes" in request.GET:
 
-    else:
-        # Get Organizations matching selected region names
-        organizations = Organization.objects.filter(
-            countries__name__in=countries
-        ).distinct()
+            # Get Organizations matching selected theme names
+            organizations = Organization.objects.filter(themes__name__in=themes).distinct()
 
-    # Debug: Print logo URLs for each organization
-    for organization in organizations:
-        print(f"Organization: {organization.name}, Logo URL: {organization.logo_url}")
+        else:
+            # Get Organizations matching selected region names
+            organizations = Organization.objects.filter(
+                countries__name__in=countries
+            ).distinct()
 
-    context = {"orgs_discover": organizations}
+        # Debug: Print logo URLs for each organization
+        for organization in organizations:
+            print(f"Organization: {organization.name}, Logo URL: {organization.logo_url}")
 
-    return render(request, "orgs_discover.html", context)
+        context = {"orgs_discover": organizations}
 
+        return render(request, "orgs_discover.html", context)
+    
 
 def get_project_detail(request, org_id):
     """

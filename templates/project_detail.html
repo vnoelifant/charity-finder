@@ -15,7 +15,7 @@
         
         <div class="rounded-lg shadow-lg bg-white w-full border-indigo-600">
             <a href="{{project.project_link}}">
-                <img class="rounded-t-lg" src="{% url 'proxy_image' image_url=project.image %}" 
+                <img class="rounded-t-lg" src="{% url 'proxy_image' image_url=project.image|urlencode %}" 
                     alt="Project Image"
                     onerror="this.onerror=null; this.src='/static/img/default-logo.jpg';">
             </a>
