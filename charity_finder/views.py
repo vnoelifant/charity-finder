@@ -1,6 +1,6 @@
 import requests
 from django.shortcuts import render
-from django.utils.encoding import iri_to_uri
+from django.utils.encoding import iri_to_uri, urlunquote
 from django.http import HttpResponse, Http404
 from typing import Final, Iterable
 from django.db.models import Q
@@ -145,21 +145,18 @@ def proxy_image(request, image_url=None):
     Fetches and serves an image from an external URL to avoid CORS and ORB restrictions.
     If the image cannot be loaded, serves a default fallback image.
     """
-    fallback_image_path = "static/img/default-logo.jpg"
-
-    print(f"Proxy Image Request: {image_url}")
 
     if not image_url:
         print("No image URL provided, serving default logo.")
-        try:
-            with open(fallback_image_path, "rb") as f:
-                return HttpResponse(f.read(), content_type="image/jpeg")
-        except FileNotFoundError:
-            raise Http404("Fallback image not found")
+        return serve_fallback_image(DEFAULT_ORG_PROJ_LOGO)
 
     try:
-        response = requests.get(image_url, timeout=5)
-        print(f"Fetched image from {image_url}, Status Code: {response.status_code}")
+        # Decode the URL before making the request
+        decoded_url = urlunquote(image_url)
+        print(f"✅ Decoded Image URL: {decoded_url}")
+
+        # Fetch the image from the external URL
+        response = requests.get(decoded_url, timeout=5)
 
         if response.status_code != 200:
             raise Exception(f"Image request failed with status {response.status_code}")
@@ -167,9 +164,14 @@ def proxy_image(request, image_url=None):
         return HttpResponse(response.content, content_type=response.headers.get("Content-Type", "image/jpeg"))
 
     except Exception as e:
-        print(f"Error fetching image: {e}, Serving fallback image.")
-        try:
-            with open(fallback_image_path, "rb") as f:
-                return HttpResponse(f.read(), content_type="image/jpeg")
-        except FileNotFoundError:
-            raise Http404("Fallback image not found")
+        print(f"⚠️ Error fetching image: {e}, Serving fallback image.")
+        return serve_fallback_image()
+
+def serve_fallback_image(fallback_image_path):
+    """Serves the fallback image in case of errors."""
+  
+    try:
+        with open(fallback_image_path, "rb") as f:
+            return HttpResponse(f.read(), content_type="image/jpeg")
+    except FileNotFoundError:
+        raise Http404("Fallback image not found")
