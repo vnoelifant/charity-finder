@@ -164,33 +164,42 @@ def search(request):
 
     return render(request, "orgs_search.html", context)
 
-def proxy_image(request, image_url):
+def proxy_image(request, image_url=None):
     """
     Fetches and serves an image from an external URL to avoid CORS and ORB restrictions.
     If the image cannot be loaded, serves a default fallback image.
     """
-    # Ensure the URL is properly encoded
-    image_url = iri_to_uri(image_url)
+    fallback_image_path = "static/img/default-logo.jpg"
 
-    # Define the fallback image path
-    fallback_image_path = "static/img/default-logo.png"
+    # Log the incoming image request
+    print(f"Proxy Image Request: {image_url}")
+
+    # If image_url is missing, return fallback
+    if not image_url:
+        print("No image URL provided, serving default logo.")
+        try:
+            with open(fallback_image_path, "rb") as f:
+                return HttpResponse(f.read(), content_type="image/jpeg")
+        except FileNotFoundError:
+            raise Http404("Fallback image not found")
 
     try:
-        # Fetch the image from the external source
+        # Fetch the image from the external URL
         response = requests.get(image_url, timeout=5)
 
-        # If the request fails, serve the fallback image
-        if response.status_code != 200:
-            raise Exception("Image request failed")
+        # Log response status
+        print(f"Fetched image from {image_url}, Status Code: {response.status_code}")
 
-        # Return the image response with correct content type
+        if response.status_code != 200:
+            raise Exception(f"Image request failed with status {response.status_code}")
+
         return HttpResponse(response.content, content_type=response.headers.get("Content-Type", "image/jpeg"))
 
     except Exception as e:
-        print(f"Error fetching image: {e}")
+        print(f"Error fetching image: {e}, Serving fallback image.")
+
         try:
-            # Serve a default image if the external image fails
             with open(fallback_image_path, "rb") as f:
-                return HttpResponse(f.read(), content_type="image/png")
+                return HttpResponse(f.read(), content_type="image/jpeg")
         except FileNotFoundError:
             raise Http404("Fallback image not found")
