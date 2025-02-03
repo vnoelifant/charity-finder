@@ -15,7 +15,9 @@
         
         <div class="rounded-lg shadow-lg bg-white w-full border-indigo-600">
             <a href="{{organization.url}}">
-                <img class="rounded-t-lg" src="{{organization.logo_url}}" alt="Organization Logo"/>
+                <img class="rounded-t-lg" src="{% url 'proxy_image' image_url=organization.logo_url %}" 
+                    alt="Organization Logo"
+                    onerror="this.onerror=null; this.src='/static/img/default-logo.jpg';">
             </a>
             <div class="p-6">
                 <h5 class="text-gray-900 text-xl font-semibold mb-2 font-lusistana">

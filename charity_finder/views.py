@@ -1,12 +1,10 @@
-import folium
-from folium.plugins import HeatMap
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, JsonResponse
-from django.db.models import Max
-from typing import List, Tuple, Final, Iterable
+import requests
+from django.shortcuts import render
+from django.utils.encoding import iri_to_uri
+from django.http import HttpResponse, Http404
+from typing import Final, Iterable
 
-from charity_finder.models import Theme, Organization, Project
-from charity_finder import charity_api
+from charity_finder.models import Organization, Project
 from .map_visualizer import ProjectMapVisualizer
 
 # Constants for project filtering by funding and region, modifiable by developers for configuration adjustments.
@@ -111,6 +109,10 @@ def discover_orgs(request):
             countries__name__in=countries
         ).distinct()
 
+    # Debug: Print logo URLs for each organization
+    for organization in organizations:
+        print(f"Organization: {organization.name}, Logo URL: {organization.logo_url}")
+
     context = {"orgs_discover": organizations}
 
     return render(request, "orgs_discover.html", context)
@@ -129,7 +131,11 @@ def get_project_detail(request, org_id):
     """
     # Retrieve details for projects associated with a given organization ID.
     project_detail = Project.objects.filter(org_id=org_id)
-    print("Project detail object: ", project_detail)
+    # print("Project detail object: ", project_detail)
+
+    # Debug: Print image URLs for each project
+    for project in project_detail:
+        print(f"Project: {project.title}, Image URL: {project.image}")
 
     context = {
         "project_detail": project_detail,
@@ -156,3 +162,34 @@ def search(request):
     context = {"orgs_by_search": orgs_by_search}
 
     return render(request, "orgs_search.html", context)
+
+def proxy_image(request, image_url):
+    """
+    Fetches and serves an image from an external URL to avoid CORS and ORB restrictions.
+    If the image cannot be loaded, serves a default fallback image.
+    """
+    # Ensure the URL is properly encoded
+    image_url = iri_to_uri(image_url)
+
+    # Define the fallback image path
+    fallback_image_path = "static/img/default-logo.png"
+
+    try:
+        # Fetch the image from the external source
+        response = requests.get(image_url, timeout=5)
+
+        # If the request fails, serve the fallback image
+        if response.status_code != 200:
+            raise Exception("Image request failed")
+
+        # Return the image response with correct content type
+        return HttpResponse(response.content, content_type=response.headers.get("Content-Type", "image/jpeg"))
+
+    except Exception as e:
+        print(f"Error fetching image: {e}")
+        try:
+            # Serve a default image if the external image fails
+            with open(fallback_image_path, "rb") as f:
+                return HttpResponse(f.read(), content_type="image/png")
+        except FileNotFoundError:
+            raise Http404("Fallback image not found")

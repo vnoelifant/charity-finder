@@ -12,4 +12,7 @@ urlpatterns = [
     ),
     path("orgs_discover/", views.discover_orgs, name="orgs_discover"),
     path("orgs_search/", views.search, name="orgs_search"),
+
+    # Proxy image route
+    path("proxy-image/<path:image_url>/", views.proxy_image, name="proxy_image"),
 ]
