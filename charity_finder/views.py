@@ -11,6 +11,7 @@ from .map_visualizer import ProjectMapVisualizer
 # Constants for project filtering by funding and region, modifiable by developers for configuration adjustments.
 GOAL_MIN: Final[int] = 100_000  # Minimum goal_remaining to include a project in the map
 REGION_NAME: Final[str] = "Africa"  # The name of the region to filter projects by
+DEFAULT_ORG_PROJ_LOGO = "/static/img/default-logo.jpg" # Name of the default logo image file
 
 def fetch_filtered_projects(goal_min: int = GOAL_MIN, region_name: str = REGION_NAME):
     """
@@ -48,72 +49,96 @@ def home(request):
 
     return render(request, "home.html", {"project_map": visualizer.project_map._repr_html_()})
 
+
+def search(request):
+    """
+    Renders a search results page for organizations based on a user's query.
+    Logs and handles missing organization logos.
+    """
+    query = request.GET.get("query", "").strip()
+
+    if not query:
+        print("❌ Empty search query received.")
+        return render(request, "orgs_search.html", {"error_message": "No search query provided."})
+
+    try:
+        orgs_by_search = Organization.objects.filter(name__icontains=query)
+        print(f"🔍 Search Query: {query} - Found {orgs_by_search.count()} organizations.")
+
+        for org in orgs_by_search:
+            if not org.logo_url:
+                print(f"⚠️ Missing logo for organization: {org.name}")
+
+        return render(request, "orgs_search.html", {"orgs_by_search": orgs_by_search, "default_logo": DEFAULT_ORG_PROJ_LOGO})
+
+    except Exception as e:
+        print(f"❌ Error in search: {e}")
+        return render(request, "orgs_search.html", {"error_message": "An error occurred while searching for organizations."})
+
 def discover_orgs(request):
     """
     Renders a page to discover organizations based on user-selected themes or countries.
+    Supports filtering by both themes and countries together.
     """
-    print("REQUEST: ", request.GET)
-    
-    themes = request.GET.getlist("themes")
-    countries = request.GET.getlist("countries")
+    print("🔍 REQUEST: ", request.GET)
+
+    themes = request.GET.getlist("themes")  # List of selected themes
+    countries = request.GET.getlist("countries")  # List of selected countries
 
     try:
-        if themes:
-            organizations = Organization.objects.filter(themes__name__in=themes).distinct()
+        # Start with all organizations
+        organizations = Organization.objects.all()
+
+        # Apply filters dynamically
+        if themes and countries:
+            organizations = organizations.filter(
+                themes__name__in=themes, countries__name__in=countries
+            ).distinct()
+            print(f"✅ Found {organizations.count()} organizations for themes {themes} in countries {countries}")
+
+        elif themes:
+            organizations = organizations.filter(themes__name__in=themes).distinct()
+            print(f"✅ Found {organizations.count()} organizations for themes {themes}")
+
         elif countries:
-            organizations = Organization.objects.filter(countries__name__in=countries).distinct()
+            organizations = organizations.filter(countries__name__in=countries).distinct()
+            print(f"✅ Found {organizations.count()} organizations in countries {countries}")
+
         else:
-            organizations = Organization.objects.all()
-
-        print(f"Found {organizations.count()} organizations matching filters.")
-
+            print("⚠️ No filters applied. Showing all organizations.")
+        
+        # Log missing images for debugging
         for org in organizations:
-            print(f"Organization: {org.name}, Logo URL: {org.logo_url or 'MISSING'}")
+            if not org.logo_url:
+                print(f"⚠️ Missing logo for organization: {org.name}")
 
-        return render(request, "orgs_discover.html", {"orgs_discover": organizations})
+        return render(request, "orgs_discover.html", {"orgs_discover": organizations, "default_logo": DEFAULT_ORG_PROJ_LOGO})
 
     except Exception as e:
-        print(f"Error in discover_orgs: {e}")
+        print(f"❌ Error in discover_orgs: {e}")
         return render(request, "orgs_discover.html", {"error_message": "An error occurred while fetching organizations."})
 
 def get_project_detail(request, org_id):
     """
     Renders the detail page for projects associated with a specific organization ID.
+    Logs and handles missing project images.
     """
     try:
         project_detail = Project.objects.filter(org_id=org_id)
 
         if not project_detail.exists():
-            print(f"No projects found for organization ID: {org_id}")
+            print(f"⚠️ No projects found for organization ID: {org_id}")
 
         for project in project_detail:
-            print(f"Project: {project.title}, Image URL: {project.image or 'MISSING'}")
+            if not project.image:
+                print(f"⚠️ Missing image for project: {project.title}")
 
-        return render(request, "project_detail.html", {"project_detail": project_detail})
+        return render(request, "project_detail.html", {"project_detail": project_detail, "default_logo": DEFAULT_ORG_PROJ_LOGO})
 
     except Exception as e:
-        print(f"Error in get_project_detail: {e}")
+        print(f"❌ Error in get_project_detail: {e}")
         return render(request, "project_detail.html", {"error_message": "An error occurred while fetching project details."})
 
-def search(request):
-    """
-    Renders a search results page for organizations based on a user's query.
-    """
-    query = request.GET.get("query", "").strip()
-
-    if not query:
-        print("Empty search query received.")
-        return render(request, "orgs_search.html", {"error_message": "No search query provided."})
-
-    try:
-        orgs_by_search = Organization.objects.filter(Q(name__icontains=query))
-        print(f"Search Query: {query} - Found {orgs_by_search.count()} organizations.")
-
-        return render(request, "orgs_search.html", {"orgs_by_search": orgs_by_search})
-
-    except Exception as e:
-        print(f"Error in search: {e}")
-        return render(request, "orgs_search.html", {"error_message": "An error occurred while searching for organizations."})
 
 def proxy_image(request, image_url=None):
     """
