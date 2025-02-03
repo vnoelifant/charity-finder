@@ -1,7 +1,7 @@
 import requests
 from django.shortcuts import render
 from django.utils.encoding import iri_to_uri
-from django.utils.http import urlunquote
+from urllib.parse import unquote
 from django.http import HttpResponse, Http404
 from typing import Final, Iterable
 from django.db.models import Q
@@ -153,7 +153,7 @@ def proxy_image(request, image_url=None):
 
     try:
         # Decode the URL before making the request
-        decoded_url = urlunquote(image_url)
+        decoded_url = unquote(image_url)
         print(f"✅ Decoded Image URL: {decoded_url}")
 
         # Fetch the image from the external URL
