@@ -1,6 +1,7 @@
 import requests
 from django.shortcuts import render
-from django.utils.encoding import iri_to_uri, urlunquote
+from django.utils.encoding import iri_to_uri
+from django.utils.http import urlunquote
 from django.http import HttpResponse, Http404
 from typing import Final, Iterable
 from django.db.models import Q
