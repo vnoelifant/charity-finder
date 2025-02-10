@@ -1,7 +1,7 @@
 import folium
 from folium.plugins import HeatMap
-from typing import List, Final, Tuple, Iterable, Union, Optional
-from django.db.models import Max
+from typing import List, Final, Tuple, Optional
+from django.db.models import QuerySet
 from charity_finder.models import Project
 
 
@@ -23,9 +23,11 @@ class ProjectMapVisualizer:
     POPUP_MAX_WIDTH: Final[int] = 200  # Maximum width of the popup in pixels
 
     # HTML template for displaying project details in popups, with placeholders for project data.
-    HTML_TEMPLATE: Final[str] = """
+    HTML_TEMPLATE: Final[
+        str
+    ] = """
         <b>Project Title:</b> {title}<br>
-        <a href="{link}" target="_blank">Project Link</a><br>
+        <a href="{link}" target="_blank" rel="noopener noreferrer">Project Link</a><br>
         <b>Funding Needed:</b> {goal_remaining}<br>
         <b>Funding Weight:</b> {goal_norm}
     """
@@ -56,7 +58,7 @@ class ProjectMapVisualizer:
         self.project_map = folium.Map(location=initial_location, zoom_start=zoom_start)
 
     def add_heat_points_and_popups(
-        self, projects: Iterable[Project], goal_remaining_max: float
+        self, projects: QuerySet[Project], goal_remaining_max: float
     ) -> None:
         """
         Adds heat points based on projects' funding needs and popups with project details to the map.
@@ -78,13 +80,13 @@ class ProjectMapVisualizer:
                 ]
                 # Adding heat point data to the map
                 HeatMap(heat_map_data).add_to(self.project_map)
-                
+
                 # Using the template for HTML content
                 html = self.HTML_TEMPLATE.format(
                     title=project.title,
                     link=project.project_link,
                     goal_remaining=int(project.goal_remaining),
-                    goal_norm=goal_norm
+                    goal_norm=goal_norm,
                 )
 
                 # Creating an iframe with the HTML content and adding it as a popup to the map
@@ -99,5 +101,3 @@ class ProjectMapVisualizer:
                     tooltip="Click to view Project Summary",
                     popup=popup,
                 ).add_to(self.project_map)
-
-

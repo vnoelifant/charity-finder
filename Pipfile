@@ -18,6 +18,7 @@ whitenoise = "*"
 xmltodict = "*"
 psycopg2-binary = "*"
 dj-database-url = "*"
+gunicorn = "*"
 
 [dev-packages]
 black = "*"

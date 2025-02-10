@@ -20,12 +20,9 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    path('my-backend/', admin.site.urls),
-    path('', include('charity_finder.urls')),
+    path("my-backend/", admin.site.urls),
+    path("", include("charity_finder.urls")),
     path("__reload__/", include("django_browser_reload.urls")),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
-
-
