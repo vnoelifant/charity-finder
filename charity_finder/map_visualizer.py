@@ -1,7 +1,7 @@
 import folium
 from folium.plugins import HeatMap
-from typing import List, Final, Tuple, Iterable, Union, Optional
-from django.db.models import Max
+from typing import List, Final, Tuple, Optional
+from django.db.models import QuerySet
 from charity_finder.models import Project
 
 
@@ -58,7 +58,7 @@ class ProjectMapVisualizer:
         self.project_map = folium.Map(location=initial_location, zoom_start=zoom_start)
 
     def add_heat_points_and_popups(
-        self, projects: Iterable[Project], goal_remaining_max: float
+        self, projects: QuerySet[Project], goal_remaining_max: float
     ) -> None:
         """
         Adds heat points based on projects' funding needs and popups with project details to the map.
